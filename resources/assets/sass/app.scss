@@ -1,2 +1,1433 @@
-// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
+$navy: #34495e;
+$green: #2ecc71;
+$blue: #3498db;
+$yellow: #f1c40f;
+$red: #e74c3c;
+$white: #ffffff;
+$black: #000000;
+$blue-green: #1abc9c;
+$purple: #9b59b6;
+$orange: #f39c12;
+$brown: #ae956d;
+
+$twitter: #4099ff;
+$facebook: #3b5998;
+
+$headerHeight: 65px;
+
+@mixin border-radius($size) {
+    -webkit-border-radius: $size;
+    -moz-border-radius: $size;
+    -o-border-radius: $size;
+    border-radius: $size;
+}
+
+@mixin border-bottom-right-radius($size) {
+    -webkit-border-bottom-right-radius: $size;
+    -moz-border-bottom-right-radius: $size;
+    -o-border-bottom-right-radius: $size;
+    border-bottom-right-radius: $size;
+}
+
+@mixin border-bottom-left-radius($size) {
+    -webkit-border-bottom-left-radius: $size;
+    -moz-border-bottom-left-radius: $size;
+    -o-border-bottom-left-radius: $size;
+    border-bottom-left-radius: $size;
+}
+
+@mixin border-top-right-radius($size) {
+    -webkit-border-top-right-radius: $size;
+    -moz-border-top-right-radius: $size;
+    -o-border-top-right-radius: $size;
+    border-top-right-radius: $size;
+}
+
+@mixin border-top-left-radius($size) {
+    -webkit-border-top-left-radius: $size;
+    -moz-border-top-left-radius: $size;
+    -o-border-top-left-radius: $size;
+    border-top-left-radius: $size;
+}
+
+@mixin box-shadow($style, $color) {
+    -webkit-box-shadow: $style $color;
+    -moz-box-shadow: $style $color;
+    -o-box-shadow: $style $color;
+    box-shadow: $style $color;
+}
+
+@mixin gradient($top, $bottom) {
+    background: mix($top, $bottom, 50%);
+    //filter: ~"progid:DXImageTransform.Microsoft.gradient( startColorstr="$top~", endColorstr="$bottom~")";
+    background: -moz-linear-gradient(top,  $top 0%, $bottom 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$top), color-stop(100%,$bottom));
+    background: -webkit-linear-gradient(top,  $top 0%,$bottom 100%);
+    background: -o-linear-gradient(top,  $top 0%,$bottom 100%);
+    background: -ms-linear-gradient(top,  $top 0%,$bottom 100%);
+    background: linear-gradient(to bottom,  $top 0%,$bottom 100%);
+    zoom: 1;
+}
+
+@mixin generate-submenu($name, $color) {
+    .#{$name} {
+        border-top: 1px solid darken($color, 20%);
+        border-bottom: 1px solid darken($color, 20%);
+        background-color: $color;
+        //.gradient($color, darken($color, 20%));
+
+        .navbar-toggle {
+            border-color: darken($color, 20%);
+            @include gradient($color, darken($color, 20%));
+            color: $white;
+            padding: 6px 10px;
+        }
+
+        .nav {
+            >li {
+                &.active {
+                    >a {
+                        border: 1px solid darken($color, 15%);
+                        background-color: darken($color, 15%);
+                        @include box-shadow(inset 0 0 3px, darken($color, 25%));
+                        //.gradient(darken($color, 20%), $color);
+                        color: $white;
+                        padding: 7px 14px;
+                    }
+                }
+
+                >a {
+                    color: $white;
+                    padding: 8px 15px;
+                }
+            }
+        }
+    }
+}
+
+@mixin opacity($percent) {
+    $percent2: $percent * 100;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=$percent2)";
+    filter: alpha(opacity=$percent2);
+    -moz-opacity: $percent;
+    -khtml-opacity: $percent;
+    opacity: $percent;
+}
+
+body {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAHCAYAAAA1WQxeAAAAIklEQVQIW2M8c+bMZgY8gBGkwMTExBekBqYYmQ9WMNhNAABnZi2pSaSOMQAAAABJRU5ErkJggg==) repeat;
+    background-color: darken($white, 5%);
+}
+
+#login-error {
+    color: $red;
+}
+
+.login-footer {
+    text-align: center;
+    display: block;
+}
+
+#goto-top {
+    position: fixed;
+    bottom: -100px;
+    right: 10px;
+    background-color: $black;
+    color: $white;
+    padding: 10px;
+    cursor: pointer;
+    @include border-radius(5px);
+    @include box-shadow(0 0 10px, darken($white, 40%));
+}
+
+.top-bar {
+    .red {
+        height: 2px;
+        background-color: $red;
+    }
+    .blue {
+        height: 2px;
+        background-color: $blue;
+    }
+    .yellow {
+        height: 2px;
+        background-color: $yellow;
+    }
+    .green {
+        height: 2px;
+        background-color: $green;
+    }
+    border-bottom: 1px solid darken($white, 40%);
+}
+
+.message {
+    top: -100px;
+    overflow-y: hidden;
+    position: fixed;
+    width: 100%;
+    @include box-shadow(0 0 5px, lighten($black, 60%));
+    z-index: 10000;
+    @include border-radius(0px);
+    /* IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=92)";
+
+    /* IE 5-7 */
+    filter: alpha(opacity=92);
+
+    /* Netscape */
+    -moz-opacity: 0.92;
+
+    /* Safari 1.x */
+    -khtml-opacity: 0.92;
+
+    /* Good browsers */
+    opacity: 0.92;
+}
+
+.header {
+    padding-top: 10px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    background-color: $white;
+    border-bottom: 1px solid darken($white, 15%);
+    @include box-shadow(0 0 5px, darken($white, 20%));
+    height: $headerHeight;
+
+    @media (min-width: 768px) {
+        height: $headerHeight + 84px;
+    }
+
+    .social {
+        margin-bottom: 5px;
+    }
+
+    .mobile-header {
+        display: block;
+
+        .logo {
+            img {
+                height: $headerHeight - 15px;
+            }
+        }
+
+        .btn {
+            background-color: transparent;
+        }
+
+        @media (min-width: 768px) {
+            display: none;
+        }
+    }
+
+    .normal-header {
+        display: none;
+
+            .logo {
+                margin-top: 5px;
+                height: $headerHeight;
+
+                img {
+                    height: $headerHeight + 15px;
+                }
+            }
+
+        .user-avatar {
+            margin-left: 10px;
+            @include box-shadow(0 0 5px, darken($white, 20%));
+            border: 1px solid darken($white, 30%);
+
+            img {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        .user-text {
+            margin-top: 5px;
+        }
+
+        .main-menu {
+            .btn-group-lg {
+                > .btn {
+                    padding-top: 20px;
+                    padding-bottom: 20px;
+                }
+            }
+
+            .btn-group {
+                @include box-shadow(0 0 5px, darken($white, 10%));
+                border-bottom: 1px solid lighten($black, 30%);
+                border-left: 1px solid darken($white, 25%);
+                border-right: 1px solid darken($white, 25%);
+
+                > .btn {
+                    border-radius: 0;
+                    color: $black;
+                    border: none;
+
+                        &.active, &:hover {
+                            text-shadow: 0 1px darken($white, 10%);
+                        }
+
+                        &.about {
+                            border-right: 1px solid darken($white, 25%);
+                            border-top: 6px solid $red;
+
+                            &.active, &:hover {
+                                background-color: lighten(desaturate($red, 35%), 35%);
+                            }
+                        }
+
+                        &.volunteer {
+                            border-top: 6px solid $blue;
+                            border-left: 1px solid darken($white, 25%);
+                            border-right: 1px solid darken($white, 25%);
+
+                            &.active, &:hover {
+                                background-color: lighten(desaturate($blue, 35%), 40%);
+                            }
+                        }
+
+                        &.youth {
+                            border-top: 6px solid $purple;
+                            border-left: 1px solid darken($white, 25%);
+                            border-right: 1px solid darken($white, 25%);
+
+                            &.active, &:hover {
+                                background-color: lighten(desaturate($purple, 25%), 35%);
+                            }
+                        }
+
+                        &.leagues {
+                            border-top: 6px solid $orange;
+                            border-left: 1px solid darken($white, 25%);
+                            border-right: 1px solid darken($white, 25%);
+
+                            &.active, &:hover {
+                                background-color: lighten(desaturate($orange, 35%), 40%);
+                            }
+                        }
+
+                        &.around {
+                            border-top: 6px solid $green;
+                            border-left: 1px solid darken($white, 25%);
+                            border-right: 1px solid darken($white, 25%);
+
+                            &.active, &:hover {
+                                background-color: lighten(desaturate($green, 35%), 40%);
+                            }
+                        }
+
+                        &.teams {
+                            border-top: 6px solid $brown;
+                            border-left: 1px solid darken($white, 25%);
+
+                            &.active, &:hover {
+                                background-color: lighten(desaturate($brown, 15%), 30%);
+                            }
+                        }
+                }
+            }
+        }
+
+        .navbar {
+            @include border-radius(0);
+            @include box-shadow(0 0 5px, darken($white, 20%));
+        }
+
+        .navbar-nav {
+            >li {
+                &.active {
+                    >a {
+                        &.about {
+                            color: lighten($red, 5%);
+                        }
+
+                        &.volunteer {
+                            color: lighten($blue, 5%);
+                        }
+
+                        &.youth {
+                            color: lighten($purple, 5%);
+                        }
+
+                        &.leagues {
+                            color: lighten($orange, 5%);
+                        }
+
+                        &.around {
+                            color: lighten($green, 5%);
+                        }
+
+                        &.teams {
+                            color: lighten($brown, 5%);
+                        }
+                    }
+                }
+
+                >a {
+                    padding-left: 22px;
+                    font-size: 12pt;
+                    color: darken($white, 15%);
+                }
+            }
+        }
+
+        .login {
+            margin-bottom: 10px;
+
+            a {
+                color: darken($green, 30%);
+                text-decoration: none;
+            }
+
+            .links {
+                margin-top: -9px;
+                margin-bottom: 25px;
+
+                li {
+                    margin-left: 1px;
+                    float: left;
+
+                    a {
+                        background-color: desaturate($green, 30%);
+                        border-bottom: 2px solid desaturate($green, 35%);
+                        color: $white;
+                        display: block;
+                        padding: 5px 10px;
+                        @include border-bottom-left-radius(5px);
+                        @include border-bottom-right-radius(5px);
+
+                        &:hover {
+                            background-color: desaturate($green, 20%);
+                        }
+                    }
+                }
+            }
+        }
+
+        @media (min-width: 768px) {
+            display: block;
+        }
+    }
+}
+
+.mobile-main-menu {
+    display: none;
+    top: $headerHeight;
+    left: 0;
+    background: lighten($black, 10%);
+    color: darken($white, 10%);
+    z-index: 1000;
+
+    .nav {
+        >li {
+            border-bottom: 1px solid darken($white, 70%);
+            >a {
+                font-size: 12pt;
+                color: darken($white, 10%);
+
+                &:hover, &:focus {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+}
+
+.mobile-user-menu {
+    display: none;
+    top: $headerHeight;
+    right: 0;
+    width: 100%;
+    background: lighten($black, 10%);
+    color: darken($white, 10%);
+    z-index: 10000;
+
+    @media (min-width: 768px) {
+        position: absolute;
+        padding: 5px;
+        top: 35px;
+        right: 10px;
+        width: 380px;
+        @include box-shadow(0 0 10px, darken($white, 30%));
+    }
+
+    .avatar {
+        img {
+            width: 100%;
+            height: 100%;
+            border: 1px solid darken($white, 20%);
+            @include box-shadow(0 0 5px, darken($white, 20%));
+        }
+    }
+
+    .user-header {
+        margin-bottom: 10px;
+    }
+
+    .status {
+        padding-bottom: 10px;
+
+        span {
+            font-weight: bold;
+        }
+    }
+
+    .nav {
+        >li {
+            border-bottom: 1px solid darken($white, 70%);
+
+            &:first-child {
+                border-top: 1px solid darken($white, 70%);
+            }
+
+            >a {
+                font-size: 12pt;
+                color: darken($white, 10%);
+
+                &:hover, &:focus {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+
+    .avatar {
+        img {
+            margin-top: 15px;
+            margin-left: 15px;
+        }
+    }
+
+    .user {
+        margin-top: 15px;
+        color: darken($white, 10%);
+        font-size: 12pt;
+
+        p {
+            &.name {
+                margin-top: 8px;
+                font-size: 14pt;
+            }
+        }
+    }
+}
+
+#login {
+    .actions {
+        button, a {
+            width: 95%;
+            margin: 5px auto;
+        }
+    }
+}
+
+.page-content {
+    padding-top: 40px;
+    padding-bottom: 50px;
+    background-color: $white;
+    border-right: 1px solid darken($white, 25%);
+    border-left: 1px solid darken($white, 25%);
+    min-height: 600px;
+
+    .login-form {
+        background-color: $white;
+        border: 5px solid darken($white, 20%);
+        padding: 30px;
+        @include border-radius(10px);
+        @include box-shadow(0 0 15px, darken($white, 30%));
+
+        @media (min-width: 768px) {
+            margin-top: 75px;
+        }
+
+        h2 {
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .actions {
+            margin: 0 -30px -30px -30px;
+            padding: 20px 10px;
+            border-top: 1px solid darken($white, 20%);
+            background-color: darken($white, 5%);
+            @include border-bottom-right-radius(10px);
+            @include border-bottom-left-radius(10px);
+
+            .forgot {
+                margin-top: 7px;
+
+                a {
+                    color: lighten($black, 60%);
+                    text-decoration: underline;
+                }
+
+            }
+        }
+    }
+
+    .login-register {
+        margin-top: 10px;
+        margin-bottom: 100px;
+    }
+
+    .banner {
+        img {
+            margin-top: -40px;
+            width: 100%;
+
+            @media (min-width: 768px) {
+                margin-top: -15px;
+                margin-bottom: -50px;
+            }
+        }
+
+        .page-actions {
+            margin-top: -50px;
+        }
+    }
+
+    .submenu {
+        @include generate-submenu(about, $red);
+        @include generate-submenu(volunteer, $blue);
+        @include generate-submenu(youth, $purple);
+        @include generate-submenu(leagues, $orange);
+        @include generate-submenu(around, $green);
+        @include generate-submenu(teams, $brown);
+
+        .navbar-brand {
+            color: $white;
+        }
+
+        @media (min-width: 768px) {
+            nav {
+                min-height: inherit;
+                @include border-radius(0);
+                border: none;
+            }
+
+            .nav {
+                >li {
+                    >a {
+                        color: $white;
+                        background-color: transparent;
+
+                        &:hover {
+                            color: $white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .board-member {
+        margin-top: 40px;
+        margin-bottom: 40px;
+
+        .picture {
+            text-align: center;
+
+            img {
+                border: 1px solid darken($white, 50%);
+                @include box-shadow(0 0 10px, darken($white, 40%));
+                @include border-radius(5px);
+                width: 40%;
+            }
+        }
+
+        .title {
+            text-align: center;
+
+            h3 {
+                margin: 10px 0 0 0;
+            }
+
+            p {
+                margin-bottom: 0;
+            }
+        }
+
+        .actions {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            text-align: justify;
+            margin-bottom: 100px;
+        }
+    }
+
+    .logo {
+        height: 150px;
+    }
+
+    #featured-news {
+        .item {
+            .carousel-caption {
+                margin: 0 0 0 -15%;
+                @media(min-width: 768px) {
+                    margin: 0 0 0 -20%;
+                }
+                width: 100%;
+                background-color: darken($purple, 30%);
+                @include box-shadow(0 0 15px, darken($purple, 30%));
+                @include opacity(0.90);
+                padding-left: 15px;
+                padding-right: 15px;
+
+                a {
+                    @include opacity(1);
+                    color: $white;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
+
+.current-picture {
+    img {
+        border: 1px solid darken($white, 30%);
+        @include box-shadow(0 0 5px, darken($white, 30%));
+        height: 60px;
+        margin-left: 15px;
+    }
+
+    .checkbox {
+        margin-left: 15px;
+    }
+}
+
+.home-page,
+.post-page {
+    margin-top: -25px;
+
+    @media (min-width: 768px) {
+        margin-top: 0;
+    }
+
+    .carousel {
+        margin-bottom: 15px;
+        @include box-shadow(0 0 5px, darken($white, 30%));
+    }
+
+    .carousel-control {
+        padding-top: 22%;
+    }
+
+    .post, .leagues, .tournaments, .pickups {
+        .badge {
+            color: $white;
+        }
+
+        .youth {
+            background-color: $purple;
+        }
+
+        .league {
+            background-color: $orange;
+        }
+
+        .around {
+            background-color: $green;
+        }
+
+        .volunteer {
+            background-color: $blue;
+        }
+
+        .list-group-item {
+            h4 {
+                font-size: 16pt;
+                margin-bottom: 2px;
+            }
+        }
+
+        .content {
+            padding: 10px;
+            border-left: 1px solid darken($white, 10%);
+            border-right: 1px solid darken($white, 10%);
+            border-bottom: 1px solid darken($white, 10%);
+        }
+    }
+
+    @media(min-width: 768px) {
+        .post {
+            min-height: 1200px;
+        }
+    }
+
+
+    .list-group {
+        @include box-shadow(0 0 5px, darken($white, 10%));
+    }
+
+    iframe {
+        border: 1px solid darken($white, 20%);
+        @include box-shadow(0 0 5px, darken($white, 10%));
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    h3 {
+        @include box-shadow(0 0 5px, darken($white, 10%));
+
+        a {
+            color: $white;
+            text-decoration: none;
+        }
+
+        &.heading {
+            margin: 0 0 2px 0;
+            padding: 5px 10px;
+       }
+
+        &.about {
+            background-color: $red;
+            color: $white;
+            border: 1px solid darken($red, 15%);
+        }
+
+        &.youth {
+            background-color: $purple;
+            color: $white;
+            border: 1px solid darken($purple, 15%);
+        }
+
+        &.volunteer {
+            background-color: $blue;
+            color: $white;
+            border: 1px solid darken($blue, 15%);
+        }
+
+        &.leagues {
+            background-color: $orange;
+            color: $white;
+            border: 1px solid darken($orange, 15%);
+        }
+
+        &.around {
+            background-color: $green;
+            color: $white;
+            border: 1px solid darken($green, 15%);
+        }
+
+        &.teams {
+            background-color: $brown;
+            color: $white;
+            border: 1px solid darken($brown, 15%);
+        }
+    }
+
+    .all-news, .last {
+        margin-bottom: 40px;
+    }
+
+    .text-muted {
+        font-size: 10pt;
+    }
+}
+
+.facebook {
+    text-decoration: none;
+    color: $facebook;
+
+    &:hover {
+        color: lighten($facebook, 10%);
+    }
+
+    &:focus {
+        color: $facebook;
+    }
+}
+
+.twitter {
+    text-decoration: none;
+    color: $twitter;
+
+    &:hover {
+        color: lighten($twitter, 10%);
+    }
+
+    &:focus {
+        color: $twitter;
+    }
+}
+
+.web {
+    text-decoration: none;
+    color: desaturate($green, 30%);
+
+    &:hover {
+        color: desaturate($green, 20%);
+
+    }
+
+    &:focus {
+        color: desaturate($green, 20%);
+    }
+
+}
+
+.contact {
+    text-decoration: none;
+    color: darken($green, 10%);
+
+    &:hover {
+        color: $green;
+    }
+
+    &:focus {
+        color: $green;
+    }
+}
+
+.page-error {
+    h2 {
+        border-bottom: 2px solid darken($white, 50%);
+    }
+    .url {
+        color: darken($white, 50%);
+    }
+
+    form {
+        background-color: $white;
+        font-size: 12pt;
+    }
+    padding-bottom: 100px;
+}
+
+.footer {
+    border-right: 1px solid darken($white, 25%);
+    border-left: 1px solid darken($white, 25%);
+    margin: 0 auto;
+    background-color: $black;
+    color: darken($white, 40%);
+
+    img {
+        background-color: $white;
+        width: 100%;
+    }
+
+    .footer-blurb {
+        text-align: center;
+
+        @media (min-width: 768px) {
+            text-align: left;
+        }
+    }
+
+    .footer-links {
+        padding-top: 10px;
+        margin: 10px auto;
+        a {
+            padding: 5px 10px;
+            color: $white;
+        }
+    }
+}
+
+.volunteer-event {
+
+    .list-group-item-heading {
+        font-size: 18pt;
+        margin-top: 5px;
+
+        .edit-button {
+            margin-right: 10px;
+        }
+    }
+
+    .list-group-item {
+        margin-top: 15px;
+        @include box-shadow(0 0 5px, darken($white, 20%));
+    }
+
+    .badge {
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        margin: -5px 0 -5px 0;
+        color: $black;
+
+        .month {
+            border: 1px solid lighten($black, 60%);
+            @include border-top-left-radius(5px);
+            @include border-top-right-radius(5px);
+            background-color: lighten($red, 10%);
+            padding: 2px 10px;
+            margin: 0;
+            font-size: 12pt;
+            color: $white;
+        }
+
+        .day {
+            border-left: 1px solid lighten($black, 60%);
+            border-right: 1px solid lighten($black, 60%);
+            font-size: 18pt;
+            padding: 3px 10px;
+        }
+
+        .year {
+            border-left: 1px solid lighten($black, 60%);
+            border-right: 1px solid lighten($black, 60%);
+            border-bottom: 1px solid lighten($black, 60%);
+            color: lighten($black, 55%);
+            font-size: 10pt;
+            padding: 0 3px;
+            @include border-bottom-left-radius(5px);
+            @include border-bottom-right-radius(5px);
+        }
+
+        .action {
+            margin: 2px 0;
+        }
+    }
+}
+
+.leagues, .tournaments {
+    .list-group {
+        a {
+            &.not-visible {
+                color: #8a6d3b;
+                background-color: #fcf8e3;
+            }
+
+            &.archived {
+                color: #a94442;
+                background-color: #f2dede;
+            }
+        }
+
+        .list-group-item {
+            h4 {
+                margin-bottom: 0;
+            }
+
+            p {
+                margin-top: 10px;
+            }
+        }
+    }
+}
+
+.pickups {
+    .pickup {
+        min-height: 500px;
+
+        .map {
+            text-align: center;
+            img {
+                width: 80%;
+                @include box-shadow(0 0 5px, darken($white, 40%));
+            }
+        }
+
+        .edit-btn {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .contacts {
+            text-align: center;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        .datetime {
+            text-align: center;
+            color: darken($white, 40%);
+        }
+
+        .info {
+            text-align: justify;
+        }
+    }
+}
+
+.text-yes {
+    color: $green;
+}
+.text-no {
+    color: $red;
+}
+
+.team {
+    margin-top: 10px;
+
+    .team-logo {
+        text-align: center;
+
+        img {
+            width: 60%;
+            border: 1px solid darken($white, 30%);
+            @include box-shadow(0 0 5px, darken($white, 50%));
+            margin-bottom: 10px;
+
+            @media(min-width: 768px) {
+                width: 70%;
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .team-title {
+        p {
+            font-size: 20pt;
+            @media(min-width: 768px) {
+                font-size: 32pt;
+            }
+            font-weight: bold;
+            text-align: center;
+            @media(min-width: 768px) {
+                text-align: left;
+            }
+        }
+
+        small {
+            font-size: 12pt;
+        }
+    }
+
+    .social {
+        font-size: 20pt;
+        text-align: center;
+
+        @media(min-width: 768px) {
+            text-align: left;
+            font-size: 12pt;
+        }
+    }
+
+    .description {
+        text-align: justify;
+    }
+}
+
+.league-teams {
+    .league-team {
+        .logo-container {
+            min-height: 275px;
+            text-align: center;
+            margin-bottom: 15px;
+
+            img {
+                width: 60%;
+                @media(min-width: 768px) {
+                    width: 100%;
+                }
+                @include box-shadow(0 0 5px, darken($white, 30%));
+            }
+        }
+
+        .title-container {
+            min-height: 275px;
+            text-align: center;
+            @media(min-width: 768px) {
+                text-align: left;
+            }
+
+            .title {
+                font-size: 20pt;
+                text-shadow: 0 1px 1px #444;
+                @media(min-width: 768px) {
+                    font-size: 24pt;
+                }
+            }
+        }
+
+        .actions {
+            margin-top: 10px;
+            position: absolute;
+            right: 10px;
+        }
+
+        .ranks {
+            p {
+                margin-top: 1px;
+                margin-bottom: 1px;
+            }
+        }
+    }
+}
+
+.league-games {
+    .league-game {
+        h4 {
+            @media(min-width: 768px) {
+                margin-top: 30px;
+            }
+        }
+
+        .badge {
+            background-color: transparent;
+            border: none;
+            padding: 5px;
+            margin: 35px 0 0 0;
+            color: $black;
+            font-size: 16pt;
+        }
+
+        .when {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            margin: 10px 15px 0 0;
+            color: $black;
+            text-align: center;
+
+            .month {
+                border: 1px solid lighten($black, 60%);
+                @include border-top-left-radius(5px);
+                @include border-top-right-radius(5px);
+                background-color: lighten($red, 10%);
+                padding: 0 7px;
+                margin: 0;
+                font-size: 12pt;
+                color: $white;
+            }
+
+            .day {
+                border-left: 1px solid lighten($black, 60%);
+                border-right: 1px solid lighten($black, 60%);
+                font-size: 18pt;
+                padding: 0 7px;
+            }
+
+            .year {
+                border-left: 1px solid lighten($black, 60%);
+                border-right: 1px solid lighten($black, 60%);
+                border-bottom: 1px solid lighten($black, 60%);
+                color: lighten($black, 55%);
+                font-size: 7pt;
+                padding: 0 3px;
+                @include border-bottom-left-radius(5px);
+                @include border-bottom-right-radius(5px);
+            }
+        }
+    }
+}
+
+.records {
+    .badge {
+        margin-top: 12px;
+        font-size: 14pt;
+        &.w {
+            background-color: $green;
+        }
+        &.l {
+            background-color: $red;
+        }
+    }
+}
+
+.modal-footer {
+    text-align: center;
+}
+
+.shirts {
+    thead {
+        tr {
+            th {
+                text-align: center;
+            }
+        }
+    }
+    tbody {
+        tr {
+            td {
+                &.color {
+                    text-shadow: 0 1px 1px #444;
+                }
+                &.count {
+                    @media(min-width:768px) {
+                        font-size: 12pt;
+                    }
+                }
+                text-align: center;
+            }
+        }
+    }
+}
+
+.league-menu {
+    .btn-group {
+        margin: 5px auto;
+    }
+}
+
+.manage-list {
+    height: 245px;
+    @media(min-width:768px) {
+        height: 361px;
+    }
+    overflow-y: auto;
+}
+
+.page-action {
+    margin-top: -40px;
+}
+
+dt {
+    &.reg-status {
+        padding-top: 8px;
+    }
+}
+
+dd {
+    &.reg-status {
+        font-size: 18pt;
+    }
+}
+
+.league-question {
+    .status {
+        strong {
+            text-decoration: underline;
+        }
+    }
+    .reg-question-count {
+        font-size: 20pt;
+    }
+}
+
+.tournament-menu {
+    @include border-radius(0);
+    border-left: 1px solid darken($white, 30%);
+    border-right: 1px solid darken($white, 30%);
+    border-bottom: 2px solid darken($white, 20%);
+    margin: 0 -15px;
+
+    .navbar-brand {
+        color: $white;
+        padding-top: 6px;
+    }
+
+    .navbar-nav {
+        .active {
+            >a {
+                color: $blue;
+                background-color: darken($blue, 35%);
+                padding-bottom: 10px;
+                border-bottom: 5px solid darken($blue, 10%);
+            }
+
+            >a:hover {
+                color: $blue;
+                background-color: darken($blue, 35%);
+                padding-bottom: 10px;
+                border-bottom: 5px solid darken($blue, 10%);
+            }
+        }
+    }
+}
+
+.tournament-banner {
+    img {
+        border-left: 1px solid darken($white, 30%);
+        border-right: 1px solid darken($white, 30%);
+        width: 100%;
+        border-bottom: 6px solid lighten($black, 30%);
+    }
+
+    .actions {
+        width: 100%;
+        text-align: right;
+        margin-top: -50px;
+        margin-bottom: 15px;
+        padding-right: 15px;
+
+        .placeholder {
+            visibility: hidden;
+        }
+    }
+}
+
+.tournament {
+    padding-top: 15px;
+    padding-bottom: 25px;
+
+    h1 {
+        &.title {
+            margin: 0 0 15px 0;
+        }
+    }
+
+    .title {
+        border-bottom: 1px solid darken($white, 30%);
+    }
+
+    h4 {
+        margin: 0 0 2px 0;
+    }
+
+    @media(min-width: 768px) {
+        .feed {
+            border-left: 2px solid darken($white, 30%);
+        }
+    }
+
+    img {
+        width: 100%;
+    }
+
+    .contacts {
+        padding-top: 20px;
+
+        dt {
+            font-size: 20pt;
+        }
+
+        dd {
+            font-size: 20pt;
+            margin-bottom: 10px;
+        }
+    }
+
+    .location {
+        img {
+            @include border-radius(5px);
+            @include box-shadow(0 0 5px, darken($white, 40%));
+            border: 2px solid darken($white, 40%);
+            margin-bottom: 10px;
+            width: 100%;
+        }
+    }
+
+    .list-group-item-heading {
+        .label {
+            font-size: 8pt;
+        }
+    }
+}
+
+.profile {
+    .avatar {
+        width: 200px;
+        @include box-shadow(0 0 5px, darken($white, 40%));
+    }
+}
+
+.label {
+    a {
+        color: $white;
+    }
+}
+
+.select2 {
+    width: 100%;
+}
+
+.manage {
+    .select-team {
+        cursor: pointer;
+    }
+}

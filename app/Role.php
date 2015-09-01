@@ -2,7 +2,9 @@
 
 namespace Cupa;
 
-class Role extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Role extends Model
 {
     protected $table = 'roles';
     protected $fillable = [

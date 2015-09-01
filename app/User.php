@@ -36,4 +36,14 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    public function roles()
+    {
+        return $this->hasMany('Cupa\UserRole');
+    }
+
+    public function fullname()
+    {
+        return $this->first_name.' '.$this->last_name;
+    }
 }

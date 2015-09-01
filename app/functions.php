@@ -1,9 +1,8 @@
 <?php
 
-namespace Cupa;
-
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
+use Carbon\Carbon;
 
 if (!function_exists('htmlify')) {
     function htmlify($data)
@@ -91,21 +90,12 @@ if (!function_exists('covnertToJpg')) {
 if (!function_exists('convertDate')) {
     function convertDate($dateData, $format = 'Y-m-d H:i:s')
     {
-        if ($dateData === null || (is_array($dateData) && in_array('-1', array_values($dateData)))) {
-            return;
+        $date = new Carbon($dateData);
+        if (get_class($date) == 'Carbon') {
+            return $date->format($format);
         }
 
-        $dateString = $dateData;
-        if (is_array($dateData)) {
-            $dateString = $dateData[ 'year' ].'-'.$dateData[ 'month' ].'-'.$dateData[ 'day' ];
-            if (isset($dateData[ 'hour' ])) {
-                $dateString .= ' '.$dateData[ 'hour' ].':'.$dateData[ 'minute' ].' '.$dateData[ 'ampm' ];
-            }
-        }
-
-        $date = new DateTime($dateString);
-
-        return $date->format($format);
+        return;
     }
 }
 

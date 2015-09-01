@@ -2,7 +2,9 @@
 
 namespace Cupa;
 
-class Pickup extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Pickup extends Model
 {
     protected $table = 'pickups';
     protected $fillable = [
@@ -14,4 +16,23 @@ class Pickup extends Eloquent
         'info',
         'is_visible',
     ];
+
+    public function location()
+    {
+        return $this->belongsTo('Cupa\Location');
+    }
+
+    public function contacts()
+    {
+        return $this->hasMany('Cupa\PickupContact');
+    }
+
+    public static function fetchAllPickups()
+    {
+        $select = static::with(['location', 'contacts', 'contacts.user'])
+                     ->where('is_visible', '=', 1)
+                     ->orderBy('created_at', 'asc');
+
+        return $select->get();
+    }
 }

@@ -14,13 +14,13 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'Cupa\Model' => 'Cupa\Policies\ModelPolicy',
+         Tournaemnt::class => TournaemntPolicy::class,
     ];
 
     /**
      * Register any application authentication / authorization services.
      *
-     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
-     * @return void
+     * @param \Illuminate\Contracts\Auth\Access\Gate $gate
      */
     public function boot(GateContract $gate)
     {
