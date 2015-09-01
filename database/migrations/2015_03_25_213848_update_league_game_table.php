@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePasswordResetsTable extends Migration
+class UpdateLeagueGameTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,8 @@ class CreatePasswordResetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('password_resets', function (Blueprint $table) {
-            $table->string('email')->index();
-            $table->string('token')->index();
-            $table->timestamp('created_at');
+        Schema::table('league_games', function ($table) {
+            $table->string('status')->default('game_on')->after('field');
         });
     }
 
@@ -26,6 +24,8 @@ class CreatePasswordResetsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('password_resets');
+        Schema::table('league_games', function ($table) {
+            $table->dropColumn('status');
+        });
     }
 }

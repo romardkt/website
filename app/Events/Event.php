@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace Cupa\Events;
 
 abstract class Event
 {

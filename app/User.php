@@ -1,6 +1,6 @@
 <?php
 
-namespace app;
+namespace Cupa;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;

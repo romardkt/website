@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace Cupa\Jobs;
 
 use Illuminate\Bus\Queueable;
 
