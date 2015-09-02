@@ -14,7 +14,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'Cupa\Model' => 'Cupa\Policies\ModelPolicy',
-         Tournaemnt::class => TournaemntPolicy::class,
+         \Cupa\Tournament::class => \Cupa\Policies\TournamentPolicy::class,
+         \Cupa\League::class => \Cupa\Policies\LeaguePolicy::class,
     ];
 
     /**
@@ -26,6 +27,22 @@ class AuthServiceProvider extends ServiceProvider
     {
         parent::registerPolicies($gate);
 
-        //
+        $gate->define('is-admin', function ($user) {
+            $roles = $user->roles();
+            if ($roles->count() > 0 && $roles->first()->role->name === 'admin') {
+                return true;
+            }
+
+            return false;
+        });
+
+        $gate->define('is-manager', function ($user) {
+            $roles = $user->roles();
+            if ($roles->count() > 0 && in_array($roles->first()->role->name, ['admin', 'manager'])) {
+                return true;
+            }
+
+            return false;
+        });
     }
 }

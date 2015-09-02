@@ -22,7 +22,7 @@
         <meta name="msapplication-TileColor" content="#ffffff">
 
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
-        <link href="{{ asset('css/cupa.min.css') }}" rel="stylesheet">
+        <link href="{{ elixir('css/cupa.min.css') }}" rel="stylesheet">
         @yield('page-styles')
         <!--<script src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>-->
     </head>
@@ -39,10 +39,10 @@
             @include('footer')
         </div>
         <div id="goto-top"><i class="fa fa-lg fa-fw fa-arrow-up"></i></div>
+        <script src="{{ elixir('js/cupa.min.js') }}"></script>
         <script>
-        var BASE_URL = '{{ asset('') }}';
+            var BASE_URL = '{{ route('home') }}/';
         </script>
-        <script src="{{ asset('js/cupa.min.js') }}"></script>
         @yield('page-scripts')
         @if(App::environment() == 'prod')
         <script>

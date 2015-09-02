@@ -24,13 +24,13 @@
             <div class="col-sm-6">
                 <div class="row text-right login">
                     <ul class="nav links pull-right">
-                        @if(Auth::check())
+                        @can('is-admin')
                         <li><a href="{{ route('manage') }}" title="News Posts">Manage</a></li>
                         @endif
                         <li><a href="{{ route('posts') }}" title="News Posts">All News</a></li>
                         <li><a href="{{ route('contact') }}" title="Contact Us">Contact Us</a></li>
                         @if(Auth::check())
-                        <li><a id="user-menu-btn" href="#" title="Profile">{{ Auth::user()->fullname() }}</a></li>
+                        <li><a id="user-menu-btn" href="#" title="Profile">{{ (Session::has('admin_user')) ? 'Impersonating ' : '' }}{{ Auth::user()->fullname() }}</a></li>
                         @else
                         <li><a href="{{ route('register') }}" title="Sign Up">Sign Up</a></li>
                         <li><a href="#" data-toggle="modal" data-target="#login" title="Login">Login</a></li>
@@ -98,7 +98,7 @@
             @if(Auth::user()->hasWaiver())
             <span class="label label-success">YES</span>
             @else
-            <span class="label label-danger"><a href="{{ route('waiver', [date('Y'), Auth::user()->id]) }}">NO</a></span>
+            <span class="label label-danger"><a href="{{ route('waiver', [date('Y'), Auth::id()]) }}">NO</a></span>
             @endif
         </div>
         <div class="col-xs-4 text-center">
@@ -150,9 +150,9 @@
             </div>
             <div class="modal-body">
                 <div id="login-error"></div>
-                {{ Form::open(['id' => 'login-form', 'class' => 'form form-horizontal', 'role' => 'form']) }}
+                {!! Form::open(['id' => 'login-form', 'class' => 'form form-horizontal', 'role' => 'form']) !!}
                     @include('partials.login')
-                {{ Form::close() }}
+                {!! Form::close() !!}
             </div>
             <div class="modal-footer hidden-xs">
                 <a class="btn btn-warning pull-left" href="{{ route('register') }}">Don't have an account?</a>

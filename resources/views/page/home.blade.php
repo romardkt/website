@@ -13,15 +13,15 @@
                         <img src="{{ $feature->image }}"/>
                         <div class="carousel-caption">
                             <a target="{{ (starts_with($feature->link, 'http')) ? '_new' : '' }}" href="{{ ($feature->link === null) ? route('post_view', [$feature->slug]) : url($feature->link) }}">
-                                <h4>{{{ $feature->title }}}</h4>
+                                <h4>{{ $feature->title }}</h4>
                                 <p class="hidden-xs">
                                     <small>
                                         posted at
-                                        {{{ (new DateTime($feature->post_at))->format('M d Y @ h:i A') }}} by
-                                        <strong>{{{ $feature->postedBy->fullname() }}}</strong>
+                                        {{ (new Carbon\Carbon($feature->post_at))->format('M d Y @ h:i A') }} by
+                                        <strong>{{ $feature->postedBy->fullname() }}</strong>
                                     </small>
                                 </p>
-                                {{{ str_limit(strip_tags($feature->content), 125, '...') }}}
+                                {{ str_limit(strip_tags($feature->content), 125, '...') }}
                             </a>
                         </div>
                     </div>
@@ -49,14 +49,14 @@
                     @foreach($posts as $post)
                     <div class="list-group">
                         <a href="{{ ($post->link === null) ? route('post_view', [$post->slug]) : url($post->link) }}" class="list-group-item">
-                            <h4>{{{ $post->title }}} <div class="badge {{{ $post->category }}}">{{{ ucwords($post->category) }}}</div></h4>
+                            <h4>{{ $post->title }} <div class="badge {{{ $post->category }}}">{{ ucwords($post->category) }}</div></h4>
                             <p>
                                 <small class="text-muted">
-                                    posted on <strong>{{{ convertDate($post->post_at, 'M d Y @ h:i A') }}}</strong> by <strong>{{{ $post->postedBy->fullname() }}}</strong>
+                                    posted on <strong>{{ convertDate($post->post_at, 'M d Y @ h:i A') }}</strong> by <strong>{{ $post->postedBy->fullname() }}</strong>
                                 </small>
                             </p>
                         </a>
-                        <div class="content">{{{ str_limit(strip_tags($post->content), 250, '...') }}}</div>
+                        <div class="content">{{ str_limit(strip_tags($post->content), 250, '...') }}</div>
                     </div>
                     @endforeach
 
@@ -71,8 +71,8 @@
                     <div class="list-group">
                         @foreach($leagues as $league)
                         <a href="{{route('league', $league->slug)}}" class="list-group-item">
-                            <span class="badge {{{ ($league->is_youth) ? 'youth' : 'league' }}}">{{{ $league->status() }}}</span>
-                            {{{ $league->displayName() }}}
+                            <span class="badge {{{ ($league->is_youth) ? 'youth' : 'league' }}}">{{ $league->status() }}</span>
+                            <span{!!($league->is_archived === 1 && Gate::allows('show', $league)) ? ' class="text-danger"' : ''!!}>{{ $league->displayName() }}</span>
                         </a>
                         @endforeach
                     </div>
@@ -99,8 +99,8 @@
                     <div class="list-group">
                         @foreach($pickups as $pickup)
                         <a href="{{ route('around_pickups') }}" class="list-group-item">
-                            <span class="badge volunteer">{{{ $pickup->day }}}</span>
-                            {{{ $pickup->title }}}
+                            <span class="badge volunteer">{{ $pickup->day }}</span>
+                            {{ $pickup->title }}
                         </a>
                         @endforeach
                     </div>
@@ -118,24 +118,24 @@
                     @if($tournament->start < (new DateTime('2015-07-02'))->format('Y-m-d') && !$usOpen)
                     <?php $usOpen = true; ?>
                     <a href="http://play.usaultimate.org/events/US-Open-Ultimate-Championships-2015/" class="list-group-item">
-                        <span class="badge around">{{{ (new DateTime('2015-07-02'))->format('M j Y') }}}</span>
+                        <span class="badge around">{{ (new DateTime('2015-07-02'))->format('M j Y') }}</span>
                         US Open 2015
                     </a>
                     @endif
                     <a href="{{ route('tournament', [$tournament->name, $tournament->year]) }}" class="list-group-item">
-                        <span class="badge around">{{{ (new DateTime($tournament->start))->format('M j Y') }}}</span>
-                        {{{ $tournament->display_name }}}
+                        <span class="badge around">{{ (new DateTime($tournament->start))->format('M j Y') }}</span>
+                        <span{!!($tournament->is_visible === 0 && Gate::allows('show', $tournament)) ? ' class="text-danger"' : ''!!}>{{ $tournament->display_name }}</span>
                     </a>
                     @if($tournament->name == 'scinny' && in_array($tournament->year, [2014, 2015]))
                     <a href="{{ route('tournament_masters_' . $tournament->year) }}" class="list-group-item">
-                        <span class="badge around">{{{ (new DateTime($tournament->start))->format('M j Y') }}}</span>
+                        <span class="badge around">{{ (new DateTime($tournament->start))->format('M j Y') }}</span>
                         GL G/Masters Regionals {{ $tournament->year }}
                     </a>
                     @endif
                     @endforeach
                     @if(!$usOpen)
                     <a href="http://play.usaultimate.org/events/US-Open-Ultimate-Championships-2015/" class="list-group-item">
-                        <span class="badge around">{{{ (new DateTime('2015-07-02'))->format('M j Y') }}}</span>
+                        <span class="badge around">{{ (new DateTime('2015-07-02'))->format('M j Y') }}</span>
                         US Open 2015
                     </a>
                     @endif

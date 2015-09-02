@@ -5,6 +5,7 @@ namespace Cupa;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Auth;
+use Gate;
 
 class League extends Model
 {
@@ -42,6 +43,14 @@ class League extends Model
     public function limits()
     {
         return $this->hasOne('Cupa\LeagueLimit');
+    }
+
+    public function directors()
+    {
+        return LeagueMember::/*with('user')
+                           ->*/where('position', '=', 'director')
+                           ->where('league_id', '=', $this->id)
+                           ->get();
     }
 
     public function displayName()
@@ -111,7 +120,6 @@ class League extends Model
              })
             ->leftJoin('league_registrations AS lr', 'lr.league_id', '=', 'l.id')
             ->where('l.type', '=', 'league')
-            ->where('l.is_archived', '=', 0)
             ->where('l.date_visible', '<=', $now)
             ->where('ll.end', '>=', $now)
             ->whereNotNull('l.date_visible')
@@ -119,6 +127,10 @@ class League extends Model
             ->orderBy('ll.begin', 'desc')
             ->select('l.*');
 
-        return $select->get();
+        return $select->get()->filter(function ($league) {
+            //var_dump($league->is_archived, Gate::allows('show', $league), $league->is_archived == 0 || Gate::allows('show', $league));
+
+            return $league->is_archived == 0 || Gate::allows('show', $league);
+        });
     }
 }

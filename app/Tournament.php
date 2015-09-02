@@ -55,7 +55,7 @@ class Tournament extends Model
         // filter the array based on authorization
         $tournaments = [];
         foreach ($select->get() as $tournament) {
-            if (!isset($tournaments[$tournament->name]) && (Gate::allows('show') || ($tournament->is_visible == 1))) {
+            if (!isset($tournaments[$tournament->name]) && (Gate::allows('show', $tournament) || ($tournament->is_visible == 1))) {
                 $tournaments[$tournament->name] = $tournament;
             }
         }

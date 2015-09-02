@@ -2,7 +2,9 @@
 
 namespace Cupa;
 
-class UserProfile extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class UserProfile extends Model
 {
     protected $table = 'user_profiles';
     protected $fillable = [
@@ -13,4 +15,15 @@ class UserProfile extends Eloquent
         'level',
         'experience',
     ];
+
+    public function isComplete()
+    {
+        foreach ($this->fillable as $test) {
+            if (!in_array($test, ['nickname']) && $this->$test === null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

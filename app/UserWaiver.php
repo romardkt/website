@@ -2,7 +2,10 @@
 
 namespace Cupa;
 
-class UserWaiver extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+
+class UserWaiver extends Model
 {
     protected $table = 'user_waivers';
     protected $fillable = [
@@ -10,4 +13,15 @@ class UserWaiver extends Eloquent
         'year',
         'updated_by',
     ];
+
+    public static function hasWaiver($userId, $year = null)
+    {
+        if ($year === null) {
+            $year = Carbon::now()->year;
+        }
+
+        return static::where('user_id', '=', $userId)
+                     ->where('year', '=', $year)
+                     ->count();
+    }
 }
