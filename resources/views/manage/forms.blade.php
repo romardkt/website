@@ -30,9 +30,9 @@
                             <a class="btn btn-default" href="{{ route('manage_forms_edit', [$form->slug]) }}"><i class="fa fa-lg fa-fw fa-edit"></i><span class="hidden-xs hidden-sm"> Update</span></a>
                             <a class="btn btn-danger" href="{{ route('manage_forms_remove', [$form->slug]) }}" onclick="return confirm('Are you sure you want to remove this form?');"><i class="fa fa-lg fa-fw fa-trash-o"></i><span class="hidden-xs hidden-sm">  Delete</span></a>
                         </div>
-                        <h4 class="list-group-item-heading">{{{ $form->year . ' ' . $form->name }}}</h4>
+                        <h4 class="list-group-item-heading">{{ $form->year . ' ' . $form->name }}</h4>
                         <p class="list-group-item-text">
-                            <span class="text-muted">{{{ $form->slug }}}</span>
+                            <span class="text-muted">{{ $form->slug }}</span>
                         </p>
                     </div>
                     @endforeach

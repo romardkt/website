@@ -2,7 +2,9 @@
 
 namespace Cupa;
 
-class Clinic extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Clinic extends Model
 {
     protected $table = 'clinics';
     protected $fillable = [

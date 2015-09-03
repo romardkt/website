@@ -10,9 +10,9 @@
             <div class="col-xs-12">
                 @include('partials.errors')
 
-                {{ Form::open(['class' => 'form form-vertical', 'role' => 'form', 'files' => true]) }}
+                {!! Form::open(['class' => 'form form-vertical', 'role' => 'form', 'files' => true]) !!}
                     @include('manage.partials.form', ['submitText' => 'Add Form'])
-                {{ Form::close() }}
+                {!! Form::close() !!}
             </div>
         </div>
     </div>

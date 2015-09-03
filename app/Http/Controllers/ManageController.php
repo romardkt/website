@@ -2,14 +2,17 @@
 
 namespace Cupa\Http\Controllers;
 
+use Illuminate\Support\MessageBag;
 use Cupa\Http\Requests\ManageUserRequest;
 use Cupa\Http\Requests\LeaguePlayersRequest;
 use Cupa\Http\Requests\LoadLeagueRequest;
 use Cupa\Http\Requests\DuplicatesRequest;
+use Cupa\Http\Requests\FormAddEditRequest;
 use Cupa\User;
 use Cupa\UserBalance;
 use Cupa\League;
 use Cupa\LeagueMember;
+use Cupa\CupaForm;
 use Session;
 use Auth;
 
@@ -96,5 +99,121 @@ class ManageController extends Controller
         }
 
         return response()->json(['status' => 'error', 'message' => $result]);
+    }
+
+    public function forms()
+    {
+        $forms = CupaForm::fetchAllForms();
+
+        return view('manage.forms', compact('forms'));
+    }
+
+    public function formsAdd()
+    {
+        return view('manage.forms_add');
+    }
+
+    public function postFormsAdd(FormAddEditRequest $request)
+    {
+        $input = $request->all();
+
+        // check md5
+        $md5 = md5_file($request->file('document')->getRealPath());
+        if (!CupaForm::isUnique($md5)) {
+            $errors = new MessageBag();
+            $errors->add('document', 'Uploaded file is a duplicate');
+
+            return redirect()->route('manage_forms_add')->withInput()->withErrors($errors);
+        }
+
+        $slug = str_slug($input['year'].'-'.$input['name']);
+        $extension = $request->file('document')->getClientOriginalExtension();
+        $documentPath = '/data/forms/';
+        $document = $slug.'.'.$extension;
+        $documentFull = $documentPath.$document;
+        $request->file('document')->move(public_path().$documentPath, $document);
+
+        $form = new CupaForm();
+        $form->year = $input['year'];
+        $form->name = $input['name'];
+        $form->slug = $slug;
+        $form->location = $documentFull;
+        $form->size = filesize(public_path().$documentFull);
+        $form->md5 = $md5;
+        $form->extension = $extension;
+        $form->save();
+
+        Session::flash('msg-success', 'Form `'.$form->name.'`added');
+
+        return redirect()->route('manage_forms');
+    }
+
+    public function formsRemove($slug)
+    {
+        $form = CupaForm::fetchBySlug($slug);
+        if ($form) {
+            if (file_exists(public_path().$form->location)) {
+                unlink(public_path().$form->location);
+            }
+
+            $name = $form->name;
+            $form->delete();
+
+            Session::flash('msg-success', 'Form `'.$name.'`removed');
+        }
+
+        return redirect()->route('manage_forms');
+    }
+
+    public function formsEdit($slug)
+    {
+        $form = CupaForm::fetchBySlug($slug);
+
+        return view('manage.forms_edit', compact('form'));
+    }
+
+    public function postFormsEdit(FormAddEditRequest $request, $slug)
+    {
+        $form = CupaForm::fetchBySlug($slug);
+        $input = $request->all();
+        $slug = str_slug($input['year'].'-'.$input['name']);
+
+        if ($request->hasFile('document')) {
+            // check md5
+            $md5 = md5_file($request->file('document')->getRealPath());
+            if (!CupaForm::isUnique($md5, $form->id)) {
+                $errors = new MessageBag();
+                $errors->add('document', 'Uploaded file is a duplicate');
+
+                return redirect()->route('manage_forms_edit')->withInput()->withErrors($errors);
+            }
+
+            $extension = $request->file('document')->getClientOriginalExtension();
+            $documentPath = '/data/forms/';
+            $document = $slug.'.'.$extension;
+            $documentFull = $documentPath.$document;
+            $request->file('document')->move(public_path().$documentPath, $document);
+
+            $form->location = $documentFull;
+            $form->size = filesize(public_path().$documentFull);
+            $form->md5 = $md5;
+            $form->extension = $extension;
+        } elseif ($slug != $form->slug) {
+            // rename file
+            $base = basename($form->location);
+            $extension = substr($base, strrpos($base, '.') + 1);
+            $target = '/data/forms/'.$slug.'.'.$extension;
+            rename(public_path().$form->location, public_path().$target);
+            $form->location = $target;
+        }
+
+        $form->year = $input['year'];
+        $form->name = $input['name'];
+        $form->slug = $slug;
+        $form->save();
+
+        Session::flash('msg-success', 'Form `'.$form->name.'`added');
+
+        return redirect()->route('manage_forms');
     }
 }

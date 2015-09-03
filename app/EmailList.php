@@ -2,7 +2,9 @@
 
 namespace Cupa;
 
-class EmailList extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class EmailList extends Model
 {
     protected $table = 'email_lists';
     protected $fillable = [

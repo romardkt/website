@@ -232,7 +232,9 @@ Route::group(['prefix' => 'manage'], function () {
     Route::post('users_detail', ['as' => 'manage_users_detail', 'uses' => 'ManageController@users_detail', 'middleware' => 'role:manager']);
     Route::get('impersonate/{user_id}', ['as' => 'manage_impersonate', 'uses' => 'ManageController@impersonate', 'middleware' => 'role:admin']);
     Route::get('forms', ['as' => 'manage_forms', 'uses' => 'ManageController@forms', 'middleware' => 'role:admin']);
-    Route::any('forms/add', ['as' => 'manage_forms_add', 'uses' => 'ManageController@forms_add', 'middleware' => 'role:admin']);
-    Route::any('forms/{slug}/edit', ['as' => 'manage_forms_edit', 'uses' => 'ManageController@forms_edit', 'middleware' => 'role:admin']);
-    Route::get('forms/{slug}/remove', ['as' => 'manage_forms_remove', 'uses' => 'ManageController@forms_remove', 'middleware' => 'role:admin']);
+    Route::get('forms/add', ['as' => 'manage_forms_add', 'uses' => 'ManageController@formsAdd', 'middleware' => 'role:admin']);
+    Route::post('forms/add', ['as' => 'manage_forms_add_post', 'uses' => 'ManageController@postFormsAdd', 'middleware' => 'role:admin']);
+    Route::get('forms/{slug}/edit', ['as' => 'manage_forms_edit', 'uses' => 'ManageController@formsEdit', 'middleware' => 'role:admin']);
+    Route::post('forms/{slug}/edit', ['as' => 'manage_forms_edit_post', 'uses' => 'ManageController@postFormsEdit', 'middleware' => 'role:admin']);
+    Route::get('forms/{slug}/remove', ['as' => 'manage_forms_remove', 'uses' => 'ManageController@formsRemove', 'middleware' => 'role:admin']);
 });
