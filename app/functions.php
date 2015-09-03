@@ -91,7 +91,7 @@ if (!function_exists('convertDate')) {
     function convertDate($dateData, $format = 'Y-m-d H:i:s')
     {
         $date = new Carbon($dateData);
-        if (get_class($date) == 'Carbon') {
+        if (get_class($date) == 'Carbon\Carbon') {
             return $date->format($format);
         }
 

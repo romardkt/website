@@ -11,6 +11,8 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Carbon\Carbon;
 use DB;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract,
@@ -58,9 +60,24 @@ class User extends Model implements AuthenticatableContract,
         return $this->hasOne('Cupa\UserProfile');
     }
 
+    public function contacts()
+    {
+        return $this->hasMany('Cupa\UserContact');
+    }
+
+    public function volunteer()
+    {
+        return $this->hasOne('Cupa\Volunteer');
+    }
+
     public function fullname()
     {
         return $this->first_name.' '.$this->last_name;
+    }
+
+    public function isVolunteer()
+    {
+        return (isset($this->volunteer()->first()->involvement)) ? true : false;
     }
 
     public function hasWaiver($year = null)
@@ -167,5 +184,112 @@ class User extends Model implements AuthenticatableContract,
         }
 
         return $duplicates;
+    }
+
+    public function combineDuplicates()
+    {
+        try {
+            DB::beginTransaction();
+
+            $duplicates = [];
+            $results = self::where('id', '<>', $this->id)
+                           ->where(DB::raw("CONCAT_WS(' ', first_name, last_name)"), '=', $this->fullname())
+                           ->get();
+
+            // update user_ids in these tables
+            $tables = ['league_members', 'officers', 'pickup_contacts', 'posts', 'team_members', 'tournament_members', 'volunteer_event_contacts', 'volunteers'];
+
+            $log = new Logger('merge-log');
+            $log->pushHandler(new StreamHandler(storage_path().'/logs/'.str_replace(' ', '_', $this->fullname()).'-merge.log'));
+            $log->addInfo('Merging duplicate users into '.$this->fullname().' #'.$this->id);
+
+            $log->addInfo('Merging User Columns');
+            $log->addInfo('=============================================================');
+            // merge all tables with the user_id column
+            foreach ($results as $duplicate) {
+                foreach ($tables as $table) {
+                    if ($table == 'volunteers') {
+                        if (!$this->isVolunteer()) {
+                            $sql = "UPDATE `{$table}` SET `user_id` = {$this->id} WHERE `user_id` = {$duplicate->id}";
+                            DB::update("UPDATE `{$table}` SET `user_id` = ? WHERE `user_id` = ?", [$this->id, $duplicate->id]);
+                        }
+                    } elseif ($table != 'posts') {
+                        $sql = "UPDATE `{$table}` SET `user_id` = {$this->id} WHERE `user_id` = {$duplicate->id}";
+                        DB::update("UPDATE `{$table}` SET `user_id` = ? WHERE `user_id` = ?", [$this->id, $duplicate->id]);
+                    } else {
+                        $sql = "UPDATE `{$table}` SET `posted_by` = {$this->id} WHERE `posted_by` = {$duplicate->id}";
+                        DB::update("UPDATE `{$table}` SET `posted_by` = ? WHERE `posted_by` = ?", [$this->id, $duplicate->id]);
+                    }
+                    $log->addInfo($sql);
+                }
+
+                $log->addInfo('Merging User Contacts');
+                $log->addInfo('=============================================================');
+                // concat user_contacts
+                foreach ($duplicate->contacts as $contact) {
+                    if (UserContact::hasContact($this->id, $contact->name, $contact->phone)) {
+                        $log->addInfo('Ignoring contact '.$contact->name.' ('.$contact->phone.')');
+                    } else {
+                        $log->addInfo('Adding contact '.$contact->name.' ('.$contact->phone.')');
+                        UserContact::create([
+                            'user_id' => $this->id,
+                            'name' => $contact->name,
+                            'phone' => $contact->phone,
+                        ]);
+                    }
+                }
+
+                $log->addInfo('Merging User Profile');
+                $log->addInfo('=============================================================');
+                $needSave = false;
+                $userProfile = $this->profile;
+                // concat user_profiles
+                foreach ($duplicate->profile->toArray() as $key => $value) {
+                    if (empty($key) || in_array($key, ['id', 'user_id', 'created_at', 'updated_at'])) {
+                        continue;
+                    }
+
+                    $log->addInfo('Key: `'.$key.'`');
+                    $log->addInfo('Value: `'.$userProfile->$key.'`');
+                    $log->addInfo('Isset: '.isset($userProfile->$key));
+                    $log->addInfo('Empty: '.empty($userProfile->$key));
+
+                    if (!isset($userProfile->$key) || empty($userProfile->$key)) {
+                        $needSave = true;
+                        $log->addInfo('Updating Profile '.$key.': `'.$userProfile->$key.'` => `'.$value.'`');
+                        $userProfile->$key = $value;
+                    } else {
+                        $log->addInfo('Ignoring Profile '.$key.': `'.$userProfile->$key.'` => `'.$value.'`');
+                    }
+                }
+
+                if ($needSave) {
+                    $userProfile->save();
+                }
+
+                $log->addInfo('Merging User Waivers');
+                $log->addInfo('=============================================================');
+                // concat user_waivers
+                foreach (UserWaiver::fetchAllWaivers($duplicate->id) as $waiver) {
+                    if (!UserWaiver::hasWaiver($this->id, $waiver->year)) {
+                        $log->addInfo('Signing waiver for '.$waiver->year);
+                        UserWaiver::signWaiver($this->id, $waiver->year);
+                    } else {
+                        $log->addInfo('Ignoring waiver for '.$waiver->year);
+                    }
+                }
+
+                // remove the user and all data with user
+                $duplicate->delete();
+            }
+
+            DB::commit();
+
+            return true;
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return $e->getMessage();
+        }
     }
 }

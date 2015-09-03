@@ -21,7 +21,13 @@ class UserWaiver extends Model
         }
 
         return static::where('user_id', '=', $userId)
-                     ->where('year', '=', $year)
-                     ->count();
+            ->where('year', '=', $year)
+            ->count();
+    }
+
+    public static function fetchAllWaivers($userId)
+    {
+        return static::where('user_id', '=', $userId)
+            ->get();
     }
 }

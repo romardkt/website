@@ -2,6 +2,8 @@
 
 namespace Cupa\Http\Requests;
 
+use Gate;
+
 class DuplicatesRequest extends Request
 {
     /**
