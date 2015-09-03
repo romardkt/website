@@ -2,7 +2,9 @@
 
 namespace Cupa;
 
-class Minute extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Minute extends Model
 {
     protected $table = 'minutes';
     protected $fillable = [

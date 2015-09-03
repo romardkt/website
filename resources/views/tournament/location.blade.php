@@ -1,4 +1,4 @@
-@extends('layouts.tournament')
+@extends('tournament')
 
 @section('content')
 <div class="row location">

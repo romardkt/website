@@ -7,11 +7,11 @@
         <h1 style="margin-bottom: 30px;">CUPA Coaches Email</h1>
         <p style="margin: 20px 0;">
             This message was sent from the CUPA website by:<br/>
-            {{{ $data['name'] }}} ({{{ $data['from'] }}})
+            {{ $data['name'] }} ({{ $data['from'] }})
         </p>
         @if(App::environment() != 'prod')
 <pre>
-{{ print_r($coach->toArray(), true) }}
+{!! print_r($coach->toArray(), true) !!}
 </pre>
         @endif
         <h4>Missing Requirements</h4>
@@ -28,7 +28,7 @@
         @if(!empty($data['message']))
         <h4>Message:</h4>
         <p style="margin: 20px 0;">
-            {{ $data['message'] }}
+            {!! $data['message'] !!}
         </p>
         @endif
     </body>

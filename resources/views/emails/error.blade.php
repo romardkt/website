@@ -8,24 +8,24 @@
         <p style="margin: 20px 0;">
             <h4>URL</h4>
             <pre>
-{{ print_r($method, true) }}
-{{ print_r($url, true) }}
+{!! print_r($method, true) !!}
+{!! print_r($url, true) !!}
             </pre>
             <h4>LOGGED IN USER</h4>
             <pre>
-{{ print_r($user, true) }}
+{!! print_r($user, true) !!}
             </pre>
             <h4>INPUT DATA</h4>
             <pre>
-{{ print_r($input, true) }}
-{{ print_r($_SERVER, true) }}
+{!! print_r($input, true) !!}
+{!! print_r($_SERVER, true) !!}
             </pre>
 
         </p>
         <p style="margin: 20px 0;">
             <h4>Exception</h4>
             <pre>
-{{ $exception }}
+{!! $exception !!}
             </pre>
         </p>
         <p style="margin: 20px 0;">

@@ -2,7 +2,9 @@
 
 namespace Cupa;
 
-class LeagueGameTeam extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class LeagueGameTeam extends Model
 {
     protected $table = 'league_game_teams';
     protected $fillable = [

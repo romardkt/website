@@ -29,5 +29,6 @@ class Kernel extends HttpKernel
         'auth' => \Cupa\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \Cupa\Http\Middleware\RedirectIfAuthenticated::class,
+        'role' => \Cupa\Http\Middleware\Role::class,
     ];
 }

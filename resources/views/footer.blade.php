@@ -1,21 +1,56 @@
+<div class="row">
+    <img src="{{ asset('img/skyline.png') }}"/>
+    <div class="col-xs-12 col-sm-3 text-center">
+        Follow CUPA<br/>
+        <a class="twitter" href="https://twitter.com/cincyultimate" target="_new" title="tw:@cincyultimate">
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+            </span>
+        </a>
+        <a class="facebook" href="https://www.facebook.com/cincyultimate" target="_new" title="fb:cincyultimate">
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+            </span>
+        </a><br/><br/>
+        Follow YUC<br/>
+        <a class="twitter" href="https://twitter.com/yuctweets" target="_new" title="tw:@cincyultimate">
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+            </span>
+        </a>
+        <a class="facebook" href="https://www.facebook.com/groups/9133123030/" target="_new" title="fb:cincyultimate">
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+            </span>
+        </a>
+    </div>
+    <div class="col-xs-12 col-sm-9 footer-blurb">
+        <p class="visible-xs">&nbsp;</p>
+        <p>Want to know what is going on with CUPA?  You can sign up for the CUPA announcements or follow us on twitter/facebook.</p>
+        <p>
+            <a class="btn btn-default" target="_new" href="https://groups.google.com/group/CUPA_Announcements/subscribe">
+                <i class="fa fa-fw fa-lg fa-envelope"></i>
+                CUPA Announcements E-Mail List
+            </a>
+        </p>
+    </div>
+</div>
 <div class="row footer-links">
     <div class="col-xs-12 text-center hidden-xs">
-        <a href="{{ route('tournament_bid', [$tournament->name, $tournament->year]) }}">Bid</a> |
-        <a href="{{ route('tournament_teams', [$tournament->name, $tournament->year]) }}">Teams</a> |
-        <a href="{{ route('tournament_schedule', [$tournament->name, $tournament->year]) }}">Schedule</a> |
-        <a href="{{ route('tournament_location', [$tournament->name, $tournament->year]) }}">Location</a> |
-        <a href="{{ route('tournament_contact', [$tournament->name, $tournament->year]) }}">Contact</a> |
-        @if(!$isAuthorized['user'])
-        <a href="#" data-toggle="modal" data-target="#login">Login</a> |
-        @endif
-        @if($isAuthorized['manager'])
-        <a href="{{ route('tournament_admin', [$tournament->name, $tournament->year]) }}">Admin</a> |
-        @endif
-        <a href="{{ route('home') }}">CUPA Home</a>
+        <a href="{{ route('about') }}">About Us</a>
+        <a href="{{ route('volunteer') }}">Volunteer</a>
+        <a href="{{ route('youth') }}">Youth Ultimate</a>
+        <a href="{{ route('leagues') }}">Leagues</a>
+        <a href="{{ route('around') }}">Around Town</a>
+        <a href="{{ route('teams') }}">Area Teams</a>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12 text-center">
-        <p>&copy; 2010-{{ date('Y') }} Cinctinnati Ultimate Players Assocaiation</p>
+        <p>&copy; 2010-{{ date('Y') }} Cincinnati Ultimate Players Association</p>
     </div>
 </div>

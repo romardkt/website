@@ -2,7 +2,9 @@
 
 namespace Cupa;
 
-class TournamentLocation extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class TournamentLocation extends Model
 {
     protected $table = 'tournament_locations';
     protected $fillable = [

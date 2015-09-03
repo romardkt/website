@@ -2,7 +2,9 @@
 
 namespace Cupa;
 
-class Scholarship extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Scholarship extends Model
 {
     protected $table = 'scholarships';
     protected $fillable = [

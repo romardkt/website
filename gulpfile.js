@@ -15,7 +15,8 @@ elixir(function(mix) {
     mix.sass([
             'app.scss',
             '../../../node_modules/select2/select2.css',
-            '../../../node_modules/select2/select2-bootstrap.css',
+            //'../../../node_modules/select2/select2-bootstrap.css',
+            '../../../node_modules/select2-bootstrap-css/select2-bootstrap.min.css',
         ], 'public/css/cupa.min.css')
         .babel([
             '../../../node_modules/jquery/dist/jquery.min.js',
@@ -25,6 +26,7 @@ elixir(function(mix) {
         ], 'public/js/cupa.min.js')
         .copy('node_modules/font-awesome/fonts', 'public/build/fonts')
         .copy('node_modules/select2/select2.png', 'public/build/css')
+        .copy('node_modules/select2/select2-spinner.gif', 'public/build/css')
         .version([
             'css/cupa.min.css',
             'js/cupa.min.js'

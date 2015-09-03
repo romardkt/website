@@ -4,88 +4,142 @@
     <div class="col-xs-3 green"></div>
     <div class="col-xs-3 yellow"></div>
 </div>
-<div class="container">
-    <div class="row">
-        <div class="col-xs-12">
-            <nav class="navbar navbar-inverse tournament-menu" role="navigation">
-                <div class="container-fluid">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="{{ route('tournament', [$tournament->name, $tournament->year]) }}">
-                            {{{ $tournament->display_name }}}<br/>
-                            <small class="text-muted">{{{ convertDate($tournament->start, 'M j-') }}}{{{ convertDate($tournament->end, 'j ') }}}{{{ convertDate($tournament->end, 'Y') }}}</small>
-                        </a>
+<div class="row header">
+    <div class="container">
+        <div class="row mobile-header">
+            <div class="col-xs-3">
+                <button type="button" id="mobile-main-menu-btn" class="btn"><i class="fa fa-lg fa-3x fa-bars"></i></button>
+            </div>
+            <div class="col-xs-6 logo text-center">
+                <a href="{{ route('home') }}"><img src="{{ asset('img/logo.png') }}"></a>
+            </div>
+            <div class="col-xs-3 text-right">
+                <button type="button" id="mobile-user-menu-btn" class="btn"><i class="fa fa-lg fa-3x fa-user"></i></button>
+            </div>
+        </div>
+        <div class="row normal-header">
+            <div class="col-sm-6 logo">
+                <a href="{{ route('home') }}"><img src="{{ asset('img/logo.png') }}"></a>
+            </div>
+            <div class="col-sm-6">
+                <div class="row text-right login">
+                    <ul class="nav links pull-right">
+                        @can('is-admin')
+                        <li><a href="{{ route('manage') }}" title="News Posts">Manage</a></li>
+                        @endif
+                        <li><a href="{{ route('posts') }}" title="News Posts">All News</a></li>
+                        <li><a href="{{ route('contact') }}" title="Contact Us">Contact Us</a></li>
+                        @if(Auth::check())
+                        <li><a id="user-menu-btn" href="#" title="Profile">{{ (Session::has('admin_user')) ? 'Impersonating ' : '' }}{{ Auth::user()->fullname() }}</a></li>
+                        @else
+                        <li><a href="{{ route('register') }}" title="Sign Up">Sign Up</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#login" title="Login">Login</a></li>
+                        @endif
+                    </ul>
+                </div>
+                <div class="row text-right social">
+                    <a class="twitter" href="https://twitter.com/cincyultimate" target="_new" title="tw:@cincyultimate">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                        </span></a>
+                    <a class="facebook" href="https://www.facebook.com/cincyultimate" target="_new" title="fb:cincyultimate">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                        </span></a>
+                </div>
+            </div>
+            <div class="row main-menu">
+                <div class="col-xs-12">
+                    <div class="btn-group btn-group-lg btn-group-justified">
+                        <a class="about btn btn-default" href="{{ route('about') }}">About<span class="hidden-sm"> Us</span></a></a>
+                        <a class="volunteer btn btn-default" href="{{ route('volunteer') }}">Volunteer</a></a>
+                        <a class="youth btn btn-default">Youth<span class="hidden-sm"> Ultimate</span></a></a>
+                        <a class="leagues btn btn-default"><span class="hidden-sm">Adult </span>Leagues</a></a>
+                        <a class="around btn btn-default" href="{{ route('around') }}">Around<span class="hidden-sm"> Town</span></a></a>
+                        <a class="teams btn btn-default" href="{{ route('teams') }}"><span class="hidden-sm">Area </span>Teams</a></a>
                     </div>
-
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav">
-                            @if($tournament->name == 'nationals' && $tournament->year == '2014')
-                            <li{{ (Route::currentRouteName() == 'tournament_2014_nationals_fans') ? ' class="active"' : '' }}><a href="{{ route('tournament_2014_nationals_fans') }}">Parents/Fans</a></li>
-                            @endif
-                            @if($tournament->use_bid == 1)
-                            <li{{ (Route::currentRouteName() == 'tournament_bid' || Route::currentRouteName() == 'tournament_payment') ? ' class="active"' : '' }}><a href="{{ route('tournament_bid', [$tournament->name, $tournament->year]) }}">Bid</a></li>
-                            @elseif($tournament->use_paypal)
-                            <li{{ (Route::currentRouteName() == 'tournament_payment') ? ' class="active"' : '' }}><a href="{{ route('tournament_payment', [$tournament->name, $tournament->year]) }}">Bid</a></li>
-                            @endif
-                            @if($tournament->has_teams == 1)
-                            <li{{ (Route::currentRouteName() == 'tournament_teams') ? ' class="active"' : '' }}><a href="{{ route('tournament_teams', [$tournament->name, $tournament->year]) }}">Teams</a></li>
-                            @endif
-                            <?php $schedule = ((in_array($tournament->name, ['nationals', 'club_regionals'])) && $tournament->year == '2014') ? 'Teams/Schedule' : 'Schedule'; ?>
-                            <li{{ (Route::currentRouteName() == 'tournament_schedule') ? ' class="active"' : '' }}><a href="{{ route('tournament_schedule', [$tournament->name, $tournament->year]) }}">{{{ $schedule }}}</a></li>
-                            <li{{ (Route::currentRouteName() == 'tournament_location') ? ' class="active"' : '' }}><a href="{{ route('tournament_location', [$tournament->name, $tournament->year]) }}">Location</a></li>
-                            <li{{ (Route::currentRouteName() == 'tournament_contact') ? ' class="active"' : '' }}><a href="{{ route('tournament_contact', [$tournament->name, $tournament->year]) }}">Contact</a></li>
-                            @if($tournament->name == 'scinny' && in_array($tournament->year, ['2014', '2015']))
-                            <li{{ (Route::currentRouteName() == 'tournament_masters_' . $tournament->year) ? ' class="active"' : '' }}><a href="{{ route('tournament_masters_' . $tournament->year) }}">Great Lakes G/Masters</a></li>
-                            @endif
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            @if(!$isAuthorized['user'])
-                            <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
-                            @endif
-                            @if($isAuthorized['manager'])
-                            <li{{ (Route::currentRouteName() == 'tournament_admin') ? ' class="active"' : '' }}><a href="{{ route('tournament_admin', [$tournament->name, $tournament->year]) }}">Admin</a></li>
-                            @endif
-                            <li><a href="{{ route('home') }}">CUPA Home</a></li>
-                        </ul>
-                    </div><!-- /.navbar-collapse -->
-                </div><!-- /.container-fluid -->
-            </nav>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<div class="container">
-    <div class="row tournament-banner">
-        <img src="{{ asset($tournament->image) }}"/>
-        <div class="actions">
-        @if($isAuthorized['manager'])
-        @if(Route::currentRouteName() == 'tournament')
-            <a class="btn btn-default" href="{{ route('tournament_feed_add', [$tournament->name, $tournament->year]) }}"><i class="fa fa-fw fa-lg fa-plus"></i> Add News</a>
-        @elseif(Route::currentRouteName() == 'tournament_contact')
-            <a class="btn btn-default" href="{{ route('tournament_contact_add', [$tournament->name, $tournament->year]) }}"><i class="fa fa-fw fa-lg fa-plus"></i> Add Contact</a>
-        @elseif(Route::currentRouteName() == 'tournament_location')
-            <div class="btn-group">
-                <a class="btn btn-default" href="{{ route('tournament_location_map_edit', [$tournament->name, $tournament->year]) }}"><i class="fa fa-fw fa-lg fa-edit"></i> Edit Location</a>
-                <a class="btn btn-default" href="{{ route('tournament_location_add', [$tournament->name, $tournament->year]) }}"><i class="fa fa-fw fa-lg fa-plus"></i> Add Lodging</a>
-            </div>
-        @elseif(Route::currentRouteName() == 'tournament_teams')
-            <a class="btn btn-default" href="{{ route('tournament_teams_add', [$tournament->name, $tournament->year]) }}"><i class="fa fa-fw fa-lg fa-plus"></i> Add Team</a>
-        @elseif(Route::currentRouteName() == 'tournament_bid' || Route::currentRouteName() == 'tournament_payment')
-            <a class="btn btn-default" href="{{ route('tournament_bid_edit', [$tournament->name, $tournament->year]) }}"><i class="fa fa-fw fa-lg fa-edit"></i>Edit Bid</a>
-        @else
-            <a class="btn btn-default placeholder">&nbsp;</a>
-        @endif
-        @else
-            <a class="btn btn-default placeholder">&nbsp;</a>
-        @endif
+<div id="mobile-main-menu" class="row mobile-main-menu" role="navigation">
+    <div class="col-xs-12">
+        <ul class="nav">
+            <li><a class="about" href="{{ route('about') }}">About Us</a></li>
+            <li><a class="volunteer" href="{{ route('volunteer') }}">Volunteer</a></li>
+            <li><a class="youth" href="{{ route('youth') }}">Youth Ultimate</a></li>
+            <li><a class="leagues" href="{{ route('leagues') }}">Adult Leagues</a></li>
+            <li><a class="around" href="{{ route('around') }}">Around Town</a></li>
+            <li><a class="teams" href="{{ route('teams') }}">Area Teams</a></li>
+        </ul>
+    </div>
+</div>
+
+<div id="mobile-user-menu" class="mobile-user-menu" role="navigation">
+    @if(Auth::user())
+    <div class="row user-header">
+        <div class="col-xs-5 avatar">
+            <img src="{{ asset(Auth::user()->avatar) }}"/>
+        </div>
+        <div class="col-xs-7 user">
+            <p class="name">
+                {{ Auth::user()->first_name }}<br/>
+                {{ Auth::user()->last_name }}<br/>
+                <span class="text-muted">{{ Auth::user()->profile->nickname }}</span>
+            </p>
         </div>
     </div>
+    <div class="row status">
+        <div class="col-xs-4 text-center">
+            Waiver<br/>
+            @if(Auth::user()->hasWaiver())
+            <span class="label label-success">YES</span>
+            @else
+            <span class="label label-danger"><a href="{{ route('waiver', [date('Y'), Auth::id()]) }}">NO</a></span>
+            @endif
+        </div>
+        <div class="col-xs-4 text-center">
+            Profile<br/>
+            @if(Auth::user()->profileComplete())
+            <span class="label label-success">Complete</span>
+            @else
+            <span class="label label-danger"><a href="{{ route('profile') }}">Incomplete</a></span>
+            @endif
+        </div>
+        <div class="col-xs-4 text-center">
+            Overdue<br/>
+            @if(isset(Auth::user()->balance))
+            <span class="label label-danger"><a href="{{ route('profile_leagues') }}">${{ Auth::user()->balance->balance }}</a></span>
+            @else
+            <span class="label label-success">$0</span>
+            @endif
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="nav">
+                <li><a href="{{ route('profile') }}"><i class="fa fa-fw fa-info-circle"></i>Personal Information</a></li>
+                <li><a href="{{ route('profile_leagues') }}"><i class="fa fa-fw fa-group"></i> Leagues</a></li>
+                <li><a href="{{ route('profile_contacts') }}"><i class="fa fa-fw fa-exclamation-triangle"></i> Emergency Contacts</a></li>
+                <li><a href="{{ route('profile_password') }}"><i class="fa fa-fw fa-lock"></i> Change Password</a></li>
+                <li><a id="logout-link" href="#"><i class="fa fa-fw fa-sign-out"></i> Logout</a></li>
+            </ul>
+        </div>
+    </div>
+    @else
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="nav">
+                <li><a href="#" data-toggle="modal" data-target="#login"><i class="fa fa-fw fa-user"></i> Login / Sign-up</a></li>
+                <li><a href="{{ route('profile') }}"><i class="fa fa-fw fa-question"></i> Forgot Password</a></li>
+                <li><a href="{{ route('contact') }}"><i class="fa fa-fw fa-envelope"></i> Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+    @endif
 </div>
 <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -96,9 +150,9 @@
             </div>
             <div class="modal-body">
                 <div id="login-error"></div>
-                {{ Form::open(['id' => 'login-form', 'class' => 'form form-horizontal', 'role' => 'form']) }}
-                    @include('layouts.partials.login')
-                {{ Form::close() }}
+                {!! Form::open(['id' => 'login-form', 'class' => 'form form-horizontal', 'role' => 'form']) !!}
+                    @include('partials.login')
+                {!! Form::close() !!}
             </div>
             <div class="modal-footer hidden-xs">
                 <a class="btn btn-warning pull-left" href="{{ route('register') }}">Don't have an account?</a>

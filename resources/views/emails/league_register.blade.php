@@ -4,12 +4,12 @@
         <meta charset="utf-8">
     </head>
     <body style="margin: 10px 0;">
-        <h1 style="margin-bottom: 30px;">{{{ $leagueName }}} {{{ $leagueStatus }}}</h1>
+        <h1 style="margin-bottom: 30px;">{{ $leagueName }} {{ $leagueStatus }}</h1>
         <p style="margin: 20px 0;">
-            Hello {{{ $userName }}},
+            Hello {{ $userName }},
         </p>
         <p style="margin: 20px 0;">
-            You have successfully registered for the {{{ $leagueName }}} league.  Please take the time to sign your waiver, on-line if you are 18 or older, or in paper form if you are younger.  You may find the links below for all the information.
+            You have successfully registered for the {{ $leagueName }} league.  Please take the time to sign your waiver, on-line if you are 18 or older, or in paper form if you are younger.  You may find the links below for all the information.
         </p>
         <p style="margin: 20px 0;">
             <ul>

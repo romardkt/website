@@ -2,7 +2,8 @@
 
 Route::get('/', ['as' => 'home', 'uses' => 'PageController@home']);
 Route::post('location/add', ['as' => 'location_add', 'uses' => 'PageController@location_add', 'before' => 'auth']);
-Route::any('contact', ['as' => 'contact', 'uses' => 'PageController@contact']);
+Route::get('contact', ['as' => 'contact', 'uses' => 'PageController@contact']);
+Route::post('contact', ['as' => 'contact_handle', 'uses' => 'PageController@postContact']);
 Route::any('waiver/{year}/download/{type?}', ['as' => 'waiver_download', 'uses' => 'PageController@waiver_download']);
 Route::any('waiver/{year}/{user_id?}', ['as' => 'waiver', 'uses' => 'PageController@waiver', 'before' => 'auth']);
 Route::any('paypal/success/{id}', ['as' => 'paypal_success', 'uses' => 'PageController@paypal_success']);
@@ -220,16 +221,18 @@ Route::group(['prefix' => 'typeahead'], function () {
 });
 
 Route::group(['prefix' => 'manage'], function () {
-    Route::get('/', ['as' => 'manage', 'uses' => 'ManageController@manage', 'before' => 'manager']);
-    Route::get('unpaid', ['as' => 'manage_unpaid', 'uses' => 'ManageController@unpaid', 'before' => 'manager']);
-    Route::any('duplicates', ['as' => 'manage_duplicates', 'uses' => 'ManageController@duplicates', 'before' => 'manager']);
-    Route::any('league_players', ['as' => 'manage_league_players', 'uses' => 'ManageController@league_players', 'before' => 'manager']);
-    Route::get('load_league_teams', ['as' => 'manage_load_league_teams', 'uses' => 'ManageController@load_league_teams', 'before' => 'manager']);
-    Route::any('users', ['as' => 'manage_users', 'uses' => 'ManageController@users', 'before' => 'manager']);
-    Route::post('users_detail', ['as' => 'manage_users_detail', 'uses' => 'ManageController@users_detail', 'before' => 'manager']);
-    Route::get('impersonate/{user_id}', ['as' => 'manage_impersonate', 'uses' => 'ManageController@impersonate', 'before' => 'admin']);
-    Route::get('forms', ['as' => 'manage_forms', 'uses' => 'ManageController@forms', 'before' => 'admin']);
-    Route::any('forms/add', ['as' => 'manage_forms_add', 'uses' => 'ManageController@forms_add', 'before' => 'admin']);
-    Route::any('forms/{slug}/edit', ['as' => 'manage_forms_edit', 'uses' => 'ManageController@forms_edit', 'before' => 'admin']);
-    Route::get('forms/{slug}/remove', ['as' => 'manage_forms_remove', 'uses' => 'ManageController@forms_remove', 'before' => 'admin']);
+    Route::get('/', ['as' => 'manage', 'uses' => 'ManageController@manage', 'middleware' => 'role:manager']);
+    Route::get('unpaid', ['as' => 'manage_unpaid', 'uses' => 'ManageController@unpaid', 'middleware' => 'role:manager']);
+    Route::get('duplicates', ['as' => 'manage_duplicates', 'uses' => 'ManageController@duplicates', 'middleware' => 'role:manager']);
+    Route::post('duplicates', ['as' => 'manage_duplicates_post', 'uses' => 'ManageController@postDuplicates', 'middleware' => 'role:manager']);
+    Route::get('league_players', ['as' => 'manage_league_players', 'uses' => 'ManageController@leaguePlayers', 'middleware' => 'role:manager']);
+    Route::post('league_players', ['as' => 'manage_league_players_handle', 'uses' => 'ManageController@postLeaguePlayers', 'middleware' => 'role:manager']);
+    Route::get('load_league_teams', ['as' => 'manage_load_league_teams', 'uses' => 'ManageController@load_league_teams', 'middleware' => 'role:manager']);
+    Route::any('users', ['as' => 'manage_users', 'uses' => 'ManageController@users', 'middleware' => 'role:manager']);
+    Route::post('users_detail', ['as' => 'manage_users_detail', 'uses' => 'ManageController@users_detail', 'middleware' => 'role:manager']);
+    Route::get('impersonate/{user_id}', ['as' => 'manage_impersonate', 'uses' => 'ManageController@impersonate', 'middleware' => 'role:admin']);
+    Route::get('forms', ['as' => 'manage_forms', 'uses' => 'ManageController@forms', 'middleware' => 'role:admin']);
+    Route::any('forms/add', ['as' => 'manage_forms_add', 'uses' => 'ManageController@forms_add', 'middleware' => 'role:admin']);
+    Route::any('forms/{slug}/edit', ['as' => 'manage_forms_edit', 'uses' => 'ManageController@forms_edit', 'middleware' => 'role:admin']);
+    Route::get('forms/{slug}/remove', ['as' => 'manage_forms_remove', 'uses' => 'ManageController@forms_remove', 'middleware' => 'role:admin']);
 });

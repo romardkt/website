@@ -7,18 +7,18 @@
         <h1 style="margin-bottom: 30px;">CUPA League Contact Form</h1>
         <p style="margin: 20px 0;">
             This message was sent from the CUPA website by:<br/>
-            {{{ $data['name'] }}} ({{{ $data['from'] }}})
+            {{ $data['name'] }} ({{ $data['from'] }})
         </p>
         @if(App::environment() != 'prod')
         <p style="margin: 20px 0;">
             @foreach($emails as $email)
-            BCC: {{{ $email }}}<br/>
+            BCC: {{ $email }}<br/>
             @endforeach
         </p>
         @endif
         <h4>Message:</h4>
         <p style="margin: 20px 0;">
-            {{ $data['body'] }}
+            {!! $data['body'] !!}
         </p>
     </body>
 </html>

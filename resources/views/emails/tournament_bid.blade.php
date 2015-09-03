@@ -4,9 +4,9 @@
         <meta charset="utf-8">
     </head>
     <body style="margin: 10px 0;">
-        <h1 style="margin-bottom: 30px;">{{{ $tournament->display_name }}} Bid</h1>
+        <h1 style="margin-bottom: 30px;">{{ $tournament->display_name }} Bid</h1>
         <p style="margin: 20px 0;">
-            Thank you for submitting your bid for the {{{ $tournament->display_name }}} tournament.  You have been added to our system and will be marked as accepted by the tournament directors when they review your bid submission.
+            Thank you for submitting your bid for the {{ $tournament->display_name }} tournament.  You have been added to our system and will be marked as accepted by the tournament directors when they review your bid submission.
         </p>
         <p style="margin: 20px 0;">
             @if($tournament->use_paypal == 1)
@@ -15,7 +15,7 @@
                 If you would like to pay via paypal you may do so below.  Just click the button and it will take you to paypal's site to pay for the tournament.
             </p>
             <p>
-                The tournament cost is <span style="color: #31708f;">${{{ $tournament->cost }}}</span>, <a href="{{ route('paypal', [$tournament->id, 'tournament', null, $team->id]) }}">Pay Now!</a>
+                The tournament cost is <span style="color: #31708f;">${{ $tournament->cost }}</span>, <a href="{{ route('paypal', [$tournament->id, 'tournament', null, $team->id]) }}">Pay Now!</a>
             </p>
                 @else
                 <pre>{{ $tournament->paypal }}</pre>
@@ -31,13 +31,13 @@
         <p style="margin: 20px 0;">
             <p>Here are some links for you:</p>
             <ul style="list-style: none;">
-                <li><a href="{{ route('tournament', [$tournament->name, $tournament->year]) }}">{{{ $tournament->display_name }}} Website</a></li>
-                <li><a href="{{ route('tournament_contact', [$tournament->name, $tournament->year]) }}">{{{ $tournament->display_name }}} Contact Information</a></li>
+                <li><a href="{{ route('tournament', [$tournament->name, $tournament->year]) }}">{{ $tournament->display_name }} Website</a></li>
+                <li><a href="{{ route('tournament_contact', [$tournament->name, $tournament->year]) }}">{{ $tournament->display_name }} Contact Information</a></li>
                 <li><a href="{{ route('about') }}">Learn about CUPA</a></li>
             </ul>
         </p>
         <p style="margin: 20px 0;">
-            Check back sometime to see updated information about the {{{ $tournament->display_name }}} tournament.
+            Check back sometime to see updated information about the {{ $tournament->display_name }} tournament.
         </p>
         <p style="margin: 20px 0;">
             <br/>

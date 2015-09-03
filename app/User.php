@@ -30,7 +30,16 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = [
+        'email',
+        'first_name',
+        'last_name',
+        'birthday',
+        'gender',
+        'password',
+        'activation_code',
+        'reason',
+    ];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -125,5 +134,38 @@ class User extends Model implements AuthenticatableContract,
         }
 
         return;
+    }
+
+    public static function fetchAllDuplicates()
+    {
+        $duplicates = [];
+        foreach (static::orderBy('created_at')->get() as $user) {
+            $duplicates[$user->fullname()][] = $user;
+        }
+
+        foreach ($duplicates as $key => $duplicate) {
+            $parents = [];
+            foreach ($duplicate as $i => $dup) {
+                if ($dup->parent === null) {
+                    $parents[] = $dup->id;
+                }
+            }
+
+            // check for minor same as parent
+            foreach ($duplicate as $i => $dup) {
+                if ($dup->parent !== null  && in_array($dup->parent, $parents)) {
+                    unset($duplicates[$key][$i]);
+                }
+
+                $userIds[] = $dup->id;
+            }
+
+            // remove non duplicates
+            if (count($duplicates[$key]) < 2) {
+                unset($duplicates[$key]);
+            }
+        }
+
+        return $duplicates;
     }
 }

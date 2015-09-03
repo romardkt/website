@@ -2,7 +2,9 @@
 
 namespace Cupa;
 
-class Paypal extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Paypal extends Model
 {
     protected $table = 'paypals';
     protected $fillable = [

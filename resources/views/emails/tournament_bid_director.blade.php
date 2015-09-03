@@ -4,14 +4,14 @@
         <meta charset="utf-8">
     </head>
     <body style="margin: 10px 0;">
-        <h1 style="margin-bottom: 30px;">{{{ $tournament->display_name }}} Bid Submitted</h1>
+        <h1 style="margin-bottom: 30px;">{{ $tournament->display_name }} Bid Submitted</h1>
         <p style="margin: 20px 0;">
             A team has submitted a bid to your tournament.  At your convenience please goto the teams section of the tournament page to accept or deny their request.  If the request is not valid or somehow there is no usable information you may also remove them from the tournament in the teams section of the page.
         </p>
         <p>
             <ul style="list-style: none;">
-                <li><a href="{{ route('tournament', [$tournament->name, $tournament->year]) }}">{{{ $tournament->display_name }}} Website</a></li>
-                <li><a href="{{ route('tournament_teams', [$tournament->name, $tournament->year]) }}">{{{ $tournament->display_name }}} Teams Page</a></li>
+                <li><a href="{{ route('tournament', [$tournament->name, $tournament->year]) }}">{{ $tournament->display_name }} Website</a></li>
+                <li><a href="{{ route('tournament_teams', [$tournament->name, $tournament->year]) }}">{{ $tournament->display_name }} Teams Page</a></li>
             </ul>
         </p>
         <p style="margin: 20px 0;">
@@ -20,19 +20,19 @@
             <table cellpadding="5px" cellspacing="0">
                 <tr>
                     <td style="width: 150px; font-weight: bold; text-align: right;">Division:</td>
-                    <td>{{{ ucwords(str_replace('_', ' ', $team->division)) }}}</td>
+                    <td>{{ ucwords(str_replace('_', ' ', $team->division)) }}</td>
                 </tr>
                 <tr>
                     <td style="width: 150px; font-weight: bold; text-align: right;">Name:</td>
-                    <td>{{{ $team->name }}}</td>
+                    <td>{{ $team->name }}</td>
                 </tr>
                 <tr>
                     <td style="width: 150px; font-weight: bold; text-align: right;">Location:</td>
-                    <td>{{{ $team->city . ', ' . $team->state }}}</td>
+                    <td>{{ $team->city . ', ' . $team->state }}</td>
                 </tr>
                 <tr>
                     <td style="width: 150px; font-weight: bold; text-align: right;">Contact:</td>
-                    <td>{{{ $team->contact_name . ' ( ' . $team->contact_email . ', ' . $team->contact_phone . ' )' }}}</td>
+                    <td>{{ $team->contact_name . ' ( ' . $team->contact_email . ', ' . $team->contact_phone . ' )' }}</td>
                 </tr>
                 <tr>
                     <td style="width: 150px; font-weight: bold; text-align: right;">Comments:</td>

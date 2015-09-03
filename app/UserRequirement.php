@@ -2,7 +2,9 @@
 
 namespace Cupa;
 
-class UserRequirement extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class UserRequirement extends Model
 {
     protected $table = 'user_requirements';
     protected $fillable = [

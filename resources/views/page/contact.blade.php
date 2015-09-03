@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('app')
 
 @section('content')
 <div class="row">
@@ -8,33 +8,33 @@
 </div>
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::open(['class' => 'form form-vertical', 'role' => 'form', 'files' => true]) }}
+        {!! Form::open(['class' => 'form form-vertical', 'role' => 'form', 'files' => true]) !!}
 
         <div class="form-group">
-            {{ Form::label('Your Name') }}
-            {{ Form::text('from_name', ($isAuthorized['user']) ? $isAuthorized['userData']->fullname() : null, ['class' => 'form-control ckeditor']) }}
+            {!! Form::label('Your Name') !!}
+            {!! Form::text('from_name', (Auth::check()) ? Auth::user()->fullname() : null, ['class' => 'form-control ckeditor']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Your Email') }}
-            {{ Form::text('from_email', ($isAuthorized['user']) ? $isAuthorized['userData']->email : null, ['class' => 'form-control ckeditor']) }}
+            {!! Form::label('Your Email') !!}
+            {!! Form::text('from_email', (Auth::check()) ? Auth::user()->email : null, ['class' => 'form-control ckeditor']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Subject') }}
-            {{ Form::text('subject', '[CUPA] More Information', ['class' => 'form-control']) }}
+            {!! Form::label('Subject') !!}
+            {!! Form::text('subject', '[CUPA] More Information', ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Message') }}
-            {{ Form::textarea('message', null, ['class' => 'form-control ckeditor']) }}
+            {!! Form::label('Message') !!}
+            {!! Form::textarea('message', null, ['class' => 'form-control ckeditor']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Verify you\'re human') }}
-            {{ Form::captcha() }}
+            {!! Form::label('Verify you\'re human') !!}
+            {!! Form::captcha() !!}
         </div>
 
         <div class="row">
@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        {{ Form::close() }}
+        {!! Form::close() !!}
     </div>
 </div>
 @endsection

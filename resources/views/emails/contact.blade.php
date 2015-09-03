@@ -7,10 +7,10 @@
         <h1 style="margin-bottom: 30px;">CUPA Website Contact Form</h1>
         <p style="margin: 20px 0;">
             This message was sent from the CUPA website by:<br/>
-            {{{ $data['from_name'] }}} ({{{ $data['from_email'] }}})
+            {{ $data['from_name'] }} ({{ $data['from_email'] }})
         </p>
         <p style="margin: 20px 0;">
-            {{ $data['message'] }}
+            {!! $data['message'] !!}
         </p>
     </body>
 </html>

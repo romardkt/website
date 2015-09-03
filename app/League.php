@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Auth;
 use Gate;
+use DB;
 
 class League extends Model
 {
@@ -43,6 +44,21 @@ class League extends Model
     public function limits()
     {
         return $this->hasOne('Cupa\LeagueLimit');
+    }
+
+    public function games()
+    {
+        return $this->hasMany('Cupa\LeagueGame');
+    }
+
+    public function members()
+    {
+        return $this->hasMany('Cupa\LeagueMember');
+    }
+
+    public function teams()
+    {
+        return $this->hasMany('Cupa\LeagueTeam')->orderBy('name');
     }
 
     public function directors()
@@ -132,5 +148,91 @@ class League extends Model
 
             return $league->is_archived == 0 || Gate::allows('show', $league);
         });
+    }
+
+    public static function fetchAllLeagues($type = null, $season = null)
+    {
+        $now = Carbon::now();
+
+        $select = static::with(['locations', 'limits', 'games', 'members', 'registration', 'teams', 'counts'])
+                        ->from('leagues AS l')
+                        ->leftJoin('league_locations AS ll', function ($join) {
+                            $join->on('ll.league_id', '=', 'l.id')
+                                 ->where('ll.type', '=', 'league');
+                        })
+                        ->leftJoin('league_registrations AS lr', 'lr.league_id', '=', 'l.id')
+                        ->leftJoin('league_members AS lm', 'lm.league_id', '=', 'l.id')
+                        ->where('l.type', '=', 'league')
+                        ->where('lm.position', '=', 'director')
+                        ->orderBy('is_archived', 'asc')
+                        ->orderBy('lr.begin', 'desc')
+                        ->orderBy('ll.begin', 'desc')
+                        ->groupBy('l.id')
+                        ->select('l.*', DB::raw('GROUP_CONCAT(lm.user_id) AS directors'));
+
+        switch ($type) {
+            case 'youth':
+                $select->where('l.is_youth', '=', 1);
+                break;
+            case 'adult':
+                $select->where('l.is_youth', '=', 0);
+                break;
+        }
+
+        if ($season !== null) {
+            $select->where('l.season', '=', $season);
+        }
+
+        if (Auth::check() && Gate::allows('is-manager')) {
+            $select->where(function ($query) use ($now) {
+                $query->where('lm.user_id', '=', Auth::id())
+                    ->orWhere(function ($query2) use ($now) {
+                        $query2->where('l.is_archived', '=', 0)
+                            ->whereNotNull('l.date_visible')
+                            ->where('l.date_visible', '<', $now);
+                    });
+            });
+        } else {
+            // not logged in hide
+            $select->where('l.is_archived', '=', 0)
+                ->whereNotNull('l.date_visible')
+                ->where('l.date_visible', '<', $now);
+        }
+
+        return $select->paginate(10);
+    }
+
+    public static function fetchAllHash()
+    {
+        $data = [];
+        foreach (static::with('registration')->orderBy('id', 'asc')->get() as $league) {
+            $data[$league->id] = [
+                'name' => $league->displayName(),
+                'cost' => $league->registration->cost,
+                'slug' => $league->slug,
+            ];
+        }
+
+        return $data;
+    }
+
+    public static function fetchAllForSelect()
+    {
+        $leagues = [];
+        foreach (static::fetchAllLeagues() as $league) {
+            $leagues[$league->id] = $league->displayName();
+        }
+
+        return $leagues;
+    }
+
+    public function fetchTeamsForSelect()
+    {
+        $teams = [];
+        foreach ($this->teams as $team) {
+            $teams[$team->id] = $team->name;
+        }
+
+        return $teams;
     }
 }

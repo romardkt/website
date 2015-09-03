@@ -2,8 +2,31 @@
 
 namespace Cupa;
 
-class UserBalance extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class UserBalance extends Model
 {
     protected $table = 'user_balances';
     protected $fillable = [];
+
+    public function user()
+    {
+        return $this->belongsTo('Cupa\User');
+    }
+
+    public static function fetchAllUnpaid()
+    {
+        return static::with('user')
+                     ->join('users AS u', 'u.id', '=', 'user_balances.user_id')
+                     ->whereNotNull('balance')
+                     ->orderBy('u.last_name')
+                     ->orderBy('u.first_name')
+                     ->select('user_balances.*')
+                     ->get();
+    }
+
+    public static function owesMoney($userId)
+    {
+        return static::where('user_id', '=', $userId)->count() > 0;
+    }
 }

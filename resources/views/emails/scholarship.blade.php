@@ -13,7 +13,7 @@
         </p>
         <p style="margin: 20px 0;">
             Information submitted:
-<pre>{{ print_r($data, true) }}</pre>
+<pre>{!! print_r($data, true) !!}</pre>
         </p>
 
         <p style="margin: 20px 0;">
