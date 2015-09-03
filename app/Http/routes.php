@@ -19,7 +19,8 @@ Route::any('/scholarship/hoy/manage/{scholarship_id}/delete', ['as' => 'scholars
 
 Route::post('login', ['as' => 'login', 'uses' => 'AuthController@login']);
 Route::get('logout', ['as' => 'logout', 'uses' => 'AuthController@logout']);
-Route::any('register', ['as' => 'register', 'uses' => 'AuthController@register']);
+Route::get('register', ['as' => 'register', 'uses' => 'AuthController@register']);
+Route::post('register', ['as' => 'register_handle', 'uses' => 'AuthController@postRegister']);
 Route::any('activate/{code}', ['as' => 'activate', 'uses' => 'AuthController@activate']);
 Route::any('reset', ['as' => 'reset', 'uses' => 'AuthController@reset']);
 Route::any('reset/{code}', ['as' => 'do_reset', 'uses' => 'AuthController@do_reset']);

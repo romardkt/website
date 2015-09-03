@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Carbon\Carbon;
 use DB;
 
 class User extends Model implements AuthenticatableContract,
@@ -90,5 +91,39 @@ class User extends Model implements AuthenticatableContract,
         }
 
         return $data;
+    }
+
+    public static function generateCode($column, $length = 25)
+    {
+        $code = str_random($length);
+        while (!static::isUnique($column, $code)) {
+            $code = str_random($length);
+        }
+
+        return $code;
+    }
+
+    public static function isUnique($column, $value)
+    {
+        $result = static::where($column, '=', $value)->first();
+        if (!$result) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function checkForDuplicate($data)
+    {
+        $result = static::where('first_name', 'LIKE', $data['first_name'])
+            ->where('last_name', 'LIKE', $data['last_name'])
+            ->where('birthday', '=', (new Carbon($data['birthday']))->format('Y-m-d'))
+            ->first();
+
+        if (isset($result->id)) {
+            return $result;
+        }
+
+        return;
     }
 }
