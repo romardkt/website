@@ -31,9 +31,11 @@ Route::any('daytonultimate/edit', ['as' => 'leagues_dayton_edit', 'uses' => 'Pag
 
 Route::group(['prefix' => 'post'], function () {
     Route::get('all', ['as' => 'posts', 'uses' => 'PostController@all']);
-    Route::any('add', ['as' => 'posts_add', 'uses' => 'PostController@add', 'before' => 'reporter']);
+    Route::get('add', ['as' => 'posts_add', 'uses' => 'PostController@add', 'middleware' => 'role:reporter']);
+    Route::post('add', ['as' => 'posts_add_post', 'uses' => 'PostController@postAdd', 'middleware' => 'role:reporter']);
     Route::get('{slug}', ['as' => 'post_view', 'uses' => 'PostController@view']);
-    Route::any('{slug}/edit', ['as' => 'post_edit', 'uses' => 'PostController@edit', 'before' => 'reporter']);
+    Route::get('{slug}/edit', ['as' => 'post_edit', 'uses' => 'PostController@edit', 'middleware' => 'role:reporter']);
+    Route::post('{slug}/edit', ['as' => 'post_edit_post', 'uses' => 'PostController@postEdit', 'middleware' => 'role:reporter']);
 });
 
 Route::group(['prefix' => 'profile'], function () {

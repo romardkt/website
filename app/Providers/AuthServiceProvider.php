@@ -27,22 +27,21 @@ class AuthServiceProvider extends ServiceProvider
     {
         parent::registerPolicies($gate);
 
-        $gate->define('is-admin', function ($user) {
-            $roles = $user->roles();
-            if ($roles->count() > 0 && $roles->first()->role->name === 'admin') {
-                return true;
-            }
+        $roles = [
+            'admin' => ['admin'],
+            'manager' => ['admin', 'manager'],
+            'reporter' => ['admin', 'manager', 'reporter'],
+        ];
 
-            return false;
-        });
+        foreach ($roles as $name => $perms) {
+            $gate->define('is-'.$name, function ($user) use ($perms) {
+                $roles = $user->roles();
+                if ($roles->count() > 0 && in_array($roles->first()->role->name, $perms)) {
+                    return true;
+                }
 
-        $gate->define('is-manager', function ($user) {
-            $roles = $user->roles();
-            if ($roles->count() > 0 && in_array($roles->first()->role->name, ['admin', 'manager'])) {
-                return true;
-            }
-
-            return false;
-        });
+                return false;
+            });
+        }
     }
 }

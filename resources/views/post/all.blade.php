@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col-xs-12 text-right">
         <div class="btn-group">
-            @if($isAuthorized['reporter'])
+            @can('is-reporter')
             <a class="btn btn-default" href="{{ route('posts_add') }}">Add News</a>
             @endif
         </div>
@@ -27,19 +27,19 @@
                 </div>
                 @endif
                 <h4 class="list-group-item-header">
-                    {{{ $post->title }}}
-                    <div class="badge {{{ $post->category }}}">{{{ ucwords($post->category) }}}</div>
+                    {{ $post->title }}
+                    <div class="badge {{ $post->category }}">{{ ucwords($post->category) }}</div>
                     @if($post->is_featured)
                     <span class="badge">Featured</span>
                     @endif
                     <p class="text-muted">
-                        Posted on <strong>{{{ convertDate($post->post_at, 'M j Y h:i A') }}}</strong> by <strong>{{{ $post->postedBy->fullname() }}}</strong>
+                        Posted on <strong>{{ convertDate($post->post_at, 'M j Y h:i A') }}</strong> by <strong>{{ $post->postedBy->fullname() }}</strong>
                         @if($post->remove_at !== null)
-                        removed on <strong>{{{ convertDate($post->remove_at, 'M j Y h:i A') }}}</strong>
+                        removed on <strong>{{ convertDate($post->remove_at, 'M j Y h:i A') }}</strong>
                         @endif
                     </p>
                 </h4>
-                <p>{{{ str_limit(strip_tags($post->content), 250, '...') }}}</p>
+                <p>{{ str_limit(strip_tags($post->content), 250, '...') }}</p>
             </a>
             @endforeach
         </div>
@@ -47,7 +47,7 @@
 </div>
 <div class="row">
     <div class="col-xs-12 text-right">
-        {{ $posts->render() }}
+        {!! $posts->render() !!}
     </div>
 </div>
 

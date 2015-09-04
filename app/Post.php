@@ -4,6 +4,7 @@ namespace Cupa;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Auth;
 
 class Post extends Model
 {
@@ -62,5 +63,24 @@ class Post extends Model
 
         // return the results
         return $select->get();
+    }
+
+    public static function fetchAllPosts($items = 10)
+    {
+        $posts = static::with('postedBy')
+                     ->orderBy('post_at', 'desc');
+
+        if (Auth::guest()) {
+            $posts->where('is_visible', '=', 1);
+        }
+
+        return $posts->paginate($items);
+    }
+
+    public static function fetchBySlug($slug)
+    {
+        return static::with('postedBy')
+            ->where('slug', '=', $slug)
+            ->first();
     }
 }

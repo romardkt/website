@@ -6,16 +6,16 @@
         <a class="btn btn-default" href="{{ route('posts') }}"><i class="fa fa-fw fa-lg fa-arrow-left"></i> All Posts</a>
     </div>
     <div class="col-xs-6 text-right">
-        @if($isAuthorized['reporter'])
+        @can('is-reporter')
         <a class="btn btn-default" href="{{ route('post_edit', [$post->slug]) }}"><i class="fa fa-fw fa-lg fa-edit"></i> Edit Post</a>
         @endif
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12 text-center">
-        <h2 class="page">{{{ $post->title }}}</h2>
+        <h2 class="page">{{ $post->title }}</h2>
         <p class="text-muted">
-            Posted at <strong>{{{ convertDate($post->post_at, 'M j Y h:i A') }}}</strong> by <strong>{{{ $post->postedBy->fullname() }}} </strong>
+            Posted at <strong>{{ convertDate($post->post_at, 'M j Y h:i A') }}</strong> by <strong>{{ $post->postedBy->fullname() }} </strong>
         </p>
         <hr/>
     </div>
@@ -28,7 +28,7 @@
         </div>
         <br/>
         @endif
-        {{ $post->content }}
+        {!! $post->content !!}
     </div>
 </div>
 @endsection
