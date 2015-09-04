@@ -9,9 +9,9 @@
 <br/>
 <div class="row">
     <div class="col-xs-12">
-        {{ Form::open(['class' => 'form form-vertical', 'role'=> 'form', 'files' => true]) }}
-            @include('about.partials.board')
-        {{ Form::close() }}
+        {!! Form::open(['class' => 'form form-vertical', 'role'=> 'form', 'files' => true]) !!}
+            @include('about.partials.board', ['btnText' => 'Add'])
+        {!! Form::close() !!}
     </div>
 </div>
 

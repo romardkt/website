@@ -64,21 +64,24 @@ Route::group(['prefix' => 'about'], function () {
     Route::get('/', ['as' => 'about', 'uses' => 'AboutController@about']);
 
     Route::get('mission', ['as' => 'about_mission', 'uses' => 'AboutController@mission']);
-    Route::any('mission/edit', ['as' => 'about_mission_edit', 'uses' => 'AboutController@mission_edit', 'before' => 'editor']);
+    Route::get('mission/edit', ['as' => 'about_mission_edit', 'uses' => 'AboutController@missionEdit', 'middleware' => 'role:editor']);
+    Route::post('mission/edit', ['as' => 'about_mission_edit_post', 'uses' => 'AboutController@postMissionEdit', 'middleware' => 'role:editor']);
 
     Route::get('board', ['as' => 'about_board', 'uses' => 'AboutController@board']);
-    Route::any('board/add', ['as' => 'about_board_add', 'uses' => 'AboutController@board_add', 'before' => 'manager']);
-    Route::any('board/edit/{officer_id}', ['as' => 'about_board_edit', 'uses' => 'AboutController@board_edit', 'before' => 'manager']);
-    Route::any('board/remove/{officer_id}', ['as' => 'about_board_remove', 'uses' => 'AboutController@board_remove', 'before' => 'manager']);
+    Route::get('board/add', ['as' => 'about_board_add', 'uses' => 'AboutController@boardAdd', 'middleware' => 'role:manager']);
+    Route::post('board/add', ['as' => 'about_board_add_post', 'uses' => 'AboutController@postBoardAdd', 'middleware' => 'role:manager']);
+    Route::get('board/edit/{officer_id}', ['as' => 'about_board_edit', 'uses' => 'AboutController@boardEdit', 'middleware' => 'role:manager']);
+    Route::post('board/edit/{officer_id}', ['as' => 'about_board_edit_post', 'uses' => 'AboutController@postBoardEdit', 'middleware' => 'role:manager']);
+    Route::get('board/remove/{officer_id}', ['as' => 'about_board_remove', 'uses' => 'AboutController@boardRemove', 'middleware' => 'role:manager']);
 
     Route::get('minutes', ['as' => 'about_minutes', 'uses' => 'AboutController@minutes']);
-    Route::any('minutes/add', ['as' => 'about_minutes_add', 'uses' => 'AboutController@minutes_add', 'before' => 'editor']);
-    Route::any('minutes/edit/{minute_id}', ['as' => 'about_minutes_edit', 'uses' => 'AboutController@minutes_edit', 'before' => 'editor']);
+    Route::any('minutes/add', ['as' => 'about_minutes_add', 'uses' => 'AboutController@minutes_add', 'middleware' => 'role:editor']);
+    Route::any('minutes/edit/{minute_id}', ['as' => 'about_minutes_edit', 'uses' => 'AboutController@minutes_edit', 'middleware' => 'role:editor']);
     Route::get('minutes/download/{minute_id}', ['as' => 'about_minutes_download', 'uses' => 'AboutController@minutes_download']);
-    Route::any('minutes/remove/{minute_id}', ['as' => 'about_minutes_remove', 'uses' => 'AboutController@minutes_remove', 'before' => 'editor']);
+    Route::any('minutes/remove/{minute_id}', ['as' => 'about_minutes_remove', 'uses' => 'AboutController@minutes_remove', 'middleware' => 'role:editor']);
 
     Route::get('links', ['as' => 'about_links', 'uses' => 'AboutController@links']);
-    Route::any('links/edit', ['as' => 'about_links_edit', 'uses' => 'AboutController@links_edit', 'before' => 'manager']);
+    Route::any('links/edit', ['as' => 'about_links_edit', 'uses' => 'AboutController@links_edit', 'middleware' => 'role:manager']);
 });
 
 Route::group(['prefix' => 'volunteer'], function () {

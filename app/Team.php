@@ -21,4 +21,12 @@ class Team extends Model
         'description',
         'updated_by',
     ];
+
+    public static function fetchAllCurrent()
+    {
+        return static::where('end', '>=', date('Y'))
+            ->orWhereNull('end')
+            ->orderBy('name')
+            ->get();
+    }
 }
