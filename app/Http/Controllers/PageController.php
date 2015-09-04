@@ -3,6 +3,7 @@
 namespace Cupa\Http\Controllers;
 
 use Cupa\Http\Requests\ContactRequest;
+use Cupa\Http\Requests\LocationAddRequest;
 use Cupa\Post;
 use Cupa\League;
 use Cupa\Tournament;
@@ -48,5 +49,17 @@ class PageController extends Controller
         Session::flash('msg-success', 'Message has been sent');
 
         return redirect()->route('contact');
+    }
+
+    public function locationAdd(LocationAddRequest $request)
+    {
+        $input = $request->all();
+
+        $location = Location::fetchOrCreateLocation($input);
+        if ($location) {
+            return response()->json(['status' => 'ok', 'name' => $location->name, 'value' => $location->id]);
+        }
+
+        return response()->json(['status' => 'error', 'message' => 'Unkown Error']);
     }
 }

@@ -4,6 +4,7 @@ namespace Cupa\Http\Controllers;
 
 use Cupa\Http\Requests\PageEditRequest;
 use Cupa\Http\Requests\BoardAddEditRequest;
+use Cupa\Http\Requests\MinuteAddEditRequest;
 use Illuminate\Http\Request;
 use Cupa\Officer;
 use Cupa\OfficerPosition;
@@ -12,6 +13,7 @@ use Cupa\Minute;
 use Cupa\Location;
 use Session;
 use Image;
+use DateTime;
 
 class AboutController extends Controller
 {
@@ -171,100 +173,73 @@ class AboutController extends Controller
         return view('about.minutes', compact('page', 'actions', 'minutes'));
     }
 
-    public function minutes_add()
+    public function minutesAdd()
     {
         $locations = Location::fetchForSelect();
-
-        if (Request::getMethod() == 'POST') {
-            $input = $request->all();
-            $input['pdf'] = $request->file('pdf');
-
-            $rules = [
-                'location_id' => 'required|numeric|not_in:0',
-                'start_date' => 'required|date',
-                'start_time' => 'required|regex:/1?[0-9]:[0-9][0-9]/',
-                'end_date' => 'required|date',
-                'end_time' => 'required|regex:/1?[0-9]:[0-9][0-9]/',
-                'pdf' => 'mimes:pdf',
-            ];
-
-            $validator = Validator::make($input, $rules);
-            if ($validator->fails()) {
-                return redirect()->route('about_minutes_add')->withInput()->withErrors($validator);
-            }
-
-            $minute = new Minute();
-            $minute->location_id = $input['location_id'];
-            $minute->start = convertDate($input['start_date'].' '.$input['start_time'], 'Y-m-d H:i:s');
-            $minute->end = convertDate($input['end_date'].' '.$input['end_time'], 'Y-m-d H:i:s');
-            $minute->save();
-
-            if ($request->hasFile('pdf')) {
-                $filePath = public_path().'/data/minutes/'.$minute->id.'.pdf';
-                $request->file('pdf')->move(public_path().'/data/minutes/', $minute->id.'.pdf');
-                $minute->pdf = str_replace(public_path(), '', $filePath);
-                $minute->save();
-            }
-
-            Session::flash('msg-success', 'Meeting minutes for '.convertDate($input['start_date'].' '.$input['start_time'], 'm/d/Y').' added');
-
-            return redirect()->route('about_minutes');
-        }
 
         return view('about.minutes_add', compact('locations'));
     }
 
-    public function minutes_edit($minuteId)
+    public function postMinutesAdd(MinuteAddEditRequest $request)
+    {
+        $input = $request->all();
+
+        $minute = new Minute();
+        $minute->location_id = $input['location_id'];
+        $minute->start = convertDate($input['start_date'].' '.$input['start_time'], 'Y-m-d H:i:s');
+        $minute->end = convertDate($input['end_date'].' '.$input['end_time'], 'Y-m-d H:i:s');
+        $minute->save();
+
+        if ($request->hasFile('pdf')) {
+            $filePath = public_path().'/data/minutes/'.$minute->id.'.pdf';
+            $request->file('pdf')->move(public_path().'/data/minutes/', $minute->id.'.pdf');
+            $minute->pdf = str_replace(public_path(), '', $filePath);
+            $minute->save();
+        }
+
+        Session::flash('msg-success', 'Meeting minutes for '.convertDate($input['start_date'].' '.$input['start_time'], 'm/d/Y').' added');
+
+        return redirect()->route('about_minutes');
+    }
+
+    public function minutesEdit($minuteId)
     {
         $minute = Minute::find($minuteId);
         $locations = Location::fetchForSelect();
 
-        if (Request::getMethod() == 'POST') {
-            $input = $request->all();
-            $input['pdf'] = $request->file('pdf');
-
-            $rules = [
-                'location_id' => 'required|numeric|not_in:0',
-                'start_date' => 'required|date',
-                'start_time' => 'required|regex:/1?[0-9]:[0-9][0-9]/',
-                'end_date' => 'required|date',
-                'end_time' => 'required|regex:/1?[0-9]:[0-9][0-9]/',
-                'pdf' => 'mimes:pdf',
-            ];
-
-            $validator = Validator::make($input, $rules);
-            if ($validator->fails()) {
-                return redirect()->route('about_minutes_edit', array($minute->id))->withInput()->withErrors($validator);
-            }
-
-            $minute->location_id = $input['location_id'];
-            $minute->start = convertDate($input['start_date'].' '.$input['start_time'], 'Y-m-d H:i:s');
-            $minute->end = convertDate($input['end_date'].' '.$input['end_time'], 'Y-m-d H:i:s');
-            $minute->save();
-
-            if ($request->hasFile('pdf')) {
-                $request->file('pdf')->move(public_path().'/data/minutes', $minute->id.'.pdf');
-                $filePath = public_path().'/data/minutes/'.$minute->id.'.pdf';
-                $minute->pdf = str_replace(public_path(), '', $filePath);
-                $minute->save();
-            }
-
-            Session::flash('msg-success', 'Meeting minutes for '.convertDate($input['start_date'].' '.$input['start_time'], 'm/d/Y').' /updated');
-
-            return redirect()->route('about_minutes');
-        }
-
         return view('about.minutes_edit', compact('minute', 'locations'));
     }
 
-    public function minutes_download($minuteId)
+    public function postMinutesEdit(MinuteAddEditRequest $request, $minuteId)
+    {
+        $minute = Minute::find($minuteId);
+        $input = $request->all();
+
+        $minute->location_id = $input['location_id'];
+        $minute->start = convertDate($input['start_date'].' '.$input['start_time'], 'Y-m-d H:i:s');
+        $minute->end = convertDate($input['end_date'].' '.$input['end_time'], 'Y-m-d H:i:s');
+        $minute->save();
+
+        if ($request->hasFile('pdf')) {
+            $request->file('pdf')->move(public_path().'/data/minutes', $minute->id.'.pdf');
+            $filePath = public_path().'/data/minutes/'.$minute->id.'.pdf';
+            $minute->pdf = str_replace(public_path(), '', $filePath);
+            $minute->save();
+        }
+
+        Session::flash('msg-success', 'Meeting minutes for '.convertDate($input['start_date'].' '.$input['start_time'], 'm/d/Y').' updated');
+
+        return redirect()->route('about_minutes');
+    }
+
+    public function minutesDownload($minuteId)
     {
         $minute = Minute::find($minuteId);
 
-        return Response::download(public_path().$minute->pdf, (new DateTime($minute->start))->format('Y-m-d').'-minutes.pdf');
+        return response()->download(public_path().$minute->pdf, (new DateTime($minute->start))->format('Y-m-d').'-minutes.pdf');
     }
 
-    public function minutes_remove($minuteId)
+    public function minutesRemove($minuteId)
     {
         $minute = Minute::find($minuteId);
         $date = convertDate($minute->start, 'm/d/Y');

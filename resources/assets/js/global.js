@@ -113,6 +113,29 @@ $(document).ready(function(){
             }, 300);
         });
     });
+
+    $('#location-add-submit').on('click touchstart', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: BASE_URL + 'location/add',
+            type: 'post',
+            data: $('#add-location-form').serialize(),
+            dataType: 'json',
+            success: function (resp) {
+                if (resp.status != 'ok') {
+                    $('#location-error').html('<div class="alert alert-danger"><p>' + resp.message + '</p></div>');
+                } else {
+                    $('#location_id').append('<option value="' + resp.value + '">' + resp.name + '</option>');
+                    $('#location_id').select2('val', resp.value);
+                    $('#addLocation').modal('hide');
+                }
+            },
+            error: function(data) {
+                var json = $.parseJSON(data.responseText);
+                $('#location-error').html('<div class="alert alert-danger"><p>' + json.message + '</p></div>');
+            }
+        });
+    });
 });
 
 function submitLoginForm(event)

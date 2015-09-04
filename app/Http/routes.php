@@ -1,11 +1,11 @@
 <?php
 
 Route::get('/', ['as' => 'home', 'uses' => 'PageController@home']);
-Route::post('location/add', ['as' => 'location_add', 'uses' => 'PageController@location_add', 'before' => 'auth']);
+Route::post('location/add', ['as' => 'location_add', 'uses' => 'PageController@locationAdd', 'middleware' => 'auth']);
 Route::get('contact', ['as' => 'contact', 'uses' => 'PageController@contact']);
 Route::post('contact', ['as' => 'contact_handle', 'uses' => 'PageController@postContact']);
 Route::any('waiver/{year}/download/{type?}', ['as' => 'waiver_download', 'uses' => 'PageController@waiver_download']);
-Route::any('waiver/{year}/{user_id?}', ['as' => 'waiver', 'uses' => 'PageController@waiver', 'before' => 'auth']);
+Route::any('waiver/{year}/{user_id?}', ['as' => 'waiver', 'uses' => 'PageController@waiver', 'middleware' => 'auth']);
 Route::any('paypal/success/{id}', ['as' => 'paypal_success', 'uses' => 'PageController@paypal_success']);
 Route::any('paypal/fail/{id}', ['as' => 'paypal_fail', 'uses' => 'PageController@paypal_fail']);
 Route::any('paypal/{id}/{type}/{user_id?}/{team_id?}', ['as' => 'paypal', 'uses' => 'PageController@paypal']);
@@ -75,10 +75,12 @@ Route::group(['prefix' => 'about'], function () {
     Route::get('board/remove/{officer_id}', ['as' => 'about_board_remove', 'uses' => 'AboutController@boardRemove', 'middleware' => 'role:manager']);
 
     Route::get('minutes', ['as' => 'about_minutes', 'uses' => 'AboutController@minutes']);
-    Route::any('minutes/add', ['as' => 'about_minutes_add', 'uses' => 'AboutController@minutes_add', 'middleware' => 'role:editor']);
-    Route::any('minutes/edit/{minute_id}', ['as' => 'about_minutes_edit', 'uses' => 'AboutController@minutes_edit', 'middleware' => 'role:editor']);
-    Route::get('minutes/download/{minute_id}', ['as' => 'about_minutes_download', 'uses' => 'AboutController@minutes_download']);
-    Route::any('minutes/remove/{minute_id}', ['as' => 'about_minutes_remove', 'uses' => 'AboutController@minutes_remove', 'middleware' => 'role:editor']);
+    Route::get('minutes/add', ['as' => 'about_minutes_add', 'uses' => 'AboutController@minutesAdd', 'middleware' => 'role:editor']);
+    Route::post('minutes/add', ['as' => 'about_minutes_add_post', 'uses' => 'AboutController@postMinutesAdd', 'middleware' => 'role:editor']);
+    Route::get('minutes/edit/{minute_id}', ['as' => 'about_minutes_edit', 'uses' => 'AboutController@minutesEdit', 'middleware' => 'role:editor']);
+    Route::post('minutes/edit/{minute_id}', ['as' => 'about_minutes_edit_post', 'uses' => 'AboutController@postMinutesEdit', 'middleware' => 'role:editor']);
+    Route::get('minutes/download/{minute_id}', ['as' => 'about_minutes_download', 'uses' => 'AboutController@minutesDownload']);
+    Route::any('minutes/remove/{minute_id}', ['as' => 'about_minutes_remove', 'uses' => 'AboutController@minutesRemove', 'middleware' => 'role:editor']);
 
     Route::get('links', ['as' => 'about_links', 'uses' => 'AboutController@links']);
     Route::any('links/edit', ['as' => 'about_links_edit', 'uses' => 'AboutController@links_edit', 'middleware' => 'role:manager']);

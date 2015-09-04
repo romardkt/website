@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('content')
-@include('layouts.page_header')
+@include('page_header')
 <div class="row">
     <div class="col-xs-12 text-center">
         <h2 class="page">Board Meeting Minutes</h2>
@@ -15,7 +15,7 @@
                     <th class="col-xs-3">When</th>
                     <th class="col-xs-3">Where</th>
                     <th class="col-xs-2 text-center">Download</th>
-                    @if($isAuthorized['editor'])
+                    @can('is-editor')
                     <th class="col-xs-3">Actions</th>
                     @endif
                 </tr>
@@ -30,8 +30,8 @@
                         </span>
                     </td>
                     <td>{{{ $minute->location->name }}}</td>
-                    <td class="text-center">{{ ($minute->pdf === null) ? 'Not Available' : '<a class="btn btn-default" href="' . route('about_minutes_download', array($minute->id)) . '" title="Download Minutes"><i class="fa fa-fw fa-lg fa-download"></i></a>'}}</td>
-                    @if($isAuthorized['editor'])
+                    <td class="text-center">{!! ($minute->pdf === null) ? 'Not Available' : '<a class="btn btn-default" href="' . route('about_minutes_download', array($minute->id)) . '" title="Download Minutes"><i class="fa fa-fw fa-lg fa-download"></i></a>' !!}</td>
+                    @can('is-editor')
                     <td>
                         <a class="btn btn-default" title="Edit Minutes" href="{{ route('about_minutes_edit', array($minute->id)) }}"><i class="text-info fa fa-lg fa-fw fa-edit"></i></a>
                         <a class="btn btn-default" title="Remove Minutes" onclick="return confirm('Are you sure you want to delete this meeting minutes?');" href="{{ route('about_minutes_remove', array($minute->id)) }}"><i class="text-danger fa fa-lg fa-fw fa-trash-o"></i></a>

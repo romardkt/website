@@ -13,4 +13,16 @@ class Minute extends Model
         'location',
         'pdf',
     ];
+
+    public function location()
+    {
+        return $this->belongsTo('Cupa\Location');
+    }
+
+    public static function fetchMinutes()
+    {
+        return static::with('location')
+            ->orderBy('start', 'desc')
+            ->get();
+    }
 }
