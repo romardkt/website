@@ -81,9 +81,9 @@ Route::group(['prefix' => 'about'], function () {
     Route::post('minutes/edit/{minute_id}', ['as' => 'about_minutes_edit_post', 'uses' => 'AboutController@postMinutesEdit', 'middleware' => 'role:editor']);
     Route::get('minutes/download/{minute_id}', ['as' => 'about_minutes_download', 'uses' => 'AboutController@minutesDownload']);
     Route::any('minutes/remove/{minute_id}', ['as' => 'about_minutes_remove', 'uses' => 'AboutController@minutesRemove', 'middleware' => 'role:editor']);
-
     Route::get('links', ['as' => 'about_links', 'uses' => 'AboutController@links']);
-    Route::any('links/edit', ['as' => 'about_links_edit', 'uses' => 'AboutController@links_edit', 'middleware' => 'role:manager']);
+    Route::get('links/edit', ['as' => 'about_links_edit', 'uses' => 'AboutController@linksEdit', 'middleware' => 'role:manager']);
+    Route::post('links/edit', ['as' => 'about_links_edit_post', 'uses' => 'AboutController@postLinksEdit', 'middleware' => 'role:manager']);
 });
 
 Route::group(['prefix' => 'volunteer'], function () {

@@ -260,33 +260,25 @@ class AboutController extends Controller
         return view('about.links', compact('page', 'actions'));
     }
 
-    public function links_edit()
+    public function linksEdit()
     {
         $page = Page::fetchBy('route', 'about_links');
 
-        if (Request::getMethod() == 'POST') {
-            // get the posted data
-            $input = $request->all();
-
-            // set the rules for the form
-            $rules = [
-                'content' => 'required',
-            ];
-
-            // validate the form
-            $validator = Validator::make($input, $rules);
-            if ($validator->fails()) {
-                return redirect()->route('about_links_edit')->withInput()->withErrors($validator);
-            }
-
-            $page->content = $input['content'];
-            $page->save();
-
-            Session::flash('msg-success', 'Helpful links updated.');
-
-            return redirect()->route('about_links');
-        }
-
         return view('about.links_edit', compact('page'));
+    }
+
+    public function postLinksEdit(PageEditRequest $request)
+    {
+        $page = Page::fetchBy('route', 'about_links');
+        // get the posted data
+        $input = $request->all();
+
+        $page->display = $input['display'];
+        $page->content = $input['content'];
+        $page->save();
+
+        Session::flash('msg-success', 'Helpful links updated.');
+
+        return redirect()->route('about_links');
     }
 }
