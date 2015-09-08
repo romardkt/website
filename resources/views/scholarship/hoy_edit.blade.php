@@ -9,9 +9,9 @@
 <br/>
 <div class="row">
     <div class="col-xs-12">
-        {{ Form::open(['class' => 'form form-vertical']) }}
-            @include('layouts.partials.page', ['showDisplay' => true])
-        {{ Form::close() }}
+        {!! Form::open(['class' => 'form form-vertical']) !!}
+            @include('partials.page', ['showDisplay' => true])
+        {!! Form::close() !!}
     </div>
 </div>
 @endsection

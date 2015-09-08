@@ -2,19 +2,19 @@
 
 namespace Cupa\Http\Controllers;
 
-use Illuminate\Support\MessageBag;
-use Cupa\Http\Requests\ManageUserRequest;
-use Cupa\Http\Requests\LeaguePlayersRequest;
-use Cupa\Http\Requests\LoadLeagueRequest;
+use Cupa\CupaForm;
 use Cupa\Http\Requests\DuplicatesRequest;
 use Cupa\Http\Requests\FormAddEditRequest;
-use Cupa\User;
-use Cupa\UserBalance;
+use Cupa\Http\Requests\LeaguePlayersRequest;
+use Cupa\Http\Requests\LoadLeagueRequest;
+use Cupa\Http\Requests\ManageUserRequest;
 use Cupa\League;
 use Cupa\LeagueMember;
-use Cupa\CupaForm;
-use Session;
-use Auth;
+use Cupa\User;
+use Cupa\UserBalance;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\MessageBag;
 
 class ManageController extends Controller
 {
@@ -35,9 +35,8 @@ class ManageController extends Controller
         return view('manage.users_detail', compact('user'));
     }
 
-    public function impersonate($userId)
+    public function impersonate(User $user)
     {
-        $user = User::find($userId);
         Session::put('admin_user', Auth::user());
         Auth::login($user);
 

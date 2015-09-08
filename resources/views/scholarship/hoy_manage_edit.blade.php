@@ -16,32 +16,31 @@
 </div>
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::model($submission, ['class' => 'form-vertical', 'role' => 'form']) }}
+        {!! Form::model($submission, ['class' => 'form-vertical', 'role' => 'form']) !!}
 
         <div class="form-group">
-            {{ Form::label('Name') }}
-            {{ Form::text('name', null, ['class' => 'form-control', 'disabled']) }}
+            {!! Form::label('Name') !!}
+            {!! Form::text('name', null, ['class' => 'form-control', 'disabled']) !!}
             <span class="help-block">Enter your name</span>
         </div>
 
         <div class="form-group">
-            {{ Form::label('Email Address') }}
-            {{ Form::text('email', null, ['class' => 'form-control', 'disabled']) }}
+            {!! Form::label('Email Address') !!}
+            {!! Form::text('email', null, ['class' => 'form-control', 'disabled']) !!}
             <span class="help-block">Make sure this is correct so we may contact you</span>
         </div>
 
-        <div class="form-group">
-            {{ Form::label('Accept Scholarship') }}
-            <div class="checkbox">
-                {{ Form::checkbox('accepted', null) }} Mark scholarship as accepted?
-            </div>
+        <div class="checkbox">
+            <label>
+                {!! Form::checkbox('accepted', null, ['class'=> 'form-control']) !!} Mark scholarship as accepted
+            </label>
         </div>
 
         <div class="form-group">
-            {{ Form::label('Comments?') }}
-            {{ Form::textarea('comments', null, ['class' => 'form-control']) }}
+            {!! Form::label('Comments?') !!}
+            {!! Form::textarea('comments', null, ['class' => 'form-control']) !!}
             <span class="help-block">(Optional) Enter any comments</span>
         </div>
 
@@ -54,7 +53,7 @@
             </div>
         </div>
 
-        {{ Form::close() }}
+        {!! Form::close() !!}
 
     </div>
 </div>

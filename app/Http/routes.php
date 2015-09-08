@@ -1,5 +1,11 @@
 <?php
 
+Route::model('scholarship_id', 'Cupa\Scholarship');
+Route::model('minute_id', 'Cupa\Minute');
+Route::model('officer_id', 'Cupa\Officer');
+Route::model('user_id', 'Cupa\User');
+Route::model('league_id', 'Cupa\League');
+
 Route::get('/', ['as' => 'home', 'uses' => 'PageController@home']);
 Route::post('location/add', ['as' => 'location_add', 'uses' => 'PageController@locationAdd', 'middleware' => 'auth']);
 Route::get('contact', ['as' => 'contact', 'uses' => 'PageController@contact']);
@@ -12,11 +18,14 @@ Route::any('paypal/{id}/{type}/{user_id?}/{team_id?}', ['as' => 'paypal', 'uses'
 
 Route::get('/scholarship/hoy', ['as' => 'about_scholarship_hoy', 'uses' => 'ScholarshipController@hoy']);
 Route::get('/scholarship/hoy', ['as' => 'scholarship_hoy', 'uses' => 'ScholarshipController@hoy']);
-Route::match(['get', 'post'], '/scholarship/hoy/edit', ['as' => 'scholarship_hoy_edit', 'uses' => 'ScholarshipController@hoy_edit', 'before' => 'hoy_scholarship']);
-Route::any('/scholarship/hoy/submit', ['as' => 'scholarship_hoy_submit', 'uses' => 'ScholarshipController@hoy_submit']);
-Route::get('/scholarship/hoy/manage', ['as' => 'scholarship_hoy_manage', 'uses' => 'ScholarshipController@hoy_manage', 'before' => 'hoy_scholarship']);
-Route::any('/scholarship/hoy/manage/{scholarship_id}', ['as' => 'scholarship_hoy_manage_edit', 'uses' => 'ScholarshipController@hoy_manage_edit', 'before' => 'hoy_scholarship']);
-Route::any('/scholarship/hoy/manage/{scholarship_id}/delete', ['as' => 'scholarship_hoy_manage_delete', 'uses' => 'ScholarshipController@hoy_manage_delete', 'before' => 'hoy_scolarship']);
+Route::get('/scholarship/hoy/edit', ['as' => 'scholarship_hoy_edit', 'uses' => 'ScholarshipController@hoyEdit', 'middleware' => 'role:hoy-scholarship']);
+Route::post('/scholarship/hoy/edit', ['as' => 'scholarship_hoy_edit_post', 'uses' => 'ScholarshipController@postHoyEdit', 'middleware' => 'role:hoy-scholarship']);
+Route::get('/scholarship/hoy/submit', ['as' => 'scholarship_hoy_submit', 'uses' => 'ScholarshipController@hoySubmit']);
+Route::post('/scholarship/hoy/submit', ['as' => 'scholarship_hoy_submit_post', 'uses' => 'ScholarshipController@postHoySubmit']);
+Route::get('/scholarship/hoy/manage', ['as' => 'scholarship_hoy_manage', 'uses' => 'ScholarshipController@hoyManage', 'middleware' => 'role:hoy-scholarship']);
+Route::get('/scholarship/hoy/manage/{scholarship_id}', ['as' => 'scholarship_hoy_manage_edit', 'uses' => 'ScholarshipController@hoyManageEdit', 'middleware' => 'role:hoy-scholarship']);
+Route::post('/scholarship/hoy/manage/{scholarship_id}', ['as' => 'scholarship_hoy_manage_edit_post', 'uses' => 'ScholarshipController@postHoyManageEdit', 'middleware' => 'role:hoy-scholarship']);
+Route::any('/scholarship/hoy/manage/{scholarship_id}/delete', ['as' => 'scholarship_hoy_manage_delete', 'uses' => 'ScholarshipController@hoyManageDelete', 'middleware' => 'role:hoy-scholarship']);
 
 Route::post('login', ['as' => 'login', 'uses' => 'AuthController@login']);
 Route::get('logout', ['as' => 'logout', 'uses' => 'AuthController@logout']);

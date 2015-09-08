@@ -14,4 +14,9 @@ class Scholarship extends Model
         'document',
         'comments',
     ];
+
+    public static function fetchSubmissions($type)
+    {
+        return static::where('scholarship', '=', $type)->get();
+    }
 }

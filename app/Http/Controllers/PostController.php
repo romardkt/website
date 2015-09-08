@@ -2,13 +2,13 @@
 
 namespace Cupa\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Cupa\Http\Requests\PostAddEditRequest;
 use Cupa\Post;
-use Config;
-use Session;
-use Auth;
-use Image;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
+use Intervention\Image\Facades\Image;
 
 class PostController extends Controller
 {

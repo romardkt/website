@@ -2,18 +2,18 @@
 
 namespace Cupa\Http\Controllers;
 
+use Carbon\Carbon;
+use Cuap\EmailList;
 use Cupa\Http\Requests\LoginRequest;
 use Cupa\Http\Requests\UserRegisterRequest;
-use Illuminate\Support\MessageBag;
-use Auth;
-use Session;
-use Mail;
-use URL;
-use Carbon\Carbon;
-use Cupa\UserProfile;
-use Cuap\EmailList;
-use Cupa\Volunteer;
 use Cupa\User;
+use Cupa\UserProfile;
+use Cupa\Volunteer;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\MessageBag;
 
 class AuthController extends Controller
 {

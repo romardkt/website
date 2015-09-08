@@ -4,13 +4,13 @@ namespace Cupa\Http\Controllers;
 
 use Cupa\Http\Requests\ContactRequest;
 use Cupa\Http\Requests\LocationAddRequest;
-use Cupa\Post;
 use Cupa\League;
-use Cupa\Tournament;
 use Cupa\Pickup;
-use Mail;
-use Session;
-use App;
+use Cupa\Post;
+use Cupa\Tournament;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class PageController extends Controller
 {

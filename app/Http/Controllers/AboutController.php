@@ -2,18 +2,18 @@
 
 namespace Cupa\Http\Controllers;
 
-use Cupa\Http\Requests\PageEditRequest;
 use Cupa\Http\Requests\BoardAddEditRequest;
 use Cupa\Http\Requests\MinuteAddEditRequest;
-use Illuminate\Http\Request;
+use Cupa\Http\Requests\PageEditRequest;
+use Cupa\Location;
+use Cupa\Minute;
 use Cupa\Officer;
 use Cupa\OfficerPosition;
 use Cupa\Page;
-use Cupa\Minute;
-use Cupa\Location;
-use Session;
-use Image;
 use DateTime;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Intervention\Image\Facades\Image;
 
 class AboutController extends Controller
 {
@@ -106,19 +106,17 @@ class AboutController extends Controller
         return redirect()->route('about_board');
     }
 
-    public function boardEdit(Request $request, $officerId)
+    public function boardEdit(Request $request, Officer $officer)
     {
         $officerPositions = OfficerPosition::fetchForSelect();
-        $officer = Officer::find($officerId);
         $initial = ($request->has('user_id')) ? $request->old('user_id') : $officer->user_id;
 
         return view('about.board_edit', compact('officerPositions', 'officer', 'initial'));
     }
 
-    public function postBoardEdit(BoardAddEditRequest $request, $officerId)
+    public function postBoardEdit(BoardAddEditRequest $request, Officer $officer)
     {
         $officerPositions = OfficerPosition::fetchForSelect();
-        $officer = Officer::find($officerId);
         $input = $request->all();
 
         if (!$request->hasFile('avatar') && isset($input['avatar_remove'])) {
@@ -147,9 +145,8 @@ class AboutController extends Controller
         return redirect()->route('about_board');
     }
 
-    public function boardRemove($officerId)
+    public function boardRemove(Officer $officer)
     {
-        $officer = Officer::find($officerId);
         $position = $officer->position()->first()->name;
 
         // remove image if present
@@ -202,17 +199,15 @@ class AboutController extends Controller
         return redirect()->route('about_minutes');
     }
 
-    public function minutesEdit($minuteId)
+    public function minutesEdit(Minute $minute)
     {
-        $minute = Minute::find($minuteId);
         $locations = Location::fetchForSelect();
 
         return view('about.minutes_edit', compact('minute', 'locations'));
     }
 
-    public function postMinutesEdit(MinuteAddEditRequest $request, $minuteId)
+    public function postMinutesEdit(MinuteAddEditRequest $request, Minute $minute)
     {
-        $minute = Minute::find($minuteId);
         $input = $request->all();
 
         $minute->location_id = $input['location_id'];
@@ -232,16 +227,13 @@ class AboutController extends Controller
         return redirect()->route('about_minutes');
     }
 
-    public function minutesDownload($minuteId)
+    public function minutesDownload(Minute $minute)
     {
-        $minute = Minute::find($minuteId);
-
         return response()->download(public_path().$minute->pdf, (new DateTime($minute->start))->format('Y-m-d').'-minutes.pdf');
     }
 
-    public function minutesRemove($minuteId)
+    public function minutesRemove(Minute $minute)
     {
-        $minute = Minute::find($minuteId);
         $date = convertDate($minute->start, 'm/d/Y');
         if ($minute->pdf !== null && file_exists(public_path().$minute->pdf)) {
             unlink(public_path().$minute->pdf);

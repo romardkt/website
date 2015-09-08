@@ -2,9 +2,10 @@
 
 namespace Cupa\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Cupa\User;
+use Cupa\League;
 use Cupa\LeagueMember;
+use Cupa\User;
+use Illuminate\Http\Request;
 
 class TypeaheadController extends Controller
 {
@@ -22,10 +23,10 @@ class TypeaheadController extends Controller
         return response()->json($users);
     }
 
-    public function members(Request $request, $leagueId)
+    public function members(Request $request, League $league)
     {
         $term = $request->get('term', '');
-        $members = LeagueMember::typeahead($leagueId, $term);
+        $members = LeagueMember::typeahead($league->id, $term);
 
         return response()->json($members);
     }

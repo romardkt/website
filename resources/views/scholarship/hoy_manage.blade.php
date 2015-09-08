@@ -28,7 +28,7 @@
                     <td>{{ $submission->name }}</td>
                     <td>{{ $submission->email }}</td>
                     <td><a href="{{ asset($submission->document) }}">Document Link</a></td>
-                    <td class="text-center">{{ ($submission->accepted == 1) ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>' }}</td>
+                    <td class="text-center">{!! ($submission->accepted == 1) ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>' !!}</td>
                     <td>
                         <a class="btn btn-default" href="{{ route('scholarship_hoy_manage_edit', [$submission->id]) }}">Edit</a>
                         <a class="btn btn-danger" onclick="return confirm('Are you sure?');" href="{{ route('scholarship_hoy_manage_delete', [$submission->id]) }}">Remove</a>
