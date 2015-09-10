@@ -14,9 +14,12 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\MessageBag;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 
 class AuthController extends Controller
 {
+    use ThrottlesLogins;
+
     public function login(LoginRequest $request)
     {
         // get the posted data

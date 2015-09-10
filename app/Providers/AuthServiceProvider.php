@@ -16,6 +16,9 @@ class AuthServiceProvider extends ServiceProvider
         'Cupa\Model' => 'Cupa\Policies\ModelPolicy',
          \Cupa\Tournament::class => \Cupa\Policies\TournamentPolicy::class,
          \Cupa\League::class => \Cupa\Policies\LeaguePolicy::class,
+         \Cupa\Team::class => \Cupa\Policies\TeamPolicy::class,
+         \Cupa\Volunteer::class => \Cupa\Policies\VolunteerPolicy::class,
+         \Cupa\Officer::class => \Cupa\Policies\OfficerPolicy::class,
     ];
 
     /**
@@ -32,7 +35,6 @@ class AuthServiceProvider extends ServiceProvider
             'manager' => ['admin', 'manager'],
             'reporter' => ['admin', 'manager', 'reporter'],
             'editor' => ['admin', 'manager', 'editor'],
-            'volunteer' => ['admin', 'manager', 'volunteer'],
             'hoy-scholarship' => ['admin', 'manager', 'hoy'],
         ];
 

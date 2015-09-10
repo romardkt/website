@@ -2,6 +2,8 @@
 
 namespace Cupa\Http\Requests;
 
+use Illuminate\Support\Facades\Gate;
+
 class LoadLeagueRequest extends Request
 {
     /**
@@ -11,7 +13,7 @@ class LoadLeagueRequest extends Request
      */
     public function authorize()
     {
-        return $this->ajax();
+        return Gate::allows('is-manager')  && $this->ajax();
     }
 
     /**

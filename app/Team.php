@@ -22,11 +22,22 @@ class Team extends Model
         'updated_by',
     ];
 
+    public function captains()
+    {
+        return TeamMember::with('user')->where('position', '=', 'captain')->where('team_id', '=', $this->id)->get();
+    }
+
     public static function fetchAllCurrent()
     {
         return static::where('end', '>=', date('Y'))
             ->orWhereNull('end')
             ->orderBy('name')
             ->get();
+    }
+
+    public static function fetchByName($name)
+    {
+        return static::where('name', '=', $name)
+            ->first();
     }
 }

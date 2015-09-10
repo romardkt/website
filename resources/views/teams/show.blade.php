@@ -1,18 +1,18 @@
 @extends('app')
 
 @section('content')
-@include('layouts.page_header')
+@include('page_header')
 <div class="team">
     <div class="row team">
-        <div class="col-xs-12 col-sm-4 col-md-3 team-logo"><img src="{{ asset($team->logo); }}"/></div>
+        <div class="col-xs-12 col-sm-4 col-md-3 team-logo"><img src="{{ asset($team->logo) }}"/></div>
         <div class="col-xs-12 col-sm-8 col-md-9 team-title">
-            <p>{{{ $team->display_name }}}</p>
+            <p>{{ $team->display_name }}</p>
             <small>Captain(s):
             @foreach ($team->captains() as $captain)
             @if($team->override_email === null)
-            {{ secureEmail($captain->user->email, $captain->user->fullname()) }}
+            {!! secureEmail($captain->user->email, $captain->user->fullname()) !!}
             @else
-            {{ secureEmail($team->override_email,  $captain->user->fullname()) }}
+            {!! secureEmail($team->override_email,  $captain->user->fullname()) !!}
             @endif
             @endforeach
             @if(!isset($captain))
@@ -21,9 +21,9 @@
             </small>
             <div class="date">
                 @if($team->begin !== null)
-                Founded in {{{ ($team->begin === null) ? 'Unknown' : $team->begin }}}
+                Founded in {{ ($team->begin === null) ? 'Unknown' : $team->begin }}
                 @if($team->end !== null)
-                (Last Season {{{ $team->end }}})
+                (Last Season {{ $team->end }})
                 @endif
                 @endif
             </div>
@@ -53,7 +53,7 @@
         </div>
         <div class="col-xs-12 col-sm-offset-1 col-sm-10 description">
             <hr/>
-            {{ $team->description }}
+            {!! $team->description !!}
         </div>
     </div>
 </div>

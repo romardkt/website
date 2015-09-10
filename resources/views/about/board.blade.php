@@ -45,11 +45,13 @@
                         <hr/>
                     </div>
                 </div>
-                @can('is-manager')
+                @can('edit', $member)
                 <div class="actions">
                     <div class="btn-group">
                         <a class="btn btn-default" href="{{ route('about_board_edit', array($member->id)) }}"><i class="text-info fa fa-edit fa-fw fa-lg"></i></a>
+                        @can('delete', $member)
                         <a title="Remove Officer" class="btn btn-default" onclick="return confirm('Are you sure?');" href="{{ route('about_board_remove', array($member->id)) }}"><i class="text-danger fa fa-trash-o fa-fw fa-lg"></i></a>
+                        @endif
                     </div>
                 </div>
                 @endif

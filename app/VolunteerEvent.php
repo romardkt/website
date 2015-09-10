@@ -18,4 +18,9 @@ class VolunteerEvent extends Model
         'information',
         'location_id',
     ];
+
+    public function contacts()
+    {
+        return $this->hasMany('Cupa\VolunteerContact');
+    }
 }

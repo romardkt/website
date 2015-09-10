@@ -32,6 +32,7 @@ class AboutController extends Controller
 
     public function missionEdit()
     {
+        $this->authorize('is-editor', null);
         $page = Page::fetchBy('route', 'about_mission');
 
         return view('about.mission_edit', compact('page'));
@@ -65,6 +66,7 @@ class AboutController extends Controller
 
     public function boardAdd(Request $request)
     {
+        $this->authorize('is-editor', null);
         $officerPositions = OfficerPosition::fetchForSelect();
         $initial = $request->old('user_id');
 
@@ -108,6 +110,7 @@ class AboutController extends Controller
 
     public function boardEdit(Request $request, Officer $officer)
     {
+        $this->authorize('edit', $officer);
         $officerPositions = OfficerPosition::fetchForSelect();
         $initial = ($request->has('user_id')) ? $request->old('user_id') : $officer->user_id;
 
@@ -147,6 +150,7 @@ class AboutController extends Controller
 
     public function boardRemove(Officer $officer)
     {
+        $this->authorize('is-editor', null);
         $position = $officer->position()->first()->name;
 
         // remove image if present
@@ -172,6 +176,7 @@ class AboutController extends Controller
 
     public function minutesAdd()
     {
+        $this->authorize('is-editor', null);
         $locations = Location::fetchForSelect();
 
         return view('about.minutes_add', compact('locations'));
@@ -201,6 +206,7 @@ class AboutController extends Controller
 
     public function minutesEdit(Minute $minute)
     {
+        $this->authorize('is-editor', null);
         $locations = Location::fetchForSelect();
 
         return view('about.minutes_edit', compact('minute', 'locations'));
@@ -234,6 +240,7 @@ class AboutController extends Controller
 
     public function minutesRemove(Minute $minute)
     {
+        $this->authorize('is-editor', null);
         $date = convertDate($minute->start, 'm/d/Y');
         if ($minute->pdf !== null && file_exists(public_path().$minute->pdf)) {
             unlink(public_path().$minute->pdf);
@@ -254,6 +261,7 @@ class AboutController extends Controller
 
     public function linksEdit()
     {
+        $this->authorize('is-editor', null);
         $page = Page::fetchBy('route', 'about_links');
 
         return view('about.links_edit', compact('page'));
