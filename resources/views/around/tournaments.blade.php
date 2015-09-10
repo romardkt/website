@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('content')
-@include('layouts.page_header')
+@include('page_header')
 <div class="row">
     <div class="col-xs-12 text-center">
         <h2 class="page">Tournaments</h2>
@@ -27,8 +27,8 @@
             @endif
 
             <a href="{{ route('tournament', [$tournament->name, $tournament->year]) }}" class="list-group-item">
-                <p class="pull-right">{{ ($tournament->is_visible == 1) ? '' : '<span class="text-warning">*** Not Visible to Public ***</span>' }}</p>
-                <h3>{{{ $tournament->display_name }}}</h3>
+                <p class="pull-right">{!! ($tournament->is_visible == 1) ? '' : '<span class="text-warning">*** Not Visible to Public ***</span>' !!}</p>
+                <h3>{{ $tournament->display_name }}</h3>
                 <em>{{ (new DateTime($tournament->start))->format('M j Y')}} -
                 {{ (new DateTime($tournament->end))->format('M j Y')}}</em>
                 <p>
@@ -37,7 +37,7 @@
             </a>
             @if($tournament->name == 'scinny' && in_array($tournament->year, [2014, 2015]))
              <a href="{{ route('tournament_masters_' . $tournament->year) }}" class="list-group-item">
-                <p class="pull-right">{{ ($tournament->is_visible == 1) ? '' : '<span class="text-warning">*** Not Visible to Public ***</span>' }}</p>
+                <p class="pull-right">{!! ($tournament->is_visible == 1) ? '' : '<span class="text-warning">*** Not Visible to Public ***</span>' !!}</p>
                 <h3>GL G/Masters Regionals {{ $tournament->year }}</h3>
                 <em>{{ (new DateTime($tournament->start))->format('M j Y')}} -
                 {{ (new DateTime($tournament->end))->format('M j Y')}}</em>

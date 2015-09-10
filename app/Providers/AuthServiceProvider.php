@@ -19,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
          \Cupa\Team::class => \Cupa\Policies\TeamPolicy::class,
          \Cupa\Volunteer::class => \Cupa\Policies\VolunteerPolicy::class,
          \Cupa\Officer::class => \Cupa\Policies\OfficerPolicy::class,
+         \Cupa\Pickup::class => \Cupa\Policies\PickupPolicy::class,
     ];
 
     /**

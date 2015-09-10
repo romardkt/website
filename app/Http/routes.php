@@ -5,6 +5,7 @@ Route::model('minute_id', 'Cupa\Minute');
 Route::model('officer_id', 'Cupa\Officer');
 Route::model('user_id', 'Cupa\User');
 Route::model('league_id', 'Cupa\League');
+Route::model('pickup_id', 'Cupa\Pickup');
 
 Route::get('/', ['as' => 'home', 'uses' => 'PageController@home']);
 Route::post('location/add', ['as' => 'location_add', 'uses' => 'PageController@locationAdd']);
@@ -183,11 +184,14 @@ Route::group(['prefix' => 'leagues'], function () {
 Route::group(['prefix' => 'around'], function () {
     Route::get('/', ['as' => 'around', 'uses' => 'AroundController@around']);
     Route::get('pickups', ['as' => 'around_pickups', 'uses' => 'AroundController@pickups']);
-    Route::any('pickups/add', ['as' => 'around_pickups_add', 'uses' => 'AroundController@pickups_add']);
-    Route::any('pickups/{pickup_id}/edit', ['as' => 'around_pickups_edit', 'uses' => 'AroundController@pickups_edit']);
-    Route::get('pickups/{pickup_id}/remove', ['as' => 'around_pickups_remove', 'uses' => 'AroundController@pickups_remove']);
+    Route::get('pickups/add', ['as' => 'around_pickups_add', 'uses' => 'AroundController@pickupsAdd']);
+    Route::post('pickups/add', ['as' => 'around_pickups_add_post', 'uses' => 'AroundController@postPickupsAdd']);
+    Route::get('pickups/{pickup_id}/edit', ['as' => 'around_pickups_edit', 'uses' => 'AroundController@pickupsEdit']);
+    Route::post('pickups/{pickup_id}/edit', ['as' => 'around_pickups_edit_post', 'uses' => 'AroundController@postPickupsEdit']);
+    Route::get('pickups/{pickup_id}/remove', ['as' => 'around_pickups_remove', 'uses' => 'AroundController@pickupsRemove']);
     Route::get('tournaments', ['as' => 'around_tournaments', 'uses' => 'AroundController@tournaments']);
-    Route::any('tournaments/add', ['as' => 'around_tournaments_add', 'uses' => 'AroundController@tournaments_add']);
+    Route::get('tournaments/add', ['as' => 'around_tournaments_add', 'uses' => 'AroundController@tournamentsAdd']);
+    Route::post('tournaments/add', ['as' => 'around_tournaments_add_post', 'uses' => 'AroundController@postTournamentsAdd']);
     Route::get('discgolf', ['as' => 'around_discgolf', 'uses' => 'AroundController@discgolf']);
     Route::get('fields', ['as' => 'around_fields', 'uses' => 'AroundController@fields']);
 });

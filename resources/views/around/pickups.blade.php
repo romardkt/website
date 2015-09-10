@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('content')
-@include('layouts.page_header')
+@include('page_header')
 
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
@@ -16,10 +16,12 @@
                 <div class="map">
                     <a target="_new" href="{{ $pickup->location->getUrl() }}"><img src="{{ $pickup->location->getImage() }}"/></a>
                 </div>
-                @if($isAuthorized['editor'])
+                @can('edit', $pickup)
                 <div class="edit-btn">
                     <a class="btn btn-default" href="{{ route('around_pickups_edit', [$pickup->id]) }}"><i class="fa fa-fw fa-lg fa-edit"></i> Edit Pickup</a>
+                    @can('delete', $pickup)
                     <a class="btn btn-danger" onclick="return confirm('Are you sure?');" href="{{ route('around_pickups_remove', [$pickup->id]) }}"><i class="fa fa-fw fa-lg fa-trash-o"></i></a>
+                    @endif
                 </div>
                 @endif
                 <div class="title"><h3>{{{ $pickup->title }}}</h3></div>
@@ -27,14 +29,14 @@
                 <div class="contacts">
                     <strong>Contact(s):</strong>
                     @if(count($pickup->contacts))
-                    @foreach ($pickup->contacts as $contact) {{ secureEmail($contact->user->email, $contact->user->fullname()) }}
+                    @foreach ($pickup->contacts as $contact) {!! secureEmail($contact->user->email, $contact->user->fullname()) !!}
                     @endforeach
                     @else
                     <span class="text-info">Unknown</span>
                     @endif
                 </div>
                 <hr/>
-                <div class="info">{{ $pickup->info }}</div>
+                <div class="info">{!! $pickup->info !!}</div>
             </div>
             @endforeach
         </div>

@@ -2,8 +2,9 @@
 
 namespace Cupa;
 
-use Illuminate\Database\Eloquent\Model;
 use Gate;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Tournament extends Model
 {
@@ -61,6 +62,16 @@ class Tournament extends Model
         }
 
         // return the filtered array
+        return $tournaments;
+    }
+
+    public static function fetchDistinctTournaments()
+    {
+        $tournaments = [];
+        foreach (DB::table('tournaments')->distinct()->select('name')->orderBy('name')->get() as $tournament) {
+            $tournaments[$tournament->name] = $tournament->name;
+        }
+
         return $tournaments;
     }
 }
