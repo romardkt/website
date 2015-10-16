@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('content')
-@include('layouts.page_header')
+@include('page_header')
 <div class="row">
     <div class="col-xs-12 text-center">
         <h2 class="page">Become a Volunteer</h2>
@@ -20,64 +20,64 @@
 
         <div class="row">
             <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-                @include('layouts.partials.errors')
+                @include('partials.errors')
 
-                {{ Form::model($user, ['class' => 'form form-vertical', 'role' => 'form']) }}
-                @if ($isVolunteer || $isAuthorized['user'])
+                {!! Form::model($user, ['class' => 'form form-vertical', 'role' => 'form']) !!}
+                @if ($isVolunteer || Auth::check())
                 <legend>Update Registration</legend>
                 <div class="form-group">
-                    {{ Form::label('Email Address') }}
-                    {{ Form::email('email', null, ['class' => 'form-control', 'disabled']) }}
+                    {!! Form::label('Email Address') !!}
+                    {!! Form::email('email', null, ['class' => 'form-control', 'disabled']) !!}
                 </div>
 
                 <div class="form-group">
-                    {{ Form::label('First Name') }}
-                    {{ Form::text('first_name', null, ['class' => 'form-control']) }}
+                    {!! Form::label('First Name') !!}
+                    {!! Form::text('first_name', null, ['class' => 'form-control']) !!}
                 </div>
 
                 <div class="form-group">
-                    {{ Form::label('Last Name') }}
-                    {{ Form::text('last_name', null, ['class' => 'form-control']) }}
+                    {!! Form::label('Last Name') !!}
+                    {!! Form::text('last_name', null, ['class' => 'form-control']) !!}
                 </div>
 
                 <div class="form-group">
-                    {{ Form::label('Phone') }}
-                    {{ Form::text('phone', $user->profile->phone, ['class' => 'form-control']) }}
+                    {!! Form::label('Phone') !!}
+                    {!! Form::text('phone', $user->profile->phone, ['class' => 'form-control']) !!}
                 </div>
 
                 <div class="form-group">
-                    {{ Form::label('Birthday') }}
-                    {{ Form::input('date', 'birthday', convertDate($user->birthday, 'm/d/Y'), ['class' => 'form-control datepicker text-center']) }}
+                    {!! Form::label('Birthday') !!}
+                    {!! Form::input('date', 'birthday', convertDate($user->birthday, 'm/d/Y'), ['class' => 'form-control datepicker text-center']) !!}
                 </div>
 
                 <div class="form-group">
-                    {{ Form::label('Gender') }}
+                    {!! Form::label('Gender') !!}
                     <div class="checkbox">
-                        {{ Form::radio('gender', 'Male', null, ['id' => 'gender-male']) }} &nbsp;{{ Form::label('gender-male', 'Male') }}
+                        {!! Form::radio('gender', 'Male', null, ['id' => 'gender-male']) !!} &nbsp;{!! Form::label('gender-male', 'Male') !!}
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        {{ Form::radio('gender', 'Female', null, ['id' => 'gender-female']) }} &nbsp;{{ Form::label('gender-female', 'Female') }}
+                        {!! Form::radio('gender', 'Female', null, ['id' => 'gender-female']) !!} &nbsp;{!! Form::label('gender-female', 'Female') !!}
                     </div>
                 </div>
 
                 <div class="form-group">
-                    {{ Form::label('Years Involved with CUPA') }}
-                    {{ Form::select('involvement', $volunteerChoices['involvement'], (isset($user->volunteer)) ? $user->volunteer->involvement : null, ['class' => 'form-control']) }}
+                    {!! Form::label('Years Involved with CUPA') !!}
+                    {!! Form::select('involvement', $volunteerChoices['involvement'], (isset($user->volunteer)) ? $user->volunteer->involvement : null, ['class' => 'form-control']) !!}
                 </div>
 
                 <div class="form-group">
-                    {{ Form::label('Primary Interest(s) for Volunteering') }}
-                    {{ Form::select('primary_interest[]', $volunteerChoices['primary_interest'], (isset($user->volunteer)) ? explode(', ', $user->volunteer->primary_interest) : null, ['class' => 'form-control select2', 'multiple']) }}
+                    {!! Form::label('Primary Interest(s) for Volunteering') !!}
+                    {!! Form::select('primary_interest[]', $volunteerChoices['primary_interest'], (isset($user->volunteer)) ? explode(', ', $user->volunteer->primary_interest) : null, ['class' => 'form-control select2', 'multiple']) !!}
                     <span class="help-block">Select all that you are interested in</span>
                 </div>
 
                 <div class="form-group">
-                    {{ Form::label('Other: Please Specify only if you selected other') }}
-                    {{ Form::textarea('other', (isset($user->volunteer)) ? $user->volunteer->other : null, ['class' => 'form-control', 'rows' => 4]) }}
+                    {!! Form::label('Other: Please Specify only if you selected other') !!}
+                    {!! Form::textarea('other', (isset($user->volunteer)) ? $user->volunteer->other : null, ['class' => 'form-control', 'rows' => 4]) !!}
                 </div>
 
                 <div class="form-group">
-                    {{ Form::label('Please list all past CUPA volunteer experience') }}
-                    {{ Form::textarea('experience', (isset($user->volunteer)) ? $user->volunteer->experience : null, ['class' => 'form-control', 'rows' => 4]) }}
+                    {!! Form::label('Please list all past CUPA volunteer experience') !!}
+                    {!! Form::textarea('experience', (isset($user->volunteer)) ? $user->volunteer->experience : null, ['class' => 'form-control', 'rows' => 4]) !!}
                 </div>
 
                 @else
@@ -89,7 +89,7 @@
                 <p>If you <strong>do not</strong> already have an account, you may create a new account <a href="{{ route('register') }}">here</a></p>
                 </div>
                 @endif
-                @if($isAuthorized['user'])
+                @if(Auth::check())
                 <hr/>
                 <div class="form-group">
                     <div class="col-xs-12 text-center">
@@ -100,7 +100,7 @@
                         @endif
                     </div>
                 </div>
-                {{ Form::close() }}
+                {!! Form::close() !!}
                 @endif
             </div>
         </div>

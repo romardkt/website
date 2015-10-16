@@ -103,7 +103,7 @@ class TeamsController extends Controller
     public function show($name)
     {
         $team = Team::fetchByName($name);
-        $this->authorize('show', $team);
+        //$this->authorize('show', $team);
 
         $page = Page::fetchBy('route', 'teams');
         $actions = 'teams_show_edit,'.$team->name;

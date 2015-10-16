@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('content')
-@include('layouts.page_header')
+@include('page_header')
 <div class="row">
     <div class="col-xs-12 text-center">
         <h2 class="page">{{{ $event->title }}} Signups</h2>

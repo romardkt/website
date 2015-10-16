@@ -6,6 +6,7 @@ Route::model('officer_id', 'Cupa\Officer');
 Route::model('user_id', 'Cupa\User');
 Route::model('league_id', 'Cupa\League');
 Route::model('pickup_id', 'Cupa\Pickup');
+Route::model('event_id', 'Cupa\VolunteerEvent');
 
 Route::get('/', ['as' => 'home', 'uses' => 'PageController@home']);
 Route::post('location/add', ['as' => 'location_add', 'uses' => 'PageController@locationAdd']);
@@ -99,16 +100,21 @@ Route::group(['prefix' => 'about'], function () {
 Route::group(['prefix' => 'volunteer'], function () {
     Route::get('/', ['as' => 'volunteer', 'uses' => 'VolunteerController@volunteer']);
     Route::get('about', ['as' => 'volunteer_about', 'uses' => 'VolunteerController@about']);
-    Route::any('about/edit', ['as' => 'volunteer_about_edit', 'uses' => 'VolunteerController@about_edit']);
-    Route::any('signup', ['as' => 'volunteer_signup', 'uses' => 'VolunteerController@signup']);
+    Route::get('about/edit', ['as' => 'volunteer_about_edit', 'uses' => 'VolunteerController@aboutEdit']);
+    Route::post('about/edit', ['as' => 'volunteer_about_edit_post', 'uses' => 'VolunteerController@postAboutEdit']);
+    Route::get('signup', ['as' => 'volunteer_signup', 'uses' => 'VolunteerController@signup']);
+    Route::post('signup', ['as' => 'volunteer_signup_post', 'uses' => 'VolunteerController@postSignup']);
     Route::get('show', ['as' => 'volunteer_show', 'uses' => 'VolunteerController@show']);
-    Route::any('show/add', ['as' => 'volunteer_show_add', 'uses' => 'VolunteerController@show_add']);
-    Route::any('show/edit/{eventId}', ['as' => 'volunteer_show_edit', 'uses' => 'VolunteerController@show_edit']);
-    Route::get('show/members/{eventId}', ['as' => 'volunteer_show_members', 'uses' => 'VolunteerController@show_members']);
-    Route::get('show/members/export/{eventId}', ['as' => 'volunteer_show_members_export', 'uses' => 'VolunteerController@show_members_export']);
-    Route::any('show/signup/{eventId}', ['as' => 'volunteer_show_signup', 'uses' => 'VolunteerController@show_signup']);
+    Route::get('show/add', ['as' => 'volunteer_show_add', 'uses' => 'VolunteerController@showAdd']);
+    Route::post('show/add', ['as' => 'volunteer_show_add_post', 'uses' => 'VolunteerController@postShowAdd']);
+    Route::get('show/edit/{event_id}', ['as' => 'volunteer_show_edit', 'uses' => 'VolunteerController@showEdit']);
+    Route::post('show/edit/{event_id}', ['as' => 'volunteer_show_edit_post', 'uses' => 'VolunteerController@postShowEdit']);
+    Route::get('show/members/{event_id}', ['as' => 'volunteer_show_members', 'uses' => 'VolunteerController@showMembers']);
+    Route::get('show/members/export/{event_id}', ['as' => 'volunteer_show_members_export', 'uses' => 'VolunteerController@showMembersExport']);
+    Route::get('show/signup/{event_id}', ['as' => 'volunteer_show_signup', 'uses' => 'VolunteerController@showSignup']);
+    Route::post('show/signup/{event_id}', ['as' => 'volunteer_show_signup_post', 'uses' => 'VolunteerController@postShowSignup']);
     Route::get('list', ['as' => 'volunteer_list', 'uses' => 'VolunteerController@pool']);
-    Route::get('list/download', ['as' => 'volunteer_list_download', 'uses' => 'VolunteerController@pool_download']);
+    Route::get('list/download', ['as' => 'volunteer_list_download', 'uses' => 'VolunteerController@poolDownload']);
 });
 
 Route::group(['prefix' => 'youth'], function () {
@@ -259,4 +265,6 @@ Route::group(['prefix' => 'manage'], function () {
     Route::get('forms/{slug}/edit', ['as' => 'manage_forms_edit', 'uses' => 'ManageController@formsEdit']);
     Route::post('forms/{slug}/edit', ['as' => 'manage_forms_edit_post', 'uses' => 'ManageController@postFormsEdit']);
     Route::get('forms/{slug}/remove', ['as' => 'manage_forms_remove', 'uses' => 'ManageController@formsRemove']);
+    Route::get('coaches', ['as' => 'manage_coaches', 'uses' => 'ManageController@coaches']);
+    Route::get('coaches/download', ['as' => 'manage_coaches_download', 'uses' => 'ManageController@coaches_download']);
 });

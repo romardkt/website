@@ -5,7 +5,7 @@ namespace Cupa\Policies;
 use Cupa\User;
 use Cupa\VolunteerEvent;
 
-class VolunteerPolicy
+class VolunteerEventPolicy
 {
     protected $globalPerms = ['admin', 'manager', 'volunteer'];
 

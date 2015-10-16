@@ -19,6 +19,21 @@ class LeagueMember extends Model
         'updated_by',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo('Cupa\User');
+    }
+
+    public function league()
+    {
+        return $this->belongsTo('Cupa\League');
+    }
+
+    public function team()
+    {
+        return $this->belongsTo('Cupa\LeagueTeam', 'league_team_id');
+    }
+
     public static function typeahead($leagueId, $filter, $ids = false)
     {
         $filter = urldecode($filter);
@@ -51,5 +66,38 @@ class LeagueMember extends Model
         }
 
         return $data;
+    }
+
+    public static function fetchAllCoaches()
+    {
+        $coaches = static::with(['user', 'team'])
+            ->join('leagues', 'leagues.id', '=', 'league_members.league_id')
+            ->where(function ($query) {
+                $query->where('position', '=', 'coach')
+                    ->orWhere('position', '=', 'assistant_coach');
+            })
+            ->where('leagues.is_youth', '=', 1)
+            ->select('league_members.*')
+            ->get();
+
+        $result = [];
+        foreach ($coaches as $coach) {
+            if (empty($coach->team->name)) {
+                continue;
+            }
+
+            $name = $coach->user->fullname();
+            if (empty($result[$name])) {
+                $result[$name] = [
+                    'name' => $name,
+                    'email' => (empty($coach->user->email)) ? 'Unknown' : $coach->user->email,
+                    'teams' => $coach->team->name,
+                ];
+            } else {
+                $result[$name]['teams'] .= ','.$coach->team->name;
+            }
+        }
+
+        return $result;
     }
 }

@@ -12,22 +12,24 @@
                 <ul class="nav navbar-nav">
                     @if($pageRoot == 'teams')
                     @foreach($subMenus as $subMenu)
-                    <?php $active = (isset($team->name) && $subMenu->name == $team->name) ? ' class="active"' : '';//($subMenu->menu == $page->route) ? ' class="active"' : ''; ?>
-                    <li{{ $active }}><a href="{{ route('teams_show', array($subMenu->name)) }}">{{{ $subMenu->menu }}}</a></li>
+                    <?php $active = (isset($team->name) && $subMenu->name == $team->name) ? ' class="active"' : ''; ?>
+                    <li{!! $active !!}><a href="{{ route('teams_show', array($subMenu->name)) }}">{{{ $subMenu->menu }}}</a></li>
                     @endforeach
                     @else
                     @foreach($subMenus as $subMenu)
-                        <?php $active = ($subMenu->route == $page->route) ? ' class="active"' : ''; ?>
+                        <?php $active = ($subMenu->route == $page->route) ? ' class="active"' : '';?>
                         @if(in_array($subMenu->route, ['youth_ycc', 'around_fields', 'around_discgolf']))
                             <li{{ $active }}><a target="_blank" href="{{ route($subMenu->route) }}">{{{ $subMenu->display }}}</a></li>
                         @elseif($subMenu->route == 'volunteer_list')
-                            @if($isAuthorized['volunteer'])
+                            @can('is-volunteer')
                             <li{{ $active }}><a href="{{ route($subMenu->route) }}">{{{ $subMenu->display }}}</a></li>
                             @endif
                         @elseif($subMenu->route == 'youth_leagues' && isset($league->is_youth) && isset($league->is_youth))
                             <li class="active"><a href="{{ route($subMenu->route) }}">{{{ $subMenu->display }}}</a></li>
+                        @elseif($subMenu->route == 'about_scholarship_hoy')
+                            <li{!! $active !!}><a href="{{ route('scholarship_hoy') }}">{{{ $subMenu->display }}}</a></li>
                         @else
-                            <li{{ $active }}><a href="{{ route($subMenu->route) }}">{{{ $subMenu->display }}}</a></li>
+                            <li{!! $active !!}><a href="{{ route($subMenu->route) }}">{{{ $subMenu->display }}}</a></li>
                         @endif
                     @endforeach
                     @endif

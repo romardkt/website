@@ -11,4 +11,14 @@ class VolunteerEventCategory extends Model
         'name',
         'questions',
     ];
+
+    public static function fetchForSelect()
+    {
+        $options = [];
+        foreach (static::orderBy('name')->get() as $row) {
+            $options[$row->id] = $row->name;
+        }
+
+        return $options;
+    }
 }

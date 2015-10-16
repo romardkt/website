@@ -215,4 +215,36 @@ class ManageController extends Controller
 
         return redirect()->route('manage_forms');
     }
+
+    public function coaches()
+    {
+        $coaches = LeagueMember::fetchAllCoaches();
+
+        return view('manage.coaches', compact('coaches'));
+    }
+
+    public function coaches_download()
+    {
+        $coaches = LeagueMember::fetchAllCoaches();
+        $file = storage_path().'/cache/'.(new DateTime())->format('Y-m-d').'-CUPA-Coaches.csv';
+
+        $fp = fopen($file, 'w');
+        if ($fp) {
+            $line = ['name', 'email', 'teams'];
+            fputcsv($fp, $line);
+
+            foreach ($coaches as $coach) {
+                $line = [$coach['name'], $coach['email'], $coach['teams']];
+                fputcsv($fp, $line);
+            }
+
+            fclose($fp);
+
+            return response()->download($file);
+        }
+
+        Session::flash('msg-error', 'Error downloading file');
+
+        return redirect()->route('manage_coaches');
+    }
 }

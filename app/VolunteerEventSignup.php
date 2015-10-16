@@ -13,4 +13,9 @@ class VolunteerEventSignup extends Model
         'answers',
         'notes',
     ];
+
+    public function volunteer()
+    {
+        return $this->belongsTo('Cupa\Volunteer');
+    }
 }
