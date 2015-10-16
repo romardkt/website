@@ -126,13 +126,17 @@ Route::group(['prefix' => 'volunteer'], function () {
 Route::group(['prefix' => 'youth'], function () {
     Route::get('/', ['as' => 'youth', 'uses' => 'YouthController@youth']);
     Route::get('about', ['as' => 'youth_about', 'uses' => 'YouthController@about']);
-    Route::any('about/edit', ['as' => 'youth_about_edit', 'uses' => 'YouthController@about_edit']);
+    Route::get('about/edit', ['as' => 'youth_about_edit', 'uses' => 'YouthController@aboutEdit']);
+    Route::post('about/edit', ['as' => 'youth_about_edit_post', 'uses' => 'YouthController@postAboutEdit']);
     Route::get('yuc', ['as' => 'youth_yuc', 'uses' => 'YouthController@yuc']);
-    Route::get('yuc/parents', ['as' => 'yuc_parents', 'uses' => 'YouthController@yuc_parents']);
-    Route::get('yuc/coaches', ['as' => 'yuc_coaches', 'uses' => 'YouthController@yuc_coaches']);
-    Route::any('yuc/edit', ['as' => 'youth_yuc_edit', 'uses' => 'YouthController@yuc_edit']);
-    Route::any('yuc/parents/edit', ['as' => 'yuc_parents_edit', 'uses' => 'YouthController@yuc_parents_edit']);
-    Route::any('yuc/coaches/edit', ['as' => 'yuc_coaches_edit', 'uses' => 'YouthController@yuc_coaches_edit']);
+    //Route::get('yuc/parents', ['as' => 'yuc_parents', 'uses' => 'YouthController@yucParents']);
+    //Route::get('yuc/coaches', ['as' => 'yuc_coaches', 'uses' => 'YouthController@yucCoaches']);
+    Route::get('yuc/edit', ['as' => 'youth_yuc_edit', 'uses' => 'YouthController@yucEdit']);
+    Route::post('yuc/edit', ['as' => 'youth_yuc_edit_post', 'uses' => 'YouthController@postYucEdit']);
+    //Route::get('yuc/parents/edit', ['as' => 'yuc_parents_edit', 'uses' => 'YouthController@yucParentsEdit']);
+    //Route::post('yuc/parents/edit', ['as' => 'yuc_parents_edit_post', 'uses' => 'YouthController@postYucParentsEdit']);
+    //Route::get('yuc/coaches/edit', ['as' => 'yuc_coaches_edit', 'uses' => 'YouthController@yucCoachesEdit']);
+    //Route::post('yuc/coaches/edit', ['as' => 'yuc_coaches_edit_post', 'uses' => 'YouthController@postYucCoachesEdit']);
     Route::get('ycc', ['as' => 'youth_ycc', 'uses' => 'YouthController@ycc']);
     Route::get('leagues', ['as' => 'youth_leagues', 'uses' => 'YouthController@leagues']);
     Route::get('tournaments', ['as' => 'youth_tournaments', 'uses' => 'YouthController@tournaments']);

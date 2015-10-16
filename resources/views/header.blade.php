@@ -55,7 +55,7 @@
                     <div class="btn-group btn-group-lg btn-group-justified">
                         <a class="about btn btn-default" href="{{ route('about') }}">About<span class="hidden-sm"> Us</span></a></a>
                         <a class="volunteer btn btn-default" href="{{ route('volunteer') }}">Volunteer</a></a>
-                        <a class="youth btn btn-default">Youth<span class="hidden-sm"> Ultimate</span></a></a>
+                        <a class="youth btn btn-default" href="{{ route('youth') }}">Youth<span class="hidden-sm"> Ultimate</span></a></a>
                         <a class="leagues btn btn-default"><span class="hidden-sm">Adult </span>Leagues</a></a>
                         <a class="around btn btn-default" href="{{ route('around') }}">Around<span class="hidden-sm"> Town</span></a></a>
                         <a class="teams btn btn-default" href="{{ route('teams') }}"><span class="hidden-sm">Area </span>Teams</a></a>

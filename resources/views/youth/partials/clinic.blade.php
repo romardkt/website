@@ -1,17 +1,17 @@
         <div class="form-group">
-            {{ Form::label('Name') }}
-            {{ Form::text('name', null, ['class' => 'form-control']) }}
+            {!! Form::label('Name') !!}
+            {!! Form::text('name', null, ['class' => 'form-control']) !!}
             <span class="help-block">The name you wan in the url</span>
         </div>
 
         <div class="form-group">
-            {{ Form::label('Title') }}
-            {{ Form::text('display', null, ['class' => 'form-control']) }}
+            {!! Form::label('Title') !!}
+            {!! Form::text('display', null, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('') }}
-            {{ Form::textarea('content', null, ['class' => 'form-control ckeditor', 'rows' => 15]) }}
+            {!! Form::label('') !!}
+            {!! Form::textarea('content', null, ['class' => 'form-control ckeditor', 'rows' => 15]) !!}
         </div>
 
         <hr/>
