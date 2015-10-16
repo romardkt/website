@@ -13,7 +13,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'Cupa\Model' => 'Cupa\Policies\ModelPolicy',
+         \Cupa\Model::class => Cupa\Policies\ModelPolicy::class,
          \Cupa\Tournament::class => \Cupa\Policies\TournamentPolicy::class,
          \Cupa\League::class => \Cupa\Policies\LeaguePolicy::class,
          \Cupa\Team::class => \Cupa\Policies\TeamPolicy::class,

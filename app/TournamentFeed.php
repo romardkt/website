@@ -12,4 +12,9 @@ class TournamentFeed extends Model
         'title',
         'content',
     ];
+
+    public function tournament()
+    {
+        return $this->belongsTo('Cupa\Tournament');
+    }
 }

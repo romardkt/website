@@ -9,13 +9,13 @@
 <br/>
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::model($tournament, ['class' => 'form form-vertical', 'role' => 'form']) }}
+        {!! Form::model($tournament, ['class' => 'form form-vertical', 'role' => 'form']) !!}
 
         <div class="form-group">
-            {{ Form::label('Schedule Information') }}
-            {{ Form::textarea('schedule', null, ['class' => 'form-control ckeditor']) }}
+            {!! Form::label('Schedule Information') !!}
+            {!! Form::textarea('schedule', null, ['class' => 'form-control ckeditor']) !!}
         </div>
 
         <hr/>
@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        {{ Form::close() }}
+        {!! Form::close() !!}
     </div>
 </div>
 @endsection

@@ -29,9 +29,24 @@ class Tournament extends Model
         'is_visible',
     ];
 
+    public function feed()
+    {
+        return $this->hasMany('Cupa\TournamentFeed')->orderBy('created_at', 'desc');
+    }
+
     public function contacts()
     {
-        return $this->hasMany('Cupa\TournamentMember')->orderBy('weight', 'asc');
+        return $this->hasMany('Cupa\TournamentMember')->with('user')->orderBy('weight', 'asc');
+    }
+
+    public function location()
+    {
+        return $this->belongsTo('Cupa\Location');
+    }
+
+    public function locations()
+    {
+        return $this->hasMany('Cupa\TournamentLocation');
     }
 
     /**
@@ -46,7 +61,7 @@ class Tournament extends Model
     {
         // build the base query
         $select = static::orderBy('start', 'DESC')
-                        ->orderBy('name');
+            ->orderBy('name');
 
         // limit by division given if not null
         if ($division !== null) {
@@ -65,6 +80,18 @@ class Tournament extends Model
         return $tournaments;
     }
 
+    public static function fetchTournament($name, $year)
+    {
+        $select = static::where('name', '=', $name)
+            ->orderBy('year', 'desc');
+
+        if ($year !== null) {
+            $select->where('year', '=', $year);
+        }
+
+        return $select->first();
+    }
+
     public static function fetchDistinctTournaments()
     {
         $tournaments = [];
@@ -73,5 +100,13 @@ class Tournament extends Model
         }
 
         return $tournaments;
+    }
+
+    public function fetchTeams($division)
+    {
+        return TournamentTeam::where('division', '=', $division)
+            ->where('tournament_id', '=', $this->id)
+            ->orderBy('name')
+            ->get();
     }
 }

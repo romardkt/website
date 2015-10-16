@@ -28,7 +28,7 @@ class TournamentPolicy
 
     public function show(User $user, Tournament $tournament)
     {
-        if ($tournament->is_visible === 0) {
+        if ($tournament->is_visible == 0) {
             return $this->isAuthorized($user, $tournament);
         }
 

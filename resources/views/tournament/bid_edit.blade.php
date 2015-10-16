@@ -9,53 +9,53 @@
 <br/>
 <div class="row">
     <div class="col-xs-12 col-sm-offset-2 col-sm-8">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::model($tournament, ['class' => 'form form-vertical', 'role' => 'form']) }}
+        {!! Form::model($tournament, ['class' => 'form form-vertical', 'role' => 'form']) !!}
 
         <legend>Bid Information</legend>
 
         <div class="form-group">
-            {{ Form::label('Tournament Fee') }}
-            {{ Form::number('cost', null, ['class' => 'form-control']) }}
+            {!! Form::label('Tournament Fee') !!}
+            {!! Form::number('cost', null, ['class' => 'form-control']) !!}
             <span class="help-block">Enter the tourney fee</span>
         </div>
 
         <div class="form-group">
-            {{ Form::label('Bid Due Date') }}
-            {{ Form::text('bid_due_date', convertDate($tournament->bid_due,'m/d/Y'), ['class' => 'form-control datepicker text-center']) }}
+            {!! Form::label('Bid Due Date') !!}
+            {!! Form::text('bid_due_date', convertDate($tournament->bid_due,'m/d/Y'), ['class' => 'form-control datepicker text-center']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Bid Due Time') }}
-            {{ Form::text('bid_due_time', convertDate($tournament->bid_due,'h:i A'), ['class' => 'form-control clockpicker text-center']) }}
+            {!! Form::label('Bid Due Time') !!}
+            {!! Form::text('bid_due_time', convertDate($tournament->bid_due,'h:i A'), ['class' => 'form-control clockpicker text-center']) !!}
         </div>
 
         <legend>Paypal Settings</legend>
 
         <div class="form-group">
-            {{ Form::label('Paypal Link') }}
+            {!! Form::label('Paypal Link') !!}
             <div class="checkbox">
-                {{ Form::radio('paypal_type', 0, $tournament->use_paypal == 1 && empty($tournament->paypal)) }} CUPA Paypal
+                {!! Form::radio('paypal_type', 0, $tournament->use_paypal == 1 && empty($tournament->paypal)) !!} CUPA Paypal
             </div>
             <div class="checkbox">
-                {{ Form::radio('paypal_type', 1, $tournament->use_paypal == 1 && !empty($tournament->paypal)) }} Custom Paypal
+                {!! Form::radio('paypal_type', 1, $tournament->use_paypal == 1 && !empty($tournament->paypal)) !!} Custom Paypal
             </div>
             <div class="checkbox">
-                {{ Form::radio('paypal_type', 2, $tournament->use_paypal == 0) }} No Paypal
+                {!! Form::radio('paypal_type', 2, $tournament->use_paypal == 0) !!} No Paypal
             </div>
             <span class="help-block">Select the type of payments</span>
         </div>
 
         <div class="form-group">
-            {{ Form::label('Paypal Button/Text') }}
-            {{ Form::textarea('paypal', null, ['class' => 'form-control', 'rows' => 4]) }}
+            {!! Form::label('Paypal Button/Text') !!}
+            {!! Form::textarea('paypal', null, ['class' => 'form-control', 'rows' => 4]) !!}
             <span class="help-block">Enter paypal message/button/link (Optional)</span>
         </div>
 
         <div class="form-group">
-            {{ Form::label('Mail Address') }}
-            {{ Form::textarea('mail', null, ['class' => 'form-control', 'rows' => 4]) }}
+            {!! Form::label('Mail Address') !!}
+            {!! Form::textarea('mail', null, ['class' => 'form-control', 'rows' => 4]) !!}
             <span class="help-block">Enter mailing address for payments (Optional)</span>
         </div>
 
@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        {{ Form::close() }}
+        {!! Form::close() !!}
     </div>
 </div>
 @endsection

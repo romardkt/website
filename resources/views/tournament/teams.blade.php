@@ -16,7 +16,7 @@
         <div class="list-group">
         @foreach($tournament->fetchTeams($currentDivision) as $team)
         <div class="list-group-item">
-            @if($isAuthorized['manager'])
+            @can('edit', $tournament)
             <div class="pull-right">
                 <div class="btn-group">
                     <a class="btn btn-default" href="{{ route('tournament_teams_edit', [$team->id]) }}"><i class="fa fa-fw fa-lg fa-edit"></i></a>
@@ -29,8 +29,8 @@
             </h4>
             <p class="list-group-item-text">
                 {{{ $team->city }}}, {{{ $team->state }}}<br/>
-                {{ ($team->paid == 1) ? '<div class="label label-success">Paid</div>' : '<div class="label label-danger">Not Paid</div>' }}
-                {{ ($team->accepted == 1) ? '<div class="label label-success">Accepted</div>' : '<div class="label label-danger">Not Accepted</div>' }}
+                {!! ($team->paid == 1) ? '<div class="label label-success">Paid</div>' : '<div class="label label-danger">Not Paid</div>' !!}
+                {!! ($team->accepted == 1) ? '<div class="label label-success">Accepted</div>' : '<div class="label label-danger">Not Accepted</div>' !!}
             </p>
 
         </div>

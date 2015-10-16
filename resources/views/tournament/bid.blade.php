@@ -3,7 +3,7 @@
 @section('content')
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-        <h1 class="title">{{{ $tournament->display_name }}} Bid Information</h1>
+        <h1 class="title">{{ $tournament->display_name }} Bid Information</h1>
     </div>
 </div>
 @if($tournament->bid_due >= (new DateTime())->format('Y-m-d H:i:s'))
@@ -15,7 +15,7 @@
             correct information you risk being bumped by a team that fills out the information correctly.
         </p>
         <p>
-            The cost for this tournament is <strong class="text-info">${{{ $tournament->cost }}}</strong>, which you may pay
+            The cost for this tournament is <strong class="text-info">${{ $tournament->cost }}</strong>, which you may pay
             upon successful bid submission with Paypal.  If you have already submitted a bid and would just like
             to pay the tournament fee you may
         </p>
@@ -24,67 +24,67 @@
         </p>
         <hr/>
         <p>
-            <h4 class="text-warning text-center">Bid is due {{{ (new DateTime($tournament->bid_due))->format('M j Y @ h:i A') }}}</h4>
+            <h4 class="text-warning text-center">Bid is due {{ (new DateTime($tournament->bid_due))->format('M j Y @ h:i A') }}</h4>
         </p>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::open(['class' => 'form form-vertical', 'role' => 'form']) }}
+        {!! Form::open(['class' => 'form form-vertical', 'role' => 'form']) !!}
 
         <legend>Team Information</legend>
 
         <div class="form-group">
-            {{ Form::label('Division') }}
-            {{ Form::select('division', $divisions, null, ['class' => 'form-control select2']) }}
+            {!! Form::label('Division') !!}
+            {!! Form::select('division', $divisions, null, ['class' => 'form-control select2']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Team Name') }}
-            {{ Form::text('name', null, ['class' => 'form-control']) }}
+            {!! Form::label('Team Name') !!}
+            {!! Form::text('name', null, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('City') }}
-            {{ Form::text('city', null, ['class' => 'form-control']) }}
+            {!! Form::label('City') !!}
+            {!! Form::text('city', null, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('State') }}
-            {{ Form::text('state', null, ['class' => 'form-control']) }}
+            {!! Form::label('State') !!}
+            {!! Form::text('state', null, ['class' => 'form-control']) !!}
             <span class="help-block">Please use state abbreviation (i.e. OH, IL, etc.)</span>
         </div>
 
         <legend>Team Contact</legend>
 
         <div class="form-group">
-            {{ Form::label('Contact Name') }}
-            {{ Form::text('contact_name', null, ['class' => 'form-control']) }}
+            {!! Form::label('Contact Name') !!}
+            {!! Form::text('contact_name', null, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Contact Phone') }}
-            {{ Form::text('contact_phone', null, ['class' => 'form-control']) }}
+            {!! Form::label('Contact Phone') !!}
+            {!! Form::text('contact_phone', null, ['class' => 'form-control']) !!}
             <span class="help-block">Please use this format: ###-###-####</span>
         </div>
 
         <div class="form-group">
-            {{ Form::label('Contact Email Address') }}
-            {{ Form::email('contact_email', null, ['class' => 'form-control']) }}
+            {!! Form::label('Contact Email Address') !!}
+            {!! Form::email('contact_email', null, ['class' => 'form-control']) !!}
         </div>
 
         <legend>Other</legend>
 
         <div class="form-group">
-            {{ Form::label('Any Comments/Questions') }}
-            {{ Form::textarea('comments', null, ['class' => 'form-control ckeditor']) }}
+            {!! Form::label('Any Comments/Questions') !!}
+            {!! Form::textarea('comments', null, ['class' => 'form-control ckeditor']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Verify you\'re human') }}
-            {{ Form::captcha() }}
+            {!! Form::label('Verify you\'re human') !!}
+            {!! Form::captcha() !!}
         </div>
 
         <hr/>
@@ -96,7 +96,7 @@
             </div>
         </div>
 
-        {{ Form::close() }}
+        {!! Form::close() !!}
     </div>
 </div>
 @else

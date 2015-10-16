@@ -1,24 +1,6 @@
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-//@import "node_modules/select2-bootstrap-css/lib/select2-bootstrap";
-@import "node_modules/font-awesome/scss/font-awesome";
-//@import "node_modules/select2/src/scss/core";
-
-$navy: #34495e;
-$green: #2ecc71;
-$blue: #3498db;
-$yellow: #f1c40f;
-$red: #e74c3c;
-$white: #ffffff;
-$black: #000000;
-$blue-green: #1abc9c;
-$purple: #9b59b6;
-$orange: #f39c12;
-$brown: #ae956d;
-
-$twitter: #4099ff;
-$facebook: #3b5998;
-
-$headerHeight: 65px;
+@import "bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "bower_components/font-awesome/scss/font-awesome";
+@import "variables";
 
 @mixin border-radius($size) {
     -webkit-border-radius: $size;
@@ -699,6 +681,7 @@ body {
         border: 1px solid darken($white, 30%);
         @include box-shadow(0 0 5px, darken($white, 30%));
         height: 60px;
+        width: auto;
         margin-left: 15px;
     }
 
@@ -1376,10 +1359,6 @@ dd {
         .feed {
             border-left: 2px solid darken($white, 30%);
         }
-    }
-
-    img {
-        width: 100%;
     }
 
     .contacts {

@@ -15,6 +15,16 @@ class TournamentMember extends Model
         'weight',
     ];
 
+    public function tournament()
+    {
+        return $this->belongsTo('Cupa\Tournament');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('Cupa\User');
+    }
+
     public static function updateMembers($tournamentId, $members, $position)
     {
         // get all members in the database

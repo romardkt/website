@@ -12,9 +12,9 @@
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
         <dl class="dl-horizontal">
             <dt>Tournament Director:</dt>
-            <dd>You can email {{ secureEmail('wilkerd@cintas.com', 'Dale') }}</dd>
+            <dd>You can email {!! secureEmail('wilkerd@cintas.com', 'Dale') !!}</dd>
             <dt>Regional Coordinator:</dt>
-            <dd>You can email {{ secureEmail('ultimate711@gmail.com', 'Alexander') }}</dd>
+            <dd>You can email {!! secureEmail('ultimate711@gmail.com', 'Alexander') !!}</dd>
             <br/>
             <dt>Grand Masters:</dt>
             <dd><a href="http://play.usaultimate.org/events/Great-Lakes-Grand-Masters-Regionals">http://play.usaultimate.org/events/Great-Lakes-Grand-Masters-Regionals</a></dd>

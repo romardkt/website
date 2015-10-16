@@ -6,7 +6,7 @@
         <h3>Map Location</h3>
         <a target="_new" href="{{ $tournament->location->getUrl() }}"><img src="{{ $tournament->location->getImage(14) }}"/></a>
         <p>
-            {{ $tournament->location->address() }}
+            {!! $tournament->location->address() !!}
             <small class="text-muted">Click on map for link</small>
         </p>
     </div>
@@ -14,7 +14,7 @@
         <h3 class="text-center">Lodging/Information</h3>
         @if(count($tournament->locations))
         @foreach($tournament->locations as $location)
-        @if($isAuthorized['manager'])
+        @can('edit', $tournament)
         <div class="pull-right">
             <div class="btn-group">
                 <a class="btn btn-default" href="{{ route('tournament_location_edit', [$location->id]) }}"><i class="fa fa-fw fa-lg fa-edit"></i></a>
@@ -24,12 +24,12 @@
         </div>
         @endif
         @if($location->link !== null)
-        <h4><a href="{{{ $location->link }}}">{{{ $location->title }}}</a></h4>
+        <h4><a href="{{ $location->link }}">{{ $location->title }}</a></h4>
         @else
-        <h4>{{{ $location->title }}}</h4>
+        <h4>{{ $location->title }}</h4>
         @endif
         <p>
-            {{ $location->address() }}
+            {!! $location->address() !!}
             @if($location->phone !== null)
             {{ $location->phone }}
             @endif
@@ -37,7 +37,7 @@
             @if($location->other !== null)
             <dl>
                 <dt>Notes:</dt>
-                <dd style="margin-left: 10px;">{{ $location->other }}</dd>
+                <dd style="margin-left: 10px;">{!! $location->other !!}</dd>
             </dl>
             @endif
         </p>

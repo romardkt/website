@@ -19,4 +19,25 @@ class TournamentTeam extends Model
         'accepted',
         'paid',
     ];
+
+    public function tournament()
+    {
+        return $this->belongsTo('Cupa\Tournament');
+    }
+
+    public static function fetchUnpaidTeamsByDivision($tournamentId)
+    {
+        $result = static::where('paid', '=', 0)
+            ->where('tournament_id', '=', $tournamentId)
+            ->orderBy('division')
+            ->orderBy('name')
+            ->get();
+
+        $teams = [];
+        foreach ($result as $team) {
+            $teams[$team->division][] = $team;
+        }
+
+        return $teams;
+    }
 }

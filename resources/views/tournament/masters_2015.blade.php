@@ -13,11 +13,11 @@
         <dl class="dl-horizontal">
             <dt>Tournament Director:</dt>
             <dd>
-                You can email {{ secureEmail('wilkerd@msn.com', 'Dale Wilker - Mike Kaylor - Rodger Oaks') }}<br/>
+                You can email {!! secureEmail('wilkerd@msn.com', 'Dale Wilker - Mike Kaylor - Rodger Oaks') !!}<br/>
             </dd>
             <br/>
             <dt>Regional Coordinator:</dt>
-            <dd>You can email {{ secureEmail('ultimate711@gmail.com', 'Alexander Dee') }}</dd>
+            <dd>You can email {!! secureEmail('ultimate711@gmail.com', 'Alexander Dee') !!}</dd>
             <br/>
             <dt>Grand Masters:</dt>
             <dd><a href="http://play.usaultimate.org/events/Great-Lakes-Grand-Masters-Regionals-2015">http://play.usaultimate.org/events/Great-Lakes-Grand-Masters-Regionals-2015</a></dd>

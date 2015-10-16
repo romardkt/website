@@ -9,11 +9,11 @@
 <br/>
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::model($location, ['class' => 'form form-vertical', 'role' => 'form']) }}
+        {!! Form::model($location, ['class' => 'form form-vertical', 'role' => 'form']) !!}
             @include('tournament.partials.location', ['type' => 'Update'])
-        {{ Form::close() }}
+        {!! Form::close() !!}
     </div>
 </div>
 @endsection

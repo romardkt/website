@@ -18,8 +18,8 @@
                             <span class="icon-bar"></span>
                         </button>
                         <a class="navbar-brand" href="{{ route('tournament', [$tournament->name, $tournament->year]) }}">
-                            {{{ $tournament->display_name }}}<br/>
-                            <small class="text-muted">{{{ convertDate($tournament->start, 'M j-') }}}{{{ convertDate($tournament->end, 'j ') }}}{{{ convertDate($tournament->end, 'Y') }}}</small>
+                            {{ $tournament->display_name }}<br/>
+                            <small class="text-muted">{{ convertDate($tournament->start, 'M j-') }}{{ convertDate($tournament->end, 'j ') }}{{ convertDate($tournament->end, 'Y') }}</small>
                         </a>
                     </div>
 
@@ -38,7 +38,7 @@
                             <li{{ (Route::currentRouteName() == 'tournament_teams') ? ' class="active"' : '' }}><a href="{{ route('tournament_teams', [$tournament->name, $tournament->year]) }}">Teams</a></li>
                             @endif
                             <?php $schedule = ((in_array($tournament->name, ['nationals', 'club_regionals'])) && $tournament->year == '2014') ? 'Teams/Schedule' : 'Schedule'; ?>
-                            <li{{ (Route::currentRouteName() == 'tournament_schedule') ? ' class="active"' : '' }}><a href="{{ route('tournament_schedule', [$tournament->name, $tournament->year]) }}">{{{ $schedule }}}</a></li>
+                            <li{{ (Route::currentRouteName() == 'tournament_schedule') ? ' class="active"' : '' }}><a href="{{ route('tournament_schedule', [$tournament->name, $tournament->year]) }}">{{ $schedule }}</a></li>
                             <li{{ (Route::currentRouteName() == 'tournament_location') ? ' class="active"' : '' }}><a href="{{ route('tournament_location', [$tournament->name, $tournament->year]) }}">Location</a></li>
                             <li{{ (Route::currentRouteName() == 'tournament_contact') ? ' class="active"' : '' }}><a href="{{ route('tournament_contact', [$tournament->name, $tournament->year]) }}">Contact</a></li>
                             @if($tournament->name == 'scinny' && in_array($tournament->year, ['2014', '2015']))
@@ -46,10 +46,10 @@
                             @endif
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            @if(!$isAuthorized['user'])
+                            @if(Auth::guest())
                             <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                             @endif
-                            @if($isAuthorized['manager'])
+                            @can('edit', $tournament)
                             <li{{ (Route::currentRouteName() == 'tournament_admin') ? ' class="active"' : '' }}><a href="{{ route('tournament_admin', [$tournament->name, $tournament->year]) }}">Admin</a></li>
                             @endif
                             <li><a href="{{ route('home') }}">CUPA Home</a></li>
@@ -64,7 +64,7 @@
     <div class="row tournament-banner">
         <img src="{{ asset($tournament->image) }}"/>
         <div class="actions">
-        @if($isAuthorized['manager'])
+        @can('edit', $tournament)
         @if(Route::currentRouteName() == 'tournament')
             <a class="btn btn-default" href="{{ route('tournament_feed_add', [$tournament->name, $tournament->year]) }}"><i class="fa fa-fw fa-lg fa-plus"></i> Add News</a>
         @elseif(Route::currentRouteName() == 'tournament_contact')
@@ -96,9 +96,9 @@
             </div>
             <div class="modal-body">
                 <div id="login-error"></div>
-                {{ Form::open(['id' => 'login-form', 'class' => 'form form-horizontal', 'role' => 'form']) }}
-                    @include('layouts.partials.login')
-                {{ Form::close() }}
+                {!! Form::open(['id' => 'login-form', 'class' => 'form form-horizontal', 'role' => 'form']) !!}
+                    @include('partials.login')
+                {!! Form::close() !!}
             </div>
             <div class="modal-footer hidden-xs">
                 <a class="btn btn-warning pull-left" href="{{ route('register') }}">Don't have an account?</a>

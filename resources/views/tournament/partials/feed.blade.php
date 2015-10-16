@@ -1,11 +1,11 @@
         <div class="form-group">
-            {{ Form::label('Title') }}
-            {{ Form::text('title', null, ['class' => 'form-control']) }}
+            {!! Form::label('Title') !!}
+            {!! Form::text('title', null, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Title') }}
-            {{ Form::textarea('content', null, ['class' => 'form-control ckeditor']) }}
+            {!! Form::label('Title') !!}
+            {!! Form::textarea('content', null, ['class' => 'form-control ckeditor']) !!}
         </div>
 
         <hr/>

@@ -9,19 +9,19 @@
 <br/>
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::open(['class' => 'form form-vertical', 'role' => 'form']) }}
+        {!! Form::open(['class' => 'form form-vertical', 'role' => 'form']) !!}
 
         <div class="form-group">
-            {{ Form::label('User') }}
-            {{ Form::hidden('user_id', $initial, ['id' => 'user_id']) }}
+            {!! Form::label('User') !!}
+            {!! Form::hidden('user_id', $initial, ['id' => 'user_id']) !!}
             <span class="help-block">Start by typing a users name</span>
         </div>
 
         <div class="form-group">
-            {{ Form::label('Position') }}
-            {{ Form::text('position', null, ['class' => 'form-control']) }}
+            {!! Form::label('Position') !!}
+            {!! Form::text('position', null, ['class' => 'form-control']) !!}
         </div>
 
         <hr/>
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        {{ Form::close() }}
+        {!! Form::close() !!}
     </div>
 </div>
 @endsection

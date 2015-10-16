@@ -18,4 +18,16 @@ class TournamentLocation extends Model
         'phone',
         'other',
     ];
+
+    public function tournament()
+    {
+        return $this->belongsTo('Cupa\Tournament');
+    }
+
+    public function address()
+    {
+        if ($this->street !== null) {
+            return $this->street.'<br/>'.$this->city.', '.$this->state.' '.$this->zip.'<br/>';
+        }
+    }
 }
