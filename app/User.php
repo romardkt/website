@@ -70,6 +70,11 @@ class User extends Model implements AuthenticatableContract,
         return $this->hasOne('Cupa\Volunteer');
     }
 
+    public function children()
+    {
+        return $this->hasMany('Cupa\User', 'parent');
+    }
+
     public function fullname()
     {
         return $this->first_name.' '.$this->last_name;
@@ -296,5 +301,23 @@ class User extends Model implements AuthenticatableContract,
     public function hasSignedUpForVolunteerEvent($eventId)
     {
         return VolunteerEvent::isMember($eventId, $this->volunteer()->first()->id);
+    }
+
+    public function fetchAllIds()
+    {
+        $ids = [];
+        $result = self::where('id', '=', $this->id)
+            ->orWhere('parent', '=', $this->id);
+
+        foreach ($result->get() as $user) {
+            $ids[] = $user->id;
+        }
+
+        return $ids;
+    }
+
+    public function fetchAllLeagues()
+    {
+        return LeagueMember::fetchAllLeagues($this->fetchAllIds(), true);
     }
 }

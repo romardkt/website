@@ -7,12 +7,12 @@
             <img class="avatar" src="{{ asset($user->avatar) }}"/>
         </div>
         <div class="col-xs-12 col-sm-6 text-center">
-            <h1>{{{ $user->fullname() }}}</h1>
-            <h4 class="text-muted">{{{ ($user->profile->nickname) ? 'aka \'' . $user->profile->nickname . '\'' : '' }}}</h4>
+            <h1>{{ $user->fullname() }}</h1>
+            <h4 class="text-muted">{{ ($user->profile->nickname) ? 'aka \'' . $user->profile->nickname . '\'' : '' }}</h4>
             <h4>
-                {{{ displayHeight($user->profile->height) }}} tall, {{{ displayAge($user->birthday) }}} years old, played for {{{ displayExperience($user->profile->experience) }}}
+                {{ displayHeight($user->profile->height) }} tall, {{ displayAge($user->birthday) }} years old, played for {{ displayExperience($user->profile->experience) }}
                 @if($user->profile->level != 'New')
-                    up to {{{ displayLevel($user->profile->level) }}}
+                    up to {{ displayLevel($user->profile->level) }}
                 @endif
             </h4>
             <h4>
@@ -39,9 +39,9 @@
                 <tbody>
                     @foreach($user->fetchAllLeagues() as $member)
                     <tr>
-                        <td><a href="{{ route('league', [$member->league->slug]) }}">{{{ $member->league->displayName() }}}</a></td>
-                        <td>{{{ (isset($member->team->name)) ? $member->team->name : 'Not Assigned' }}}</td>
-                        <td class="text-center">{{{ (isset($member->team)) ? $member->team->record->record() : 'N/A' }}}</td>
+                        <td><a href="{{ route('league', [$member->league->slug]) }}">{{ $member->league->displayName() }}</a></td>
+                        <td>{{ (isset($member->team->name)) ? $member->team->name : 'Not Assigned' }}</td>
+                        <td class="text-center">{{ (isset($member->team)) ? $member->team->record->record() : 'N/A' }}</td>
                     </tr>
                     @endforeach
                 </tbody>

@@ -4,37 +4,37 @@
 <div class="profile">
     <div class="row">
         <div class="col-xs-12 col-sm-offset-1 col-sm-4 text-center">
-            <img class="avatar" src="{{ asset($isAuthorized['userData']->avatar) }}"/>
+            <img class="avatar" src="{{ asset(Auth::user()->avatar) }}"/>
         </div>
         <div class="col-xs-12 col-sm-6 text-center">
-            <h1>{{{ $isAuthorized['userData']->fullname() }}}</h1>
-            <h4 class="text-muted">{{{ ($isAuthorized['userData']->profile->nickname) ? 'aka \'' . $isAuthorized['userData']->profile->nickname . '\'' : '' }}}</h4>
+            <h1>{{ Auth::user()->fullname() }}</h1>
+            <h4 class="text-muted">{{ (Auth::user()->profile->nickname) ? 'aka \'' . Auth::user()->profile->nickname . '\'' : '' }}</h4>
             <h4>
-                {{{ displayHeight($isAuthorized['userData']->profile->height) }}} tall, {{{ displayAge($isAuthorized['userData']->birthday) }}} years old, played for {{{ displayExperience($isAuthorized['userData']->profile->experience) }}}
-                @if($isAuthorized['userData']->profile->level != 'New')
-                    up to {{{ displayLevel($isAuthorized['userData']->profile->level) }}}
+                {{ displayHeight(Auth::user()->profile->height) }} tall, {{ displayAge(Auth::user()->birthday) }} years old, played for {{ displayExperience(Auth::user()->profile->experience) }}
+                @if(Auth::user()->profile->level != 'New')
+                    up to {{ displayLevel(Auth::user()->profile->level) }}
                 @endif
             </h4>
             <hr/>
             <div class="status">
-                @if($isAuthorized['userData']->hasWaiver())
+                @if(Auth::user()->hasWaiver())
                 <span class="label label-success">Waiver Signed</span>
                 @else
-                    @if($isAuthorized['userData']->getAge() >= 18)
-                    <span class="label label-danger"><a href="{{ route('waiver', [date('Y'), $isAuthorized['userData']->id]) }}">Waiver NOT Signed</a></span>
+                    @if(Auth::user()->getAge() >= 18)
+                    <span class="label label-danger"><a href="{{ route('waiver', [date('Y'), Auth::user()->id]) }}">Waiver NOT Signed</a></span>
                     @else
                     <span class="label label-danger">Waiver NOT Signed</span>
                     @endif
                 @endif
 
-                @if($isAuthorized['userData']->profileComplete())
+                @if(Auth::user()->profileComplete())
                 <span class="label label-success">Complete</span>
                 @else
                 <span class="label label-danger"><a href="{{ route('profile_leagues') }}">Profile Incomplete</a></span>
                 @endif
 
-                @if(isset($isAuthorized['userData']->balance->balance))
-                <span class="label label-danger"><a href="{{ route('profile_leagues') }}">Overdue ${{{ $isAuthorized['userData']->balance->balance }}}</a></span>
+                @if(isset(Auth::user()->balance->balance))
+                <span class="label label-danger"><a href="{{ route('profile_leagues') }}">Overdue ${{ Auth::user()->balance->balance }}</a></span>
                 @else
                 <span class="label label-success">Overdue $0</span>
                 @endif

@@ -7,6 +7,8 @@ Route::model('user_id', 'Cupa\User');
 Route::model('league_id', 'Cupa\League');
 Route::model('pickup_id', 'Cupa\Pickup');
 Route::model('event_id', 'Cupa\VolunteerEvent');
+Route::model('minor_id', 'Cupa\User');
+Route::model('contact_id', 'Cupa\UserContact');
 
 Route::get('/', ['as' => 'home', 'uses' => 'PageController@home']);
 Route::post('location/add', ['as' => 'location_add', 'uses' => 'PageController@locationAdd']);
@@ -17,7 +19,6 @@ Route::any('waiver/{year}/{user_id?}', ['as' => 'waiver', 'uses' => 'PageControl
 Route::any('paypal/success/{id}', ['as' => 'paypal_success', 'uses' => 'PageController@paypal_success']);
 Route::any('paypal/fail/{id}', ['as' => 'paypal_fail', 'uses' => 'PageController@paypal_fail']);
 Route::any('paypal/{id}/{type}/{user_id?}/{team_id?}', ['as' => 'paypal', 'uses' => 'PageController@paypal']);
-
 Route::get('/scholarship/hoy', ['as' => 'about_scholarship_hoy', 'uses' => 'ScholarshipController@hoy']);
 Route::get('/scholarship/hoy', ['as' => 'scholarship_hoy', 'uses' => 'ScholarshipController@hoy']);
 Route::get('/scholarship/hoy/edit', ['as' => 'scholarship_hoy_edit', 'uses' => 'ScholarshipController@hoyEdit']);
@@ -28,7 +29,6 @@ Route::get('/scholarship/hoy/manage', ['as' => 'scholarship_hoy_manage', 'uses' 
 Route::get('/scholarship/hoy/manage/{scholarship_id}', ['as' => 'scholarship_hoy_manage_edit', 'uses' => 'ScholarshipController@hoyManageEdit']);
 Route::post('/scholarship/hoy/manage/{scholarship_id}', ['as' => 'scholarship_hoy_manage_edit_post', 'uses' => 'ScholarshipController@postHoyManageEdit']);
 Route::any('/scholarship/hoy/manage/{scholarship_id}/delete', ['as' => 'scholarship_hoy_manage_delete', 'uses' => 'ScholarshipController@hoyManageDelete']);
-
 Route::post('login', ['as' => 'login', 'uses' => 'AuthController@login']);
 Route::get('logout', ['as' => 'logout', 'uses' => 'AuthController@logout']);
 Route::get('register', ['as' => 'register', 'uses' => 'AuthController@register']);
@@ -36,7 +36,6 @@ Route::post('register', ['as' => 'register_handle', 'uses' => 'AuthController@po
 Route::any('activate/{code}', ['as' => 'activate', 'uses' => 'AuthController@activate']);
 Route::any('reset', ['as' => 'reset', 'uses' => 'AuthController@reset']);
 Route::any('reset/{code}', ['as' => 'do_reset', 'uses' => 'AuthController@do_reset']);
-
 Route::get('daytonultimate', ['as' => 'leagues_dayton', 'uses' => 'PageController@dayton']);
 Route::any('daytonultimate/edit', ['as' => 'leagues_dayton_edit', 'uses' => 'PageController@dayton_edit']);
 
@@ -50,21 +49,25 @@ Route::group(['prefix' => 'post'], function () {
 });
 
 Route::group(['prefix' => 'profile'], function () {
-    Route::any('/', ['as' => 'profile', 'uses' => 'ProfileController@profile']);
-    Route::any('password', ['as' => 'profile_password', 'uses' => 'ProfileController@password']);
+    Route::get('/', ['as' => 'profile', 'uses' => 'ProfileController@profile']);
+    Route::post('/', ['as' => 'profile_post', 'uses' => 'ProfileController@postProfile']);
+    Route::get('password', ['as' => 'profile_password', 'uses' => 'ProfileController@password']);
+    Route::post('password', ['as' => 'profile_password_post', 'uses' => 'ProfileController@postPassword']);
     Route::get('minors', ['as' => 'profile_minors', 'uses' => 'ProfileController@minors']);
-    Route::any('minors/add', ['as' => 'profile_minor_add', 'uses' => 'ProfileController@minor_add']);
-    Route::any('minors/{minor_id}/edit', ['as' => 'profile_minor_edit', 'uses' => 'ProfileController@minor_edit']);
-    Route::get('minors/{minor_id}/remove', ['as' => 'profile_minor_remove', 'uses' => 'ProfileController@minor_remove']);
+    Route::get('minors/add', ['as' => 'profile_minor_add', 'uses' => 'ProfileController@minorAdd']);
+    Route::post('minors/add', ['as' => 'profile_minor_add_post', 'uses' => 'ProfileController@postMinorAdd']);
+    Route::get('minors/{minor_id}/edit', ['as' => 'profile_minor_edit', 'uses' => 'ProfileController@minorEdit']);
+    Route::post('minors/{minor_id}/edit', ['as' => 'profile_minor_edit_post', 'uses' => 'ProfileController@postMinorEdit']);
+    Route::get('minors/{minor_id}/remove', ['as' => 'profile_minor_remove', 'uses' => 'ProfileController@minorRemove']);
     Route::get('leagues', ['as' => 'profile_leagues', 'uses' => 'ProfileController@leagues']);
     Route::get('teams', ['as' => 'profile_teams', 'uses' => 'ProfileController@teams']);
     Route::get('contacts', ['as' => 'profile_contacts', 'uses' => 'ProfileController@contacts']);
-    Route::any('contacts/add', ['as' => 'profile_contact_add', 'uses' => 'ProfileController@contact_add']);
-    Route::any('contacts/{minor_id}/edit', ['as' => 'profile_contact_edit', 'uses' => 'ProfileController@contact_edit']);
-    Route::get('contacts/{minor_id}/remove', ['as' => 'profile_contact_remove', 'uses' => 'ProfileController@contact_remove']);
-    Route::post('add/contact', ['as' => 'profile_add_contact', 'uses' => 'ProfileController@add_contact']);
-    Route::post('remove/contact', ['as' => 'profile_remove_contact', 'uses' => 'ProfileController@remove_contact']);
-    Route::get('{userId}', ['as' => 'profile_public', 'uses' => 'ProfileController@public_profile'])->where('userId', '[0-9]+');
+    Route::get('contacts/add', ['as' => 'profile_contact_add', 'uses' => 'ProfileController@contactAdd']);
+    Route::post('contacts/add', ['as' => 'profile_contact_add_post', 'uses' => 'ProfileController@postContactAdd']);
+    Route::get('contacts/{contact_id}/edit', ['as' => 'profile_contact_edit', 'uses' => 'ProfileController@contactEdit']);
+    Route::post('contacts/{contact_id}/edit', ['as' => 'profile_contact_edit_post', 'uses' => 'ProfileController@postContactEdit']);
+    Route::get('contacts/{contact_id}/remove', ['as' => 'profile_contact_remove', 'uses' => 'ProfileController@contactRemove']);
+    Route::get('{userId}', ['as' => 'profile_public', 'uses' => 'ProfileController@publicProfile'])->where('userId', '[0-9]+');
 });
 
 Route::group(['prefix' => 'form'], function () {
@@ -73,25 +76,22 @@ Route::group(['prefix' => 'form'], function () {
 
 Route::group(['prefix' => 'about'], function () {
     Route::get('/', ['as' => 'about', 'uses' => 'AboutController@about']);
-
     Route::get('mission', ['as' => 'about_mission', 'uses' => 'AboutController@mission']);
     Route::get('mission/edit', ['as' => 'about_mission_edit', 'uses' => 'AboutController@missionEdit']);
     Route::post('mission/edit', ['as' => 'about_mission_edit_post', 'uses' => 'AboutController@postMissionEdit']);
-
     Route::get('board', ['as' => 'about_board', 'uses' => 'AboutController@board']);
     Route::get('board/add', ['as' => 'about_board_add', 'uses' => 'AboutController@boardAdd']);
     Route::post('board/add', ['as' => 'about_board_add_post', 'uses' => 'AboutController@postBoardAdd']);
     Route::get('board/edit/{officer_id}', ['as' => 'about_board_edit', 'uses' => 'AboutController@boardEdit']);
     Route::post('board/edit/{officer_id}', ['as' => 'about_board_edit_post', 'uses' => 'AboutController@postBoardEdit']);
     Route::get('board/remove/{officer_id}', ['as' => 'about_board_remove', 'uses' => 'AboutController@boardRemove']);
-
     Route::get('minutes', ['as' => 'about_minutes', 'uses' => 'AboutController@minutes']);
     Route::get('minutes/add', ['as' => 'about_minutes_add', 'uses' => 'AboutController@minutesAdd']);
     Route::post('minutes/add', ['as' => 'about_minutes_add_post', 'uses' => 'AboutController@postMinutesAdd']);
     Route::get('minutes/edit/{minute_id}', ['as' => 'about_minutes_edit', 'uses' => 'AboutController@minutesEdit']);
     Route::post('minutes/edit/{minute_id}', ['as' => 'about_minutes_edit_post', 'uses' => 'AboutController@postMinutesEdit']);
     Route::get('minutes/download/{minute_id}', ['as' => 'about_minutes_download', 'uses' => 'AboutController@minutesDownload']);
-    Route::any('minutes/remove/{minute_id}', ['as' => 'about_minutes_remove', 'uses' => 'AboutController@minutesRemove']);
+    Route::get('minutes/remove/{minute_id}', ['as' => 'about_minutes_remove', 'uses' => 'AboutController@minutesRemove']);
     Route::get('links', ['as' => 'about_links', 'uses' => 'AboutController@links']);
     Route::get('links/edit', ['as' => 'about_links_edit', 'uses' => 'AboutController@linksEdit']);
     Route::post('links/edit', ['as' => 'about_links_edit_post', 'uses' => 'AboutController@postLinksEdit']);

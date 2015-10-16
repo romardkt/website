@@ -1,13 +1,13 @@
         <legend>{{ $type }} Contact</legend>
 
         <div class="form-group">
-            {{ Form::label('Name') }}
-            {{ Form::text('name', null, ['class' => 'form-control']) }}
+            {!! Form::label('Name') !!}
+            {!! Form::text('name', null, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Phone') }}
-            {{ Form::text('phone', null, ['class' => 'form-control']) }}
+            {!! Form::label('Phone') !!}
+            {!! Form::text('phone', null, ['class' => 'form-control']) !!}
             <span class="help-block">Format: ###-###-####</span>
         </div>
 

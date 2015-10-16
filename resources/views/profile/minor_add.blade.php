@@ -14,11 +14,11 @@ $('.datepicker').pickadate({
 @section('profile_content')
 <div class="row">
     <div class="col-xs-12">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::open(['class' => 'form form-vertical', 'role' => 'form']) }}
+        {!! Form::open(['class' => 'form form-vertical', 'role' => 'form']) !!}
             @include('profile.partials.minor', ['type' => 'Add a'])
-        {{ Form::close() }}
+        {!! Form::close() !!}
     </div>
 </div>
 @endsection

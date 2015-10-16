@@ -100,4 +100,17 @@ class LeagueMember extends Model
 
         return $result;
     }
+
+    public static function fetchAllLeagues(array $userIds, $withMinors)
+    {
+        return static::with(['league', 'team', 'team.record'])
+            ->whereIn('user_id', $userIds)
+            ->where('position', '=', 'player')
+            ->join('leagues AS l', 'l.id', '=', 'league_members.league_id')
+            ->join('league_registrations AS lr', 'lr.league_id', '=', 'l.id')
+            ->orderBy('l.year', 'desc')
+            ->orderBy('lr.begin', 'desc')
+            ->select('league_members.*')
+            ->get();
+    }
 }

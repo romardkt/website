@@ -15,4 +15,34 @@ class LeagueTeam extends Model
         'color_code',
         'text_code',
     ];
+
+    public function captains()
+    {
+        return LeagueMember::fetchAllMembers('captain', $this->id);
+    }
+
+    public function coaches()
+    {
+        return LeagueMember::fetchAllMembers('coaches', $this->id);
+    }
+
+    public function headCoaches()
+    {
+        return LeagueMember::fetchAllMembers('coach', $this->id);
+    }
+
+    public function asstCoaches()
+    {
+        return LeagueMember::fetchAllMembers('assistant_coach', $this->id);
+    }
+
+    public function players()
+    {
+        return LeagueMember::fetchAllMembers('player', $this->id);
+    }
+
+    public function record()
+    {
+        return $this->hasOne('Cupa\LeagueTeamRecord');
+    }
 }
