@@ -15,7 +15,7 @@
             <a href="{{ route('youth_clinic', [$clinic->name]) }}" class="list-group-item">
                 <h4>{{ $clinic->display }}</h4>
                 <div class="label label-info">{{ $clinic->type }}</div>
-                <p>{{ str_limit(preg_replace("/\s+/", ' ', strip_tags($clinic->content)), 250) }} }}</p>
+                <p>{!! str_limit(preg_replace("/\s+/", ' ', strip_tags($clinic->content)), 250) !!}</p>
             </a>
             @endforeach
         </div>

@@ -3,10 +3,11 @@
 namespace Cupa\Http\Controllers;
 
 use Cupa\Clinic;
+use Cupa\Http\Requests\ClinicEditRequest;
 use Cupa\Http\Requests\PageEditRequest;
 use Cupa\League;
 use Cupa\Page;
-use Illuminate\Http\Request;
+use Cupa\Tournament;
 use Illuminate\Support\Facades\Session;
 
 class YouthController extends Controller
@@ -113,7 +114,7 @@ class YouthController extends Controller
         return view('youth.tournaments', compact('page', 'actions', 'tournaments'));
     }
 
-    public function tournaments_add()
+    public function tournamentsAdd()
     {
         return redirect()->route('around_tournaments_add');
     }
@@ -136,72 +137,49 @@ class YouthController extends Controller
         return view('youth.clinic', compact('page', 'actions', 'clinic'));
     }
 
-    public function clinic_add()
+    public function clinicAdd()
     {
-        if (Request::getMethod() == 'POST') {
-            // get the posted data
-            $input = $request->all();
-
-            // set the rules for the form
-            $rules = [
-                'name' => 'required',
-                'display' => 'required',
-                'content' => 'required',
-            ];
-
-            // validate the form
-            $validator = Validator::make($input, $rules);
-            if ($validator->fails()) {
-                return redirect()->route('youth_clinics_add')->withInput()->withErrors($validator);
-            }
-
-            $clinic = new Clinic();
-            $clinic->type = 'youth';
-            $clinic->name = $input['name'];
-            $clinic->display = $input['display'];
-            $clinic->content = $input['content'];
-            $clinic->save();
-
-            Session::flash('msg-success', 'Youth clinic created.');
-
-            return redirect()->route('youth_clinic', [$clinic->name]);
-        }
-
-        return view('youth.clinic_add', compact('clinic'));
+        return view('youth.clinic_add');
     }
 
-    public function clinic_edit($name)
+    public function postClinicAdd(ClinicEditRequest $request)
+    {
+        // get the posted data
+        $input = $request->all();
+
+        $clinic = new Clinic();
+        $clinic->type = 'youth';
+        $clinic->name = $input['name'];
+        $clinic->display = $input['display'];
+        $clinic->content = $input['content'];
+        $clinic->save();
+
+        Session::flash('msg-success', 'Youth clinic created.');
+
+        return redirect()->route('youth_clinic', [$clinic->name]);
+    }
+
+    public function clinicEdit($name)
     {
         $clinic = Clinic::fetchClinic($name);
 
-        if (Request::getMethod() == 'POST') {
-            // get the posted data
-            $input = $request->all();
-
-            // set the rules for the form
-            $rules = [
-                'name' => 'required',
-                'display' => 'required',
-                'content' => 'required',
-            ];
-
-            // validate the form
-            $validator = Validator::make($input, $rules);
-            if ($validator->fails()) {
-                return redirect()->route('youth_clinics_edit')->withInput()->withErrors($validator);
-            }
-
-            $clinic->name = $input['name'];
-            $clinic->display = $input['display'];
-            $clinic->content = $input['content'];
-            $clinic->save();
-
-            Session::flash('msg-success', 'Youth clinic updated.');
-
-            return redirect()->route('youth_clinic', [$clinic->name]);
-        }
-
         return view('youth.clinic_edit', compact('clinic'));
+    }
+
+    public function postClinicEdit($name, ClinicEditRequest $request)
+    {
+        // get the posted data
+        $input = $request->all();
+
+        $clinic = Clinic::fetchClinic($name);
+        $clinic->name = $input['name'];
+        $clinic->display = $input['display'];
+        $clinic->content = $input['content'];
+        $clinic->save();
+
+        Session::flash('msg-success', 'Youth clinic updated.');
+
+        return redirect()->route('youth_clinic', [$clinic->name]);
     }
 
     public function coaching_requirements()
@@ -229,11 +207,72 @@ class YouthController extends Controller
         // get the posted data
         $input = $request->all();
 
+        $page = Page::fetchBy('route', 'youth_coaching');
         $page->content = $input['content'];
         $page->save();
 
         Session::flash('msg-success', 'Youth coaching requirements updated.');
 
         return redirect()->route('youth_coaching');
+    }
+
+    public function yucParents()
+    {
+        $page = Page::fetchBy('route', 'yuc_parents');
+        $actions = 'edit';
+
+        return view('youth.page_view', compact('page', 'actions'));
+    }
+
+    public function yucParentsEdit()
+    {
+        $page = Page::fetchBy('route', 'yuc_parents');
+
+        return view('youth.page_edit', compact('page'));
+    }
+
+    public function postYucParentsEdit(PageEditRequest $request)
+    {
+        // get the posted data
+        $input = $request->all();
+
+        $page = Page::fetchBy('route', 'yuc_parents');
+        $page->display = $input['display'];
+        $page->content = $input['content'];
+        $page->save();
+
+        Session::flash('msg-success', $page->display.' updated.');
+
+        return redirect()->route('yuc_parents');
+    }
+
+    public function yucCoaches()
+    {
+        $page = Page::fetchBy('route', 'yuc_coaches');
+        $actions = 'edit';
+
+        return view('youth.page_view', compact('page', 'actions'));
+    }
+
+    public function yucCoachesEdit()
+    {
+        $page = Page::fetchBy('route', 'yuc_coaches');
+
+        return view('youth.page_edit', compact('page'));
+    }
+
+    public function postYucCoachesEdit(PageEditRequest $request)
+    {
+        // get the posted data
+        $input = $request->all();
+
+        $page = Page::fetchBy('route', 'yuc_coaches');
+        $page->display = $input['display'];
+        $page->content = $input['content'];
+        $page->save();
+
+        Session::flash('msg-success', $page->display.' updated.');
+
+        return redirect()->route('yuc_coaches');
     }
 }
