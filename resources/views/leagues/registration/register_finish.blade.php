@@ -1,8 +1,8 @@
 <div class="row">
     <div class="col-xs-12 col-sm-offset-2 col-sm-8">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::open(['class' => 'form form-vertical', 'role' => 'form']) }}
+        {!! Form::open(['class' => 'form form-vertical', 'role' => 'form']) !!}
 
         <legend>Finish Registration</legend>
 
@@ -12,23 +12,23 @@
         </div>
 
         <div class="form-group">
-            {{ Form::label('Email Address') }}
-            {{ Form::email('email', $session->info['email'], ['class' => 'form-control', 'disabled']) }}
+            {!! Form::label('Email Address') !!}
+            {!! Form::email('email', $session->info['email'], ['class' => 'form-control', 'disabled']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('First Name') }}
-            {{ Form::text('first_name', $session->info['first_name'], ['class' => 'form-control', 'disabled']) }}
+            {!! Form::label('First Name') !!}
+            {!! Form::text('first_name', $session->info['first_name'], ['class' => 'form-control', 'disabled']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Last Name') }}
-            {{ Form::text('last_name', $session->info['last_name'], ['class' => 'form-control', 'disabled']) }}
+            {!! Form::label('Last Name') !!}
+            {!! Form::text('last_name', $session->info['last_name'], ['class' => 'form-control', 'disabled']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Email Address') }}
-            {{ Form::text('phone', $session->info['phone'], ['class' => 'form-control', 'disabled']) }}
+            {!! Form::label('Email Address') !!}
+            {!! Form::text('phone', $session->info['phone'], ['class' => 'form-control', 'disabled']) !!}
         </div>
 
         <hr>
@@ -40,6 +40,6 @@
             </div>
         </div>
 
-        {{ Form::close() }}
+        {!! Form::close() !!}
     </div>
 </div>

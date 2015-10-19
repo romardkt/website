@@ -11,6 +11,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Support\Facades\Auth;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
@@ -98,6 +99,12 @@ class User extends Model implements AuthenticatableContract,
     public function profileComplete()
     {
         return $this->profile->isComplete();
+    }
+
+    public function coachingRequirements($year)
+    {
+        return $this->hasOne('Cupa\UserRequirement', 'user_id')
+            ->where('year', '=', $year)->first();
     }
 
     public static function typeahead($filter, $ids = false)
@@ -329,5 +336,24 @@ class User extends Model implements AuthenticatableContract,
     public function isLeagueMember($leagueId)
     {
         return LeagueMember::isMember($leagueId, $this->id);
+    }
+
+    public static function fetchRegistrantsForRadio($name)
+    {
+        $user = Auth::user();
+        $registrants = [$user->fullname() => ['name' => $name, 'value' => $user->id]];
+        foreach (static::fetchMinors($user->id) as $minor) {
+            $registrants[$minor->fullname()] = ['name' => $name, 'value' => $minor->id];
+        }
+
+        return $registrants;
+    }
+
+    public static function fetchMinors($userId)
+    {
+        return static::where('parent', '=', $userId)
+            ->orderBy('last_name')
+            ->orderBy('first_name')
+            ->get();
     }
 }

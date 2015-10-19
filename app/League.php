@@ -494,4 +494,27 @@ class League extends Model
 
         return $contacts;
     }
+
+    public function fetchRegistrationType($session)
+    {
+        $counts = $this->counts;
+        $limits = $this->limits;
+        $registration = $this->registration;
+        $now = (new DateTime())->format('Y-m-d H:i:s');
+
+        if ($limits->total !== null && $counts->total >= $limits->total) {
+            return ($this->has_waitlist == 1) ? 'waitlist' : 'full';
+        }
+
+        $gender = (isset($session->registrant)) ? $session->registrant->gender : Auth::user()->gender;
+        if ($limits->$gender !== null && $counts->$gender >= $limits->$gender) {
+            return ($this->has_waitlist == 1) ? 'waitlist' : 'full';
+        }
+
+        if ($registration->end < $now && $this->has_waitlist == 1) {
+            return 'waitlist';
+        }
+
+        return 'registration';
+    }
 }

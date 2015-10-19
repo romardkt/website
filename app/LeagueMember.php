@@ -3,8 +3,10 @@
 namespace Cupa;
 
 use DB;
+use StdClass;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 class LeagueMember extends Model
 {
@@ -271,5 +273,29 @@ class LeagueMember extends Model
         }
 
         return ($select->first()) ? true : false;
+    }
+
+    public function getStatus()
+    {
+        $requirements = (isset($this->user->coachingRequirements($this->league->year)->requirements)) ? json_decode($this->user->coachingRequirements($this->league->year)->requirements) : new StdClass();
+
+        // check requirements
+        foreach (Config::get('cupa.coachingRequirements') as $req => $reqText) {
+            if (!isset($requirements->$req) || $requirements->$req != 1) {
+                return ['status' => 'text-danger', 'msg' => 'Not Complete'];
+            }
+        }
+
+        // check user information
+        if (empty($this->user->profile->phone)) {
+            return ['status' => 'text-danger', 'msg' => 'Not Complete'];
+        }
+
+        // check waiver
+        if (!$this->user->hasWaiver($this->league->year)) {
+            return ['status' => 'text-danger', 'msg' => 'Not Complete'];
+        }
+
+        return ['status' => 'text-success', 'msg' => 'Complete'];
     }
 }

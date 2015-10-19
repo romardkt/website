@@ -12,23 +12,23 @@
 
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::open(['class' => 'form form-vertical', 'role' => 'form']) }}
+        {!! Form::open(['class' => 'form form-vertical', 'role' => 'form']) !!}
 
         <legend>Enter Emergency Contacts</legend>
 
         @foreach($session->registrant->contacts()->get() as $i => $contact)
-            <h4 class="col-sm-offset-2">Contact #{{{ $i + 1}}} &nbsp; <button class="btn btn-danger remove-contact-btn" data-contact="{{{ $contact->id }}}" type="button"><i class="fa fa-fw fa-lg fa-trash-o"></i></button></h4>
+            <h4 class="col-sm-offset-2">Contact #{{ $i + 1}} &nbsp; <button class="btn btn-danger remove-contact-btn" data-contact="{{ $contact->id }}" type="button"><i class="fa fa-fw fa-lg fa-trash-o"></i></button></h4>
 
         <div class="form-group">
-            {{ Form::label('Name') }}
-            {{ Form::text('name[]', $contact->name, ['class' => 'form-control', 'disabled']) }}
+            {!! Form::label('Name') !!}
+            {!! Form::text('name[]', $contact->name, ['class' => 'form-control', 'disabled']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Phone') }}
-            {{ Form::text('phone[]', $contact->phone, ['class' => 'form-control', 'disabled']) }}
+            {!! Form::label('Phone') !!}
+            {!! Form::text('phone[]', $contact->phone, ['class' => 'form-control', 'disabled']) !!}
         </div>
 
         <hr>
@@ -43,7 +43,7 @@
                 @endif
             </div>
         </div>
-        {{ Form::close() }}
+        {!! Form::close() !!}
     </div>
 </div>
 <div class="modal fade" id="add-contact" tabindex="-1" role="dialog" aria-labelledby="loginLabel" aria-hidden="true">
@@ -55,23 +55,23 @@
             </div>
             <div class="modal-body">
                 <div id="contact-error" class="alert alert-danger"></div>
-                {{ Form::open(['class' => 'form form-vertical', 'role' => 'form', 'id' => 'contact-form']) }}
+                {!! Form::open(['class' => 'form form-vertical', 'role' => 'form', 'id' => 'contact-form']) !!}
 
-                {{ Form::hidden('user_id', $session->registrant->id) }}
+                {!! Form::hidden('user_id', $session->registrant->id) !!}
 
                 <div class="form-group">
-                    {{ Form::label('Name') }}
-                    {{ Form::text('name', null, ['class' => 'form-control']) }}
+                    {!! Form::label('Name') !!}
+                    {!! Form::text('name', null, ['class' => 'form-control']) !!}
                     <span class="help-block">Enter contacts full name</span>
                 </div>
 
                 <div class="form-group">
-                    {{ Form::label('Phone') }}
-                    {{ Form::text('phone', null, ['class' => 'form-control']) }}
+                    {!! Form::label('Phone') !!}
+                    {!! Form::text('phone', null, ['class' => 'form-control']) !!}
                     <span class="help-block">Enter contacts phone number ###-###-####</span>
                 </div>
 
-                {{ Form::close() }}
+                {!! Form::close() !!}
             </div>
 
             <div class="modal-footer">
@@ -114,7 +114,7 @@
             $.ajax({
                 url: '{{ route('profile_remove_contact') }}',
                 type: 'post',
-                data: { '_token': '{{{ csrf_token() }}}', 'contact_id': contactId },
+                data: { '_token': '{{ csrf_token() }}', 'contact_id': contactId },
                 success: function (resp) {
                     if (resp.status == 'success') {
                         window.location.reload();

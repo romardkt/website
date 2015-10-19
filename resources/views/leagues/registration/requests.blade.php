@@ -21,10 +21,10 @@
             </thead>
             <tbody>
                 @foreach($requests as $player => $data)
-                <tr id="request-{{{ $data['member'] }}}">
-                    <td>{{{ $player }}}</td>
-                    <td>{{{ $data['requested']['name'] }}}</td>
-                    <td class="text-center">{{{ (new DateTime($data['registered_at']))->format('M j Y h:i A') }}}</td>
+                <tr id="request-{{ $data['member'] }}">
+                    <td>{{ $player }}</td>
+                    <td>{{ $data['requested']['name'] }}</td>
+                    <td class="text-center">{{ (new DateTime($data['registered_at']))->format('M j Y h:i A') }}</td>
                     <td>
                         <a title="Assign to team" class="btn btn-success" href="{{ route('league_requests_accept', [$league->slug, $data['member']]) }}"><i class="fa fa-fw fa-lg fa-check"></i> Accept</a>
                     </td>

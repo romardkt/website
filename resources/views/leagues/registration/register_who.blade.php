@@ -11,17 +11,17 @@
 
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::open(['class' => 'form form-vertical', 'role' => 'form']) }}
+        {!! Form::open(['class' => 'form form-vertical', 'role' => 'form']) !!}
 
         <legend>Select who to register as</legend>
 
         <div class="form-group">
-            {{ Form::label('Available players')}}
-            @foreach(User::fetchRegistrantsForRadio('user') as $name => $user)
+            {!! Form::label('Available players') !!}
+            @foreach(Cupa\User::fetchRegistrantsForRadio('user') as $name => $user)
             <div class="checkbox">
-                {{ Form::radio('user', $user['value']) }} {{ $name }}
+                {!! Form::radio('user', $user['value']) !!} {{ $name }}
             </div>
             @endforeach
         </div>
@@ -38,6 +38,6 @@
                 <button type="submit" class="btn btn-primary">Next <i class="fa fa-fw fa-lg fa-arrow-right"></i></button>
             </div>
         </div>
-        {{ Form::close() }}
+        {!! Form::close() !!}
     </div>
 </div>

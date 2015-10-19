@@ -38,13 +38,13 @@
 
         <div class="form-group">
             {!! Form::label('Your Email') !!}
-            {!! Form::text('from', (isset($isAuthorized['userData'])) ? $isAuthorized['userData']->email : null, ['class' => 'form-control']) !!}
+            {!! Form::text('from', (isset(Auth::check())) ? Auth::user()->email : null, ['class' => 'form-control']) !!}
             <span class="help-block">Make sure this is correct to receive a reply</span>
         </div>
 
         <div class="form-group">
             {!! Form::label('Your Name') !!}
-            {!! Form::text('name', (isset($isAuthorized['userData'])) ? $isAuthorized['userData']->fullname() : null, ['class' => 'form-control']) !!}
+            {!! Form::text('name', (isset(Auth::check())) ? Auth::user()->fullname() : null, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">

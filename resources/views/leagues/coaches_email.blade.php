@@ -9,28 +9,28 @@
 @include('leagues.header')
 <div class="row">
     <div class="col-sm-offset-2 col-sm-8">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::open(['class' => 'form-vertical', 'role'=> 'form']) }}
+        {!! Form::open(['class' => 'form-vertical', 'role'=> 'form']) !!}
 
         <div class="form-group">
-            {{ Form::label('From Email Address') }}
-            {{ Form::email('from', $isAuthorized['userData']->email, ['class' => 'form-control']) }}
+            {!! Form::label('From Email Address') !!}
+            {!! Form::email('from', Auth::user()->email, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('From Name') }}
-            {{ Form::text('name', $isAuthorized['userData']->fullname(), ['class' => 'form-control']) }}
+            {!! Form::label('From Name') !!}
+            {!! Form::text('name', Auth::user()->fullname(), ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Subject') }}
-            {{ Form::text('subject', '[CUPA] ' . $league->year . ' Coaching Requirements', ['class' => 'form-control']) }}
+            {!! Form::label('Subject') !!}
+            {!! Form::text('subject', '[CUPA] ' . $league->year . ' Coaching Requirements', ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Message') }}
-            {{ Form::textarea('message', null, ['class' => 'form-control']) }}
+            {!! Form::label('Message') !!}
+            {!! Form::textarea('message', null, ['class' => 'form-control']) !!}
             <span class="help-block">This will be added to the message of what requirements the coach is missing</span>
         </div>
 
@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        {{ Form::close() }}
+        {!! Form::close() !!}
     </div>
 </div>
 @endsection

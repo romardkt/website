@@ -7,8 +7,8 @@
     </div>
 </div>
 <hr/>
-@include('leagues.register_menu')
-@include('leagues.register_' . $state)
+@include('leagues.registration.register_menu')
+@include('leagues.registration.register_' . $state)
 @endsection
 
 @section('page-scripts')

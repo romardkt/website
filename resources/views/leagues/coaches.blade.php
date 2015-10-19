@@ -7,7 +7,7 @@
     </div>
 </div>
 @include('leagues.header')
-@if($isAuthorized['manager'])
+@can('is-manager')
 <div class="row">
     <div class="col-xs-12 text-right">
         <div class="btn-group">
@@ -40,7 +40,7 @@
                     <td class="{{{ $status['status'] }}}"><strong>{{{ $status['msg'] }}}</strong></td>
                     <td class="text-center">
 
-                        @if($isAuthorized['manager'] || $isAuthorized['background'] || ($isAuthorized['coach'] && $coach->user_id == $isAuthorized['userData']->id))
+                        @if(Gate::allows('edit', $league) || (Gate::allows('coach', $league) && $coach->user_id == Auth::id()))
                         <a class="btn btn-default" href="{{ route('league_coaches_edit', [$league->slug, $coach->id])}}"><i class="fa fa-lg fa-fw fa-edit"></i> Edit</a>
                         @endif
                     </td>
