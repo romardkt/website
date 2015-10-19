@@ -50,6 +50,11 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $hidden = ['password', 'remember_token'];
 
+    public function parentObj()
+    {
+        return $this->belongsTo('Cupa\User', 'parent');
+    }
+
     public function roles()
     {
         return $this->hasMany('Cupa\UserRole');
@@ -319,5 +324,10 @@ class User extends Model implements AuthenticatableContract,
     public function fetchAllLeagues()
     {
         return LeagueMember::fetchAllLeagues($this->fetchAllIds(), true);
+    }
+
+    public function isLeagueMember($leagueId)
+    {
+        return LeagueMember::isMember($leagueId, $this->id);
     }
 }

@@ -17,4 +17,9 @@ class LeagueLocation extends Model
         'num_fields',
         'link',
     ];
+
+    public function location()
+    {
+        return $this->belongsTo('Cupa\Location');
+    }
 }

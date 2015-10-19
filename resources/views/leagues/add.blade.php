@@ -8,68 +8,68 @@
 </div>
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::open(['class' => 'form form-vertical', 'role' => 'form']) }}
+        {!! Form::open(['class' => 'form form-vertical', 'role' => 'form']) !!}
 
         <legend>League Infromation</legend>
 
         <div class="form-group">
-            {{ Form::label('League Type') }}
-            {{ Form::select('type', $types, null, ['class' => 'form-control']) }}
+            {!! Form::label('League Type') !!}
+            {!! Form::select('type', $types, null, ['class' => 'form-control']) !!}
             <span class="help-block">Select the type of league</span>
         </div>
 
         <div class="form-group">
-            {{ Form::label('Year') }}
-            {{ Form::select('year', $years, null, ['class' => 'form-control']) }}
+            {!! Form::label('Year') !!}
+            {!! Form::select('year', $years, null, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('League Generation') }}
+            {!! Form::label('League Generation') !!}
             <div class="checkbox">
-                {{ Form::radio('league_type', 0, true, ['id' => 'new-league-radio']) }} {{ Form::label('new-league-radio', 'New League') }}
+                {!! Form::radio('league_type', 0, true, ['id' => 'new-league-radio']) !!} {!! Form::label('new-league-radio', 'New League') !!}
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {{ Form::radio('league_type', 1, false, ['id' => 'copy-league-radio']) }} {{ Form::label('copy-league-radio', 'Copy From Previous') }}
+                {!! Form::radio('league_type', 1, false, ['id' => 'copy-league-radio']) !!} {!! Form::label('copy-league-radio', 'Copy From Previous') !!}
             </div>
         </div>
 
         <div id="new-league">
             <div class="form-group">
-                {{ Form::label('Season') }}
-                {{ Form::select('season', $seasons, null, ['class' => 'form-control']) }}
+                {!! Form::label('Season') !!}
+                {!! Form::select('season', $seasons, null, ['class' => 'form-control']) !!}
                 <span class="help-block">Select the season the league is played in</span>
             </div>
 
             <div class="form-group">
-                {{ Form::label('Director(s)') }}
-                {{ Form::hidden('directors', $initial, ['id' => 'directors']) }}
+                {!! Form::label('Director(s)') !!}
+                {!! Form::hidden('directors', $initial, ['id' => 'directors']) !!}
                 <span class="help-block">Start by typing a directors name</span>
             </div>
 
             <div class="form-group">
-                {{ Form::label('Day Played') }}
-                {{ Form::select('day', $days, null, ['class' => 'form-control']) }}
+                {!! Form::label('Day Played') !!}
+                {!! Form::select('day', $days, null, ['class' => 'form-control']) !!}
                 <span class="help-block">Select the day this league is played</span>
             </div>
 
             <div class="form-group">
-                {{ Form::label('League Name') }}
-                {{ Form::text('name', null, ['class' => 'form-control']) }}
+                {!! Form::label('League Name') !!}
+                {!! Form::text('name', null, ['class' => 'form-control']) !!}
                 <span class="help-block">Enter a league name (Optional)</span>
             </div>
 
             <div class="form-group">
-                {{ Form::label('Contact Email') }}
-                {{ Form::email('override_email', null, ['class' => 'form-control']) }}
+                {!! Form::label('Contact Email') !!}
+                {!! Form::email('override_email', null, ['class' => 'form-control']) !!}
                 <span class="help-block">Enter a SINGLE contact email for league (Optional)</span>
             </div>
         </div>
 
         <div id="copy-league">
             <div class="form-group">
-                {{ Form::label('Copy From') }}
-                {{ Form::select('copy', $prevLeagues, null, ['class' => 'form-control']) }}
+                {!! Form::label('Copy From') !!}
+                {!! Form::select('copy', $prevLeagues, null, ['class' => 'form-control']) !!}
                 <span class="help-block">Select the type of league to copy from</span>
             </div>
         </div>
@@ -87,7 +87,7 @@
             </div>
         </div>
 
-        {{ Form::close() }}
+        {!! Form::close() !!}
     </div>
 </div>
 <hr/>

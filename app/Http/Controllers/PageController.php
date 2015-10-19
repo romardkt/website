@@ -4,6 +4,7 @@ namespace Cupa\Http\Controllers;
 
 use Cupa\Http\Requests\ContactRequest;
 use Cupa\Http\Requests\LocationAddRequest;
+use Cupa\Http\Requests\PageEditRequest;
 use Cupa\League;
 use Cupa\Location;
 use Cupa\Page;
@@ -367,31 +368,21 @@ class PageController extends Controller
     {
         $page = Page::fetchBy('route', 'leagues_dayton');
 
-        if (Request::getMethod() == 'POST') {
-            // get the posted data
-            $input = $request->all();
-
-            // set the rules for the form
-            $rules = [
-                'display' => 'required',
-                'content' => 'required',
-            ];
-
-            // validate the form
-            $validator = Validator::make($input, $rules);
-            if ($validator->fails()) {
-                return redirect()->route('leagues_dayton_edit')->withInput()->withErrors($validator);
-            }
-
-            $page->display = $input['display'];
-            $page->content = $input['content'];
-            $page->save();
-
-            Session::flash('msg-success', $page->display.' updated.');
-
-            return redirect()->route('leagues_dayton');
-        }
-
         return view('page.dayton_edit', compact('page'));
+    }
+
+    public function postDaytonEdit(PageEditRequest $request)
+    {
+        // get the posted data
+        $input = $request->all();
+
+        $page = Page::fetchBy('route', 'leagues_dayton');
+        $page->display = $input['display'];
+        $page->content = $input['content'];
+        $page->save();
+
+        Session::flash('msg-success', $page->display.' updated.');
+
+        return redirect()->route('leagues_dayton');
     }
 }

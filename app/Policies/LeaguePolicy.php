@@ -36,6 +36,23 @@ class LeaguePolicy
         return true;
     }
 
+    public function coach(User $user, League $league)
+    {
+        if ($league->is_youth) {
+            if ($league->coaches()->contains('user_id', $user->id)) {
+                return true;
+            }
+
+            foreach ($user->roles()->get() as $userRole) {
+                if ($userRole->role()->first()->name == 'background') {
+                    return true;
+                }
+            }
+        }
+
+        return $this->isAuthorized($user, $league);
+    }
+
     public function create(User $user, League $league)
     {
         return $this->isAuthorized($user, $league);

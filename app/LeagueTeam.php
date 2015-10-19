@@ -45,4 +45,11 @@ class LeagueTeam extends Model
     {
         return $this->hasOne('Cupa\LeagueTeamRecord');
     }
+
+    public function points()
+    {
+        $points = LeagueTeamRecord::fetchRecord($this->id);
+
+        return ($points) ? $points->points() : '0 - 0 (0)';
+    }
 }

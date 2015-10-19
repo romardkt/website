@@ -2,9 +2,9 @@
     @if(count($records))
     @foreach($records as $record)
     <div class="list-group-item record">
-        <span class="badge {{{ $record['result'] }}}">{{{ $record['score'] }}}</span>
-        <h4 class="list-group-item-heading">{{{ $record['team'] }}}</h4>
-        <p class="text-muted">Week {{{ $record['week'] }}}, Field {{{ $record['field'] }}}</p>
+        <span class="badge {{ $record['result'] }}">{{ $record['score'] }}</span>
+        <h4 class="list-group-item-heading">{{ $record['team'] }}</h4>
+        <p class="text-muted">Week {{ $record['week'] }}, Field {{ $record['field'] }}</p>
     </div>
     @endforeach
     @else

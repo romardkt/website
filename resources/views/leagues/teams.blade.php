@@ -7,7 +7,7 @@
     </div>
 </div>
 @include('leagues.header')
-@if($isAuthorized['manager'])
+@can('is-manager')
 <div class="row">
     <div class="col-xs-12 text-right">
         <div class="btn-group">
@@ -26,12 +26,12 @@
                 <img src="{{ asset($team->logo) }}"/>
             </div>
             <div class="col-sm-8 col-lg-9 title-container">
-                <p style="color: {{ $team->color_code }};" class="title">{{{ $team->name }}}</p>
+                <p style="color: {{ $team->color_code }};" class="title">{{ $team->name }}</p>
                 <div class="row text-muted ranks">
                     <div class="col-xs-12">
-                        <p>Rank: <strong class="text-info">{{{ $i + 1 }}}</strong></p>
-                        <p>W/L: <strong class="text-info">{{{ $team->record->record() }}}</strong></p>
-                        <p>Points: <strong class="text-info">{{{ $team->points() }}}</strong></p>
+                        <p>Rank: <strong class="text-info">{{ $i + 1 }}</strong></p>
+                        <p>W/L: <strong class="text-info">{{ $team->record->record() }}</strong></p>
+                        <p>Points: <strong class="text-info">{{ $team->points() }}</strong></p>
                     </div>
                 </div>
                 <p class="captains">
@@ -41,9 +41,9 @@
                         <dd>
                             @foreach ($team->headCoaches() as $coach)
                             @if($coach->user->email)
-                            {{ secureEmail($coach->user->email, $coach->user->fullname()) }}
+                            {!! secureEmail($coach->user->email, $coach->user->fullname()) !!}
                             @else
-                            {{ secureEmail($coach->user->parentObj->email, $coach->user->fullname()) }}
+                            {!! secureEmail($coach->user->parentObj->email, $coach->user->fullname()) !!}
                             @endif
                             @endforeach
                         </dd>
@@ -51,9 +51,9 @@
                         <dd>
                             @foreach ($team->asstCoaches() as $coach)
                             @if($coach->user->email)
-                            {{ secureEmail($coach->user->email, $coach->user->fullname()) }}
+                            {!! secureEmail($coach->user->email, $coach->user->fullname()) !!}
                             @else
-                            {{ secureEmail($coach->user->parentObj->email, $coach->user->fullname()) }}
+                            {!! secureEmail($coach->user->parentObj->email, $coach->user->fullname()) !!}
                             @endif
                             @endforeach
                         </dd>
@@ -62,9 +62,9 @@
                         <dd>
                             @foreach ($team->captains() as $captain)
                             @if($captain->user->email)
-                            {{ secureEmail($captain->user->email, $captain->user->fullname()) }}
+                            {!! secureEmail($captain->user->email, $captain->user->fullname()) !!}
                             @else
-                            {{ secureEmail($captain->user->parentObj->email, $captain->user->fullname()) }}
+                            {!! secureEmail($captain->user->parentObj->email, $captain->user->fullname()) !!}
                             @endif
                             @endforeach
                         </dd>
@@ -76,9 +76,9 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="btn-group btn-group-justified">
-                    <a class="btn btn-default show-players-btn" href="#" data-team="{{{ $team->id }}}" title="Show Players"><i class="fa fa-lg fa-fw fa-user"></i><span class="hidden-xs hidden-sm"> Players</span></a>
-                    <a class="btn btn-default show-record-btn" href="#" data-team="{{{ $team->id }}}" title="Show Record"><i class="fa fa-lg fa-fw fa-list"></i><span class="hidden-xs hidden-sm"> Record</span></a>
-                    @if($isAuthorized['manager'])
+                    <a class="btn btn-default show-players-btn" href="#" data-team="{{ $team->id }}" title="Show Players"><i class="fa fa-lg fa-fw fa-user"></i><span class="hidden-xs hidden-sm"> Players</span></a>
+                    <a class="btn btn-default show-record-btn" href="#" data-team="{{ $team->id }}" title="Show Record"><i class="fa fa-lg fa-fw fa-list"></i><span class="hidden-xs hidden-sm"> Record</span></a>
+                    @can('is-manager')
                     <a class="btn btn-default" href="{{ route('league_team_edit', [$league->slug, $team->id]) }}" title="Edit Team"><i class="fa fa-lg fa-fw fa-edit"></i><span class="hidden-xs hidden-sm"> Edit</span></a>
                     <a class="btn btn-default" href="{{ route('league_team_remove', [$league->slug, $team->id]) }}" onclick="return confirm('Are you sure you want to delete this team?');" title="Remove Team"><i class="text-danger fa fa-lg fa-fw fa-trash-o"></i><span class="hidden-xs hidden-sm text-danger"> Delete</span></a>
                     @endif

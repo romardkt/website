@@ -2,8 +2,8 @@
     @if(count($players))
     @foreach($players as $player)
     <a class="list-group-item" href="{{ route('profile_public', [$player['id']]) }}">
-        <span class="badge">{{{ $player['height'] }}}</span>
-        <p><strong>{{{ $player['name'] }}}</strong> - {{ $player['level'] }}</p>
+        <span class="badge">{{ $player['height'] }}</span>
+        <p><strong>{{ $player['name'] }}</strong> - {!! $player['level'] !!}</p>
     </a>
     @endforeach
     @else

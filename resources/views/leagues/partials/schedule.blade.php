@@ -1,29 +1,29 @@
         <div class="form-group">
-            {{ Form::label('Date')}}
-            {{ Form::text('played_at_date', (isset($game->played_at)) ? convertDate($game->played_at, 'm/d/Y') : null, ['class' => 'datepicker text-center form-control']) }}
+            {!! Form::label('Date') !!}
+            {!! Form::text('played_at_date', (isset($game->played_at)) ? convertDate($game->played_at, 'm/d/Y') : null, ['class' => 'datepicker text-center form-control']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Time')}}
-            {{ Form::text('played_at_time', (isset($game->played_at)) ? convertDate($game->played_at, 'h:i A') : null, ['class' => 'clockpicker text-center form-control']) }}
+            {!! Form::label('Time')!!}
+            {!! Form::text('played_at_time', (isset($game->played_at)) ? convertDate($game->played_at, 'h:i A') : null, ['class' => 'clockpicker text-center form-control']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Week #')}}
-            {{ Form::number('week', null, ['class' => 'text-center form-control']) }}
+            {!! Form::label('Week #')!!}
+            {!! Form::number('week', null, ['class' => 'text-center form-control']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Field #')}}
-            {{ Form::number('field', null, ['class' => 'text-center form-control']) }}
+            {!! Form::label('Field #')!!}
+            {!! Form::number('field', null, ['class' => 'text-center form-control']) !!}
         </div>
 
         <div class="form-group">
-            {{ Form::label('Game Placeholder') }}
+            {!! Form::label('Game Placeholder') !!}
             <div class="radio">
-                <p>{{ Form::radio('status', 'game_on', (!isset($game->status) || $game->status == 'game_on') ? true : false, ['class' => 'game-status']) }} Game On!</p>
-                <p>{{ Form::radio('status', 'canceled', (isset($game->status) && $game->status == 'canceled') ? true : false, ['class' => 'game-status']) }} Games Canceled</p>
-                <p>{{ Form::radio('status', 'playoff', (isset($game->status) && $game->status == 'playoff') ? true : false, ['class' => 'game-status']) }} Playoff Placeholder</p>
+                <p>{!! Form::radio('status', 'game_on', (!isset($game->status) || $game->status == 'game_on') ? true : false, ['class' => 'game-status']) !!} Game On!</p>
+                <p>{!! Form::radio('status', 'canceled', (isset($game->status) && $game->status == 'canceled') ? true : false, ['class' => 'game-status']) !!} Games Canceled</p>
+                <p>{!! Form::radio('status', 'playoff', (isset($game->status) && $game->status == 'playoff') ? true : false, ['class' => 'game-status']) !!} Playoff Placeholder</p>
             </div>
         </div>
 
@@ -40,19 +40,19 @@
             <?php $values[] = $team->league_team_id; ?>
             @endforeach
             @endif
-            {{ Form::label(ucfirst($teamType) . ' Pods') }}
-            {{ Form::select($teamType . '_team[]', $leagueTeams, $values, ['class' => 'form-control select2', 'multiple']) }}
+            {!! Form::label(ucfirst($teamType) . ' Pods') !!}
+            {!! Form::select($teamType . '_team[]', $leagueTeams, $values, ['class' => 'form-control select2', 'multiple']) !!}
             <span class="help-block">Click to select the teams</span>
             @else
             <?php $currentTeam = (!empty($$options)) ? array_shift($$options) : null; ?>
-            {{ Form::label(ucfirst($teamType) . ' Team') }}
-            {{ Form::select($teamType . '_team[]', $leagueTeams, (!empty($currentTeam->league_team_id)) ? $currentTeam->league_team_id : null, ['class' => 'form-control select2']) }}
+            {!! Form::label(ucfirst($teamType) . ' Team') !!}
+            {!! Form::select($teamType . '_team[]', $leagueTeams, (!empty($currentTeam->league_team_id)) ? $currentTeam->league_team_id : null, ['class' => 'form-control select2']) !!}
             @endif
         </div>
 
         <div class="form-group team-select">
-            {{ Form::label(ucfirst($teamType) . ' Score') }}
-            {{ Form::number($teamType . '_score', (!empty($currentTeam->score)) ? $currentTeam->score : null, ['class' => 'form-control']) }}
+            {!! Form::label(ucfirst($teamType) . ' Score') !!}
+            {!! Form::number($teamType . '_score', (!empty($currentTeam->score)) ? $currentTeam->score : null, ['class' => 'form-control']) !!}
             <span class="help-block">Leave blank for no score</span>
         </div>
         @endforeach
