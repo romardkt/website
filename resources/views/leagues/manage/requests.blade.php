@@ -41,7 +41,7 @@
 
 @section('page-scripts')
 <script>
-$('.accept-btn').on('click touchstart', function (e) {
+$('.accept-btn').on('click', function (e) {
     e.preventDefault();
     var memberId = $(this).data('member');
 

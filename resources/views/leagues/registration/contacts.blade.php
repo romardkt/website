@@ -91,7 +91,7 @@
         var data = $('#contact-form').serialize();
 
         $.ajax({
-            url: '{{ route('profile_add_contact') }}',
+            url: '{{ route('profile_contact_add_post') }}',
             type: 'post',
             data: data,
             success: function (resp) {
@@ -109,12 +109,10 @@
     $('.remove-contact-btn').on('click touchstart', function (e) {
         e.preventDefault();
         var contactId = $(this).data('contact');
-        console.log('here');
         if (confirm('Are you sure?')) {
             $.ajax({
-                url: '{{ route('profile_remove_contact') }}',
-                type: 'post',
-                data: { '_token': '{{ csrf_token() }}', 'contact_id': contactId },
+                url: '{{ route('profile_contacts') }}/' + contactId + '/remove',
+                type: 'get',
                 success: function (resp) {
                     if (resp.status == 'success') {
                         window.location.reload();

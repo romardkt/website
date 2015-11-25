@@ -6,6 +6,7 @@ use Cupa\Http\Requests\ContactRequest;
 use Cupa\Http\Requests\LocationAddRequest;
 use Cupa\Http\Requests\PageEditRequest;
 use Cupa\League;
+use Cupa\LeagueMember;
 use Cupa\Location;
 use Cupa\Page;
 use Cupa\Paypal;
@@ -210,7 +211,7 @@ class PageController extends Controller
     private function _paypalPayment($paypalId)
     {
         $paypalConfig = Config::get('cupa.paypal');
-        $server = (App::environment() == 'prod') ? 'https://cincyultimate.org' : 'http://cupa-recode.dev';
+        $server = (App::environment() == 'prod') ? 'https://cincyultimate.org' : Config::get('app.url');
         $paypalConfig['return_url'] = $server.'/paypal/success/'.$paypalId;
         $paypalConfig['cancel_url'] = $server.'/paypal/fail/'.$paypalId;
         $paypalConfig['use_proxy'] = null;

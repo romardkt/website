@@ -27,17 +27,17 @@
 
         <div class="form-group">
             {!! Form::label('Birthday') !!}
-            {!! Form::input('date', 'birthday', convertDate($session->registrant->birthday, 'm/d/Y'), ['class' => 'form-control datepicker text-center']) }}
+            {!! Form::input('date', 'birthday', convertDate($session->registrant->birthday, 'm/d/Y'), ['class' => 'form-control datepicker text-center']) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label('Gender') !!}
             <div class="checkbox">
-                {!! Form::radio('gender', 'Male', $session->registrant->gender == 'Male', ['id' => 'gender-male']) }} &nbsp;
-                {!! Form::label('gender-male', 'Male') }}
+                {!! Form::radio('gender', 'Male', $session->registrant->gender == 'Male', ['id' => 'gender-male']) !!} &nbsp;
+                {!! Form::label('gender-male', 'Male') !!}
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                {!! Form::radio('gender', 'Female', $session->registrant->gender == 'Female', ['id' => 'gender-female']) }} &nbsp;
-                {!! Form::label('gender-female', 'Female') }}
+                {!! Form::radio('gender', 'Female', $session->registrant->gender == 'Female', ['id' => 'gender-female']) !!} &nbsp;
+                {!! Form::label('gender-female', 'Female') !!}
             </div>
         </div>
 

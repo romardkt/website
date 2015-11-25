@@ -206,7 +206,11 @@ class ProfileController extends Controller
 
         Session::flash('msg-success', 'New contact created');
 
-        return redirect()->route('profile_contacts');
+        if ($request->ajax()) {
+            return response()->json(['status' => 'success']);
+        } else {
+            return redirect()->route('profile_contacts');
+        }
     }
 
     public function contactEdit(UserContact $contact)
@@ -226,11 +230,15 @@ class ProfileController extends Controller
         return redirect()->route('profile_contacts');
     }
 
-    public function contactRemove(UserContact $contact)
+    public function contactRemove(UserContact $contact, Request $request)
     {
         $contact->delete();
         Session::flash('msg-success', 'Minor removed');
 
-        return redirect()->route('profile_contacts');
+        if ($request->ajax()) {
+            return response()->json(['status' => 'success']);
+        } else {
+            return redirect()->route('profile_contacts');
+        }
     }
 }

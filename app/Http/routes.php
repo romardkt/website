@@ -177,7 +177,8 @@ Route::group(['prefix' => 'leagues'], function () {
     Route::post('{slug}/coaches/email', ['as' => 'league_coaches_email_post', 'uses' => 'League\PageController@postCoachesEmail']);
 
     // registration
-    Route::any('{slug}/register/success', ['as' => 'league_success', 'uses' => 'League\RegistrationController@success']);
+    Route::get('{slug}/register/success', ['as' => 'league_success', 'uses' => 'League\RegistrationController@success']);
+    Route::post('{slug}/register/success', ['as' => 'league_success_post', 'uses' => 'League\RegistrationController@postSuccess']);
     Route::any('{slug}/register/{state?}', ['as' => 'league_register', 'uses' => 'League\RegistrationController@register']);
 
     // Management
@@ -194,24 +195,26 @@ Route::group(['prefix' => 'leagues'], function () {
     Route::post('{slug}/schedule/edit/{league_game_id}', ['as' => 'league_schedule_edit_post', 'uses' => 'League\ManageController@postScheduleEdit']);
     Route::get('{slug}/schedule/remove/{league_game_id}', ['as' => 'league_schedule_remove', 'uses' => 'League\ManageController@scheduleRemove']);
 
-    Route::any('{slug}/schedule/generate', ['as' => 'league_schedule_generate', 'uses' => 'LeagueController@schedule_generate']);
-    Route::any('{slug}/edit/{type}', ['as' => 'league_edit', 'uses' => 'LeagueController@league_edit']);
-    Route::any('{slug}/coaches/{memberId}/edit', ['as' => 'league_coaches_edit', 'uses' => 'LeagueController@coaches_edit']);
-    Route::get('{slug}/shirts', ['as' => 'league_shirts', 'uses' => 'LeagueController@shirts']);
-    Route::get('{slug}/shirts/download', ['as' => 'league_shirts_download', 'uses' => 'LeagueController@shirts_download']);
-    Route::get('{slug}/emergency', ['as' => 'league_emergency', 'uses' => 'LeagueController@emergency']);
-    Route::get('{slug}/emergency/download', ['as' => 'league_emergency_download', 'uses' => 'LeagueController@emergency_download']);
-    Route::get('{slug}/requests', ['as' => 'league_requests', 'uses' => 'LeagueController@requests']);
-    Route::get('{slug}/requests/accept/{memberId?}', ['as' => 'league_requests_accept', 'uses' => 'LeagueController@requests_accept']);
-    Route::get('{slug}/players', ['as' => 'league_players', 'uses' => 'LeagueController@players']);
-    Route::get('{slug}/players/download', ['as' => 'league_players_download', 'uses' => 'LeagueController@players_download']);
-    Route::get('{slug}/status/{all}/download', ['as' => 'league_status_download', 'uses' => 'LeagueController@status_download']);
-    Route::get('{slug}/status/{all?}', ['as' => 'league_status', 'uses' => 'LeagueController@status']);
-    Route::post('{slug}/status/toggle', ['as' => 'league_status_toggle', 'uses' => 'LeagueController@status_toggle']);
-    Route::match(['get', 'post'], '{slug}/manage', ['as' => 'league_manage', 'uses' => 'LeagueController@manage']);
-    Route::get('{slug}/waitlist', ['as' => 'league_waitlist', 'uses' => 'LeagueController@waitlist']);
-    Route::get('{slug}/waitlist/download', ['as' => 'league_waitlist_download', 'uses' => 'LeagueController@waitlist_download']);
-    Route::get('{slug}/waitlist/accept/{member_id}', ['as' => 'league_waitlist_accept', 'uses' => 'LeagueController@waitlist_accept']);
+    //Route::any('{slug}/schedule/generate', ['as' => 'league_schedule_generate', 'uses' => 'LeagueController@schedule_generate']);
+
+    Route::any('{slug}/edit/{type}', ['as' => 'league_edit', 'uses' => 'League\EditController@handle']);
+
+    Route::any('{slug}/coaches/{memberId}/edit', ['as' => 'league_coaches_edit', 'uses' => 'LeagueController@coachesEdit']);
+    Route::get('{slug}/shirts', ['as' => 'league_shirts', 'uses' => 'League\ManageController@shirts']);
+    Route::get('{slug}/shirts/download', ['as' => 'league_shirts_download', 'uses' => 'League\ManageController@shirtsDownload']);
+    Route::get('{slug}/emergency', ['as' => 'league_emergency', 'uses' => 'League\ManageController@emergency']);
+    Route::get('{slug}/emergency/download', ['as' => 'league_emergency_download', 'uses' => 'League\ManageController@emergencyDownload']);
+    Route::get('{slug}/requests', ['as' => 'league_requests', 'uses' => 'League\ManageController@requests']);
+    Route::get('{slug}/requests/accept/{memberId?}', ['as' => 'league_requests_accept', 'uses' => 'League\ManageController@requestsAccept']);
+    Route::get('{slug}/players', ['as' => 'league_players', 'uses' => 'League\ManageController@players']);
+    Route::get('{slug}/players/download', ['as' => 'league_players_download', 'uses' => 'LeagueController@playersDownload']);
+    Route::get('{slug}/status/{all}/download', ['as' => 'league_status_download', 'uses' => 'League\ManageController@statusDownload']);
+    Route::get('{slug}/status/{all?}', ['as' => 'league_status', 'uses' => 'League\ManageController@status']);
+    Route::post('{slug}/status/toggle', ['as' => 'league_status_toggle', 'uses' => 'League\ManageController@statusToggle']);
+    Route::match(['get', 'post'], '{slug}/manage', ['as' => 'league_manage', 'uses' => 'League\ManageController@manage']);
+    Route::get('{slug}/waitlist', ['as' => 'league_waitlist', 'uses' => 'League\ManageController@waitlist']);
+    Route::get('{slug}/waitlist/download', ['as' => 'league_waitlist_download', 'uses' => 'League\ManageController@waitlistDownload']);
+    Route::get('{slug}/waitlist/accept/{member_id}', ['as' => 'league_waitlist_accept', 'uses' => 'League\ManageController@waitlistAccept']);
 
     // Managing
     Route::any('{slug}/archive', ['as' => 'league_archive', 'uses' => 'League\AdminController@archive']);

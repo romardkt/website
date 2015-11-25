@@ -16,7 +16,7 @@
 
         @foreach(json_decode($league->registration->questions) as $i => $questionData)
         <?php list($questionId, $required) = explode('-', $questionData); ?>
-        <?php $question = LeagueQuestion::find($questionId); ?>
+        <?php $question = Cupa\LeagueQuestion::find($questionId); ?>
         <?php $i = ($i + 1).'.) '; ?>
         <div class="form-group">
             {!! Form::label($i . $question->title) !!}
@@ -24,14 +24,14 @@
             {!! Form::text($question->name, null, ['class' => 'form-control', 'required']) !!}
             @elseif ($question->type == 'boolean')
             <div class="checkbox">
-                {!! Form::radio($question->name, 'No', null, ['id' => $question->name . '-no']) }} &nbsp;{!! Form::label($question->name. '-no', 'No') !!}
+                {!! Form::radio($question->name, 'No', null) !!} No
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                {!! Form::radio($question->name, 'Yes', null, ['id' => $question->name . '-yes']) }} &nbsp;{!! Form::label($question->name . '-yes', 'Yes') !!}
+                {!! Form::radio($question->name, 'Yes', null) !!} Yes
             </div>
             @elseif ($question->type == 'multiple')
                 @foreach(json_decode($question->answers, true) as $value => $answer)
             <div class="checkbox">
-                {!! Form::radio($question->name, $value, false) }} {{ $answer !!}
+                {!! Form::radio($question->name, $value, false) !!} {{ $answer }}
             </div>
                 @endforeach
             @elseif ($question->type == 'textarea')

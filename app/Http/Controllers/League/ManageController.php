@@ -9,8 +9,12 @@ use Cupa\League;
 use Cupa\LeagueGame;
 use Cupa\LeagueGameTeam;
 use Cupa\LeagueMember;
+use Cupa\LeagueQuestion;
 use Cupa\LeagueTeam;
 use Cupa\Page;
+use Cupa\UserBalance;
+use Cupa\UserWaiver;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -22,6 +26,7 @@ class ManageController extends Controller
     public function teamAdd($slug, Request $request)
     {
         $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
         if (!$league) {
             Session::flash('msg-error', 'Could not find league');
 
@@ -38,7 +43,6 @@ class ManageController extends Controller
     public function postTeamAdd($slug, LeagueTeamRequest $request)
     {
         $league = League::fetchBySlug($slug);
-        $this->authorize('edit', $league);
         $input = $request->all();
 
         if ($league->is_youth) {
@@ -82,6 +86,7 @@ class ManageController extends Controller
     public function teamEdit($slug, LeagueTeam $team, Request $request)
     {
         $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
         $page = Page::fetchBy('route', 'leagues_'.$league->season);
         $actions = null;
 
@@ -123,7 +128,6 @@ class ManageController extends Controller
     public function postTeamEdit($slug, LeagueTeam $team, LeagueTeamRequest $request)
     {
         $league = League::fetchBySlug($slug);
-        $this->authorize('edit', $league);
         $input = $request->all();
 
         $input['logo'] = $request->file('logo');
@@ -306,5 +310,568 @@ class ManageController extends Controller
         Session::flash('msg-success', 'Game removed');
 
         return redirect()->route('league_schedule', [$league->slug]);
+    }
+
+    public function shirts($slug)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
+        if (!$league) {
+            Session::flash('msg-error', 'Could not find league');
+
+            return redirect()->route('leagues');
+        }
+
+        $data = $league->fetchColorCounts();
+
+        return view('leagues.manage.shirts', compact('league', 'data'));
+    }
+
+    public function shirtsDownload($slug)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
+        if (!$league) {
+            Session::flash('msg-error', 'Could not find league');
+
+            return redirect()->route('leagues');
+        }
+
+        $data = $league->fetchColorCounts();
+        $file = storage_path().'/app/'.str_slug($league->displayName().' '.(new DateTime())->format('Y-m-d').' shirts').'.csv';
+
+        $fp = fopen($file, 'w');
+        if ($fp) {
+            $line = ['color'];
+            foreach (array_slice($data, 0, 1)[0]['sizes'] as $abbr => $counts) {
+                $line[] = ucfirst($abbr);
+            }
+            fputcsv($fp, $line);
+
+            foreach ($data as $sizes) {
+                $line = [ucwords($sizes['color'])];
+
+                foreach ($sizes['sizes'] as $counts) {
+                    $line[] = $counts;
+                }
+
+                fputcsv($fp, $line);
+            }
+            fclose($fp);
+
+            return response()->download($file);
+        }
+
+        Session::flash('msg-error', 'Error downloading file');
+
+        return redirect()->route('league_shirts');
+    }
+
+    public function emergency($slug)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
+        if (!$league) {
+            Session::flash('msg-error', 'Could not find league');
+
+            return redirect()->route('leagues');
+        }
+
+        $contacts = $league->fetchEmergencyContacts();
+
+        return view('leagues.manage.emergency', compact('league', 'contacts'));
+    }
+
+    public function emergencyDownload($slug)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
+        if (!$league) {
+            Session::flash('msg-error', 'Could not find league');
+
+            return redirect()->route('leagues');
+        }
+
+        $contacts = $league->fetchEmergencyContacts();
+        $file = storage_path().'/app/'.str_slug($league->displayName().' '.(new DateTime())->format('Y-m-d').' emergency contacts').'.csv';
+
+        $fp = fopen($file, 'w');
+        if ($fp) {
+            $line = ['player', 'contacts'];
+            fputcsv($fp, $line);
+
+            foreach ($contacts as $player => $contact) {
+                $line = [$player];
+
+                $contactLine = [];
+                foreach ($contact as $data) {
+                    $contactLine[] = $data['name'].' ('.$data['phone'].')';
+                }
+                $line[] = implode(', ', $contactLine);
+                fputcsv($fp, $line);
+            }
+
+            fclose($fp);
+
+            return response()->download($file);
+        }
+
+        Session::flash('msg-error', 'Error downloading file');
+
+        return redirect()->route('league_shirts');
+    }
+
+    public function requests($slug)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
+        if (!$league) {
+            Session::flash('msg-error', 'Could not find league');
+
+            return redirect()->route('leagues');
+        }
+
+        if (!$league->user_teams) {
+            Session::flash('msg-error', 'This league does not support user selectable teams');
+
+            return redirect()->route('league_teams', [$league->slug]);
+        }
+
+        $requests = $league->fetchAllRequests();
+        $leagueTeams = $league->fetchTeamsForSelect();
+
+        return view('leagues.manage.requests', compact('league', 'requests', 'leagueTeams'));
+    }
+
+    public function requestsAccept($slug, $memberId)
+    {
+        $member = LeagueMember::find($memberId);
+        $this->authorize('edit', $member->league);
+        if ($member) {
+            $answers = json_decode($member->answers, true);
+            if ($member->league_team_id === null && isset($answers['user_teams'])) {
+                $member->league_team_id = $answers['user_teams'];
+                $member->save();
+                Session::flash('msg-success', 'Added player to team');
+            } else {
+                Session::flash('msg-error', 'Could not add player to team');
+            }
+
+            return redirect()->route('league_requests', [$slug]);
+        }
+    }
+
+    public function players($slug)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
+        if (!$league) {
+            Session::flash('msg-error', 'Could not find league');
+
+            return redirect()->route('leagues');
+        }
+
+        $players = LeagueMember::fetchAnswersByLeague($league->id);
+
+        return view('leagues.manage.players', compact('league', 'players'));
+    }
+
+    public function players_download($slug)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
+        if (!$league) {
+            Session::flash('msg-error', 'Could not find league');
+
+            return redirect()->route('leagues');
+        }
+
+        $players = LeagueMember::fetchAnswersByLeague($league->id);
+        $file = storage_path().'/app/'.str_slug($league->displayName().' '.(new DateTime())->format('Y-m-d').' players').'.csv';
+
+        $header = [
+            'email',
+            'first_name',
+            'last_name',
+            'gender',
+            'age',
+            'phone',
+            'nickname',
+            'height',
+            'level',
+            'experience',
+            'waiver',
+            'paid',
+            'team_name',
+        ];
+
+        $fp = fopen($file, 'w');
+        if ($fp) {
+            $line = $header;
+            $questions = json_decode($league->registration->questions, true);
+            foreach ($questions as $question) {
+                list($questionId, $required) = explode('-', $question);
+                $questionObject = LeagueQuestion::find($questionId);
+                switch ($questionObject->name) {
+                    case 'user_teams':
+                        break;
+                    default:
+                        $line[] = $questionObject->name;
+                        break;
+                }
+            }
+            fputcsv($fp, $line);
+
+            foreach ($players as $player) {
+                $line = [];
+                foreach ($header as $col) {
+                    switch ($col) {
+                        case 'age':
+                            $line[] = displayAge($player['birthday']);
+                            break;
+                        case 'height':
+                            $line[] = displayHeight($player['height']);
+                            break;
+                        case 'experience':
+                            $line[] = displayExperience($player['experience']);
+                            break;
+                        case 'paid':
+                            $line[] = ($player['paid'] == 1) ? 'Yes' : 'No';
+                            break;
+                        case 'waiver':
+                            $line[] = ($player['waiver'] !== null) ? 'Signed' : 'Not Signed';
+                            break;
+                        case 'email':
+                            $line[] = (empty($player['parent_email'])) ? $player['email'] : $player['parent_email'];
+                            break;
+                        case 'phone':
+                            $line[] = (empty($player['parent_phone'])) ? $player['phone'] : $player['parent_phone'];
+                            break;
+                        default:
+                            $line[] = $player[$col];
+                            break;
+                    }
+                }
+                foreach ($questions as $question) {
+                    list($questionId, $required) = explode('-', $question);
+                    $questionObject = LeagueQuestion::find($questionId);
+                    if ($questionObject->name == 'user_teams') {
+                        continue;
+                    }
+
+                    switch ($questionObject->type) {
+                        case 'boolean':
+                            if (is_numeric($player['answers'][$questionObject->name])) {
+                                $line[] = ($player['answers'][$questionObject->name] == 1) ? 'Yes' : 'No';
+                            } else {
+                                $line[] = $player['answers'][$questionObject->name];
+                            }
+                            break;
+                        default:
+                            if (isset($player['answers'][$questionObject->name])) {
+                                $line[] = $player['answers'][$questionObject->name];
+                            } else {
+                                $line[] = 'Unknown';
+                            }
+                            break;
+                    }
+                }
+                fputcsv($fp, $line);
+            }
+            fclose($fp);
+
+            return response()->download($file);
+        }
+
+        Session::flash('msg-error', 'Error downloading file');
+
+        return redirect()->route('league_players');
+    }
+
+    public function status($slug, $all = false)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
+        if (!$league) {
+            Session::flash('msg-error', 'Could not find league');
+
+            return redirect()->route('leagues');
+        }
+
+        $statuses = LeagueMember::fetchAnswersByLeague($league->id);
+        foreach ($statuses as $i => $status) {
+            if (!$all && ($status['paid'] == 1 && $status['waiver'] !== null && $status['balance'] < 1)) {
+                unset($statuses[$i]);
+            }
+        }
+
+        return view('leagues.manage.status', compact('league', 'statuses', 'all'));
+    }
+
+    public function status_toggle()
+    {
+        $input = $request->all();
+        $member = LeagueMember::find($input['member']);
+        if ($member) {
+            $league = League::find($member->league_id);
+            $this->authorize('edit', $league);
+
+            if ($input['type'] == 'paid') {
+                $member->paid = ($member->paid == 1) ? 0 : 1;
+                $member->save();
+            } elseif ($input['type'] == 'waiver') {
+                UserWaiver::toggleWaiver($member->user_id, $league->year);
+            }
+
+            $balance = UserBalance::find($member->user_id);
+            if ($balance) {
+                $balance = $balance->balance;
+            }
+
+            return response()->json(['status' => 'success', 'paid' => $member->paid, 'waiver' => UserWaiver::hasWaiver($member->user_id, $league->year), 'balance' => $balance]);
+        }
+
+        return response()->json(['status' => 'error', 'msg' => 'No Player Found']);
+    }
+
+    public function status_download($slug, $all)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
+        if (!$league) {
+            Session::flash('msg-error', 'Could not find league');
+
+            return redirect()->route('leagues');
+        }
+
+        $statuses = LeagueMember::fetchAnswersByLeague($league->id);
+        $file = storage_path().'/app/'.str_slug($league->displayName().' '.(new DateTime())->format('Y-m-d').' statuses').'.csv';
+
+        $fp = fopen($file, 'w');
+        if ($fp) {
+            $line = ['player', 'paid', 'waiver', 'balance', 'outstanding_leagues'];
+            fputcsv($fp, $line);
+
+            foreach ($statuses as $status) {
+                if ($all == 'outstanding' && ($status['paid'] == 1 && $status['waiver'] !== null && $status['balance'] < 1)) {
+                    continue;
+                }
+
+                $leagues = [];
+                if (!empty($status['balance_leagues'])) {
+                    foreach (League::whereIn('id', explode(',', $status['balance_leagues']))->get() as $league) {
+                        $leagues[] = $league->displayName();
+                    }
+                }
+
+                $line = [
+                    $status['first_name'].' '.$status['last_name'],
+                    ($status['paid'] == 1) ? 'Yes' : 'No',
+                    ($status['waiver'] === null) ? 'No' : 'Yes',
+                    ($status['balance'] === null) ? '0' : $status['balance'],
+                    (empty($leagues)) ? '' : implode(', ', $leagues),
+                ];
+
+                fputcsv($fp, $line);
+            }
+
+            fclose($fp);
+
+            return response()->download($file);
+        }
+
+        Session::flash('msg-error', 'Error downloading file');
+
+        return redirect()->route('league_shirts');
+    }
+
+    public function manage($slug)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
+        if (!$league) {
+            Session::flash('msg-error', 'Could not find league');
+
+            return redirect()->route('leagues');
+        }
+
+        $initial = $request->old('add_players');
+        $members = $league->getAllPlayers();
+        $teams = $league->teams;
+
+        if (Request::method() == 'POST') {
+            $input = $request->all();
+            if (isset($input['add'])) {
+                $member = LeagueMember::find($input['member_id']);
+                $member->league_team_id = $input['team_id'];
+                $member->save();
+
+                return json_encode(['success' => 'ok']);
+            } elseif (isset($input['remove'])) {
+                $member = LeagueMember::find($input['member_id']);
+                $member->league_team_id = null;
+                $member->save();
+
+                return json_encode(['success' => 'ok']);
+            } elseif (isset($input['delete'])) {
+                $member = LeagueMember::find($input['member_id']);
+                $member->delete();
+
+                return json_encode(['success' => 'ok']);
+            } elseif (isset($input['add_players'])) {
+                $players = explode(',', $input['players']);
+                if (count($players) && $players[0] != '') {
+                    foreach ($players as $player) {
+                        LeagueMember::create([
+                            'league_id' => $league->id,
+                            'user_id' => $player,
+                            'position' => 'player',
+                            'updated_by' => Auth::id(),
+                        ]);
+                    }
+                } else {
+                    Session::flash('msg-error', 'Please select at least one player to add');
+                }
+            }
+
+            return redirect()->route('league_manage', [$slug]);
+        }
+
+        return view('leagues.manage.manage', compact('league', 'members', 'teams', 'initial'));
+    }
+
+    public function waitlist($slug)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
+        if (!$league) {
+            Session::flash('msg-error', 'Could not find league');
+
+            return redirect()->route('leagues');
+        }
+
+        $players = LeagueMember::fetchAllLeagueMembers($league->id, 'waitlist', 'created_at');
+
+        return view('leagues.manage.waitlist', compact('league', 'players'));
+    }
+
+    public function waitlist_accept($slug, $memberId)
+    {
+        $member = LeagueMember::find($memberId);
+        $this->authorize('edit', $member->league);
+
+        $member->position = 'player';
+        $member->save();
+
+        Session::flash('msg-success', 'Player moved from wailist to player');
+
+        return redirect()->route('league_waitlist', [$slug]);
+    }
+
+    public function waitlist_download($slug)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
+        if (!$league) {
+            Session::flash('msg-error', 'Could not find league');
+
+            return redirect()->route('leagues');
+        }
+
+        $players = LeagueMember::fetchAllLeagueMembers($league->id, 'waitlist', 'created_at');
+        $file = storage_path().'/app/'.str_slug($league->displayName().' '.(new DateTime())->format('Y-m-d').' waitlist').'.csv';
+
+        $header = [
+            'first_name',
+            'last_name',
+            'gender',
+            'age',
+            'phone',
+            'nickname',
+            'height',
+            'level',
+            'experience',
+            'waiver',
+            'paid',
+            'registered_at',
+        ];
+
+        $fp = fopen($file, 'w');
+        if ($fp) {
+            $line = $header;
+            $questions = json_decode($league->registration->questions, true);
+            foreach ($questions as $question) {
+                list($questionId, $required) = explode('-', $question);
+                $questionObject = LeagueQuestion::find($questionId);
+                switch ($questionObject->name) {
+                    case 'user_teams':
+                        break;
+                    default:
+                        $line[] = $questionObject->name;
+                        break;
+                }
+            }
+            fputcsv($fp, $line);
+
+            foreach ($players as $player) {
+                $line = [];
+                foreach ($header as $col) {
+                    if (isset($player->user->$col)) {
+                        $line[] = $player->user->$col;
+                    } elseif (isset($player->user->profile->$col)) {
+                        switch ($col) {
+                            case 'height':
+                                $line[] = displayHeight($player->user->profile->height);
+                                break;
+                            case 'experience':
+                                $line[] = displayExperience($player->user->profile->experience);
+                                break;
+                            default:
+                                $line[] = $player->user->profile->$col;
+                                break;
+                        }
+                    } elseif ($col == 'age') {
+                        $line[] = displayAge($player->user->birthday);
+                    } elseif ($col == 'waiver') {
+                        $line[] = ($player->user->hasWaiver($league->year) == 1) ? 'Yes' : 'No';
+                    } elseif ($col == 'registered_at') {
+                        $line[] = $player->created_at;
+                    } else {
+                        $line[] = $player->$col;
+                    }
+                }
+
+                $answers = json_decode($player->answers);
+                foreach ($questions as $question) {
+                    list($questionId, $required) = explode('-', $question);
+                    $questionObject = LeagueQuestion::find($questionId);
+
+                    if ($questionObject->name == 'user_teams') {
+                        continue;
+                    }
+
+                    if (isset($answers->{$questionObject->name})) {
+                        switch ($questionObject->type) {
+                            case 'boolean':
+                                $line[] = ($answers->{$questionObject->name} == 1) ? 'Yes' : 'No';
+                                break;
+                            default:
+                                $line[] = $answers->{$questionObject->name};
+                                break;
+                        }
+                    } else {
+                        $line[] = 'Unknown';
+                    }
+                }
+                fputcsv($fp, $line);
+            }
+            fclose($fp);
+
+            return response()->download($file);
+        }
+
+        Session::flash('msg-error', 'Error downloading file');
+
+        return redirect()->route('league_waitlist');
     }
 }

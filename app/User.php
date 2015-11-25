@@ -3,7 +3,7 @@
 namespace Cupa;
 
 use Carbon\Carbon;
-use DB;
+use Datetime;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -12,6 +12,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
@@ -355,5 +356,20 @@ class User extends Model implements AuthenticatableContract,
             ->orderBy('last_name')
             ->orderBy('first_name')
             ->get();
+    }
+
+    public static function fetchAllPlayers($leagueId, $userId)
+    {
+        $userIds = [$userId];
+        foreach (self::find($userId)->children as $child) {
+            $userIds[] = $child->id;
+        }
+
+        return LeagueMember::fetchAllMembersFromUser($leagueId, $userIds);
+    }
+
+    public function getAge()
+    {
+        return (new DateTime($this->birthday))->diff(new DateTime('now'))->y;
     }
 }

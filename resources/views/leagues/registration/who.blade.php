@@ -21,7 +21,7 @@
             {!! Form::label('Available players') !!}
             @foreach(Cupa\User::fetchRegistrantsForRadio('user') as $name => $user)
             <div class="checkbox">
-                {!! Form::radio('user', $user['value']) !!} {{ $name }}
+                {!! Form::radio('user', $user['value'], null, ['id' => 'user-' . $user['value']]) !!} <label for="user-{{$user['value']}}">{{ $name }}</label>
             </div>
             @endforeach
         </div>

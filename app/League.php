@@ -5,8 +5,8 @@ namespace Cupa;
 use Auth;
 use Carbon\Carbon;
 use DB;
-use Gate;
 use DateTime;
+use Gate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 
@@ -516,5 +516,122 @@ class League extends Model
         }
 
         return 'registration';
+    }
+
+    public function updateQuestion($questionId, $type)
+    {
+        $registration = $this->registration;
+        $questions = json_decode($registration->questions, true);
+
+        if ($type == 'add-question') {
+            $questions[] = $questionId.'-1';
+        } else {
+            foreach ($questions as $i => $question) {
+                list($aQuestionId, $required) = explode('-', $question);
+
+                if ($aQuestionId == $questionId) {
+                    switch ($type) {
+                        case 'required':
+                            $required = ($required == 1) ? 0 : 1;
+                            $questions[$i] = $questionId.'-'.$required;
+                            break;
+                        case 'remove':
+                            unset($questions[$i]);
+                            $questions = array_values($questions);
+                            break;
+                        case 'move-up':
+                            if ($i > 0) {
+                                $tmp = $questions[$i - 1];
+                                $questions[$i - 1] = $questions[$i];
+                                $questions[$i] = $tmp;
+                                unset($tmp);
+                                $questions = array_values($questions);
+                            }
+                            break;
+                        case 'move-down':
+                            if ($i < count($questions) - 2) {
+                                $tmp = $questions[$i + 1];
+                                $questions[$i + 1] = $questions[$i];
+                                $questions[$i] = $tmp;
+                                unset($tmp);
+                                $questions = array_values($questions);
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        $registration->questions = json_encode($questions);
+        $registration->save();
+    }
+
+    public function fetchColorCounts()
+    {
+        $tmpCount = [];
+        $counts = [];
+        foreach (Config::get('cupa.shirts') as $abbr => $name) {
+            $tmpCount[$abbr] = 0;
+        }
+        $tmpCount['total'] = 0;
+
+        foreach ($this->teams as $team) {
+            $counts[$team->id]['sizes'] = $tmpCount;
+            $counts[$team->id]['code'] = $team->color_code;
+            $counts[$team->id]['color'] = $team->color;
+        }
+
+        $data = LeagueMember::fetchAnswersByLeague($this->id);
+        foreach ($data as $row) {
+            if (isset($row['answers']['shirt']) && isset($counts[$row['league_team_id']]['sizes'][$row['answers']['shirt']])) {
+                ++$counts[$row['league_team_id']]['sizes'][$row['answers']['shirt']];
+                ++$counts[$row['league_team_id']]['sizes']['total'];
+            }
+        }
+
+        return $counts;
+    }
+
+    public function fetchEmergencyContacts()
+    {
+        $result = LeagueMember::leftJoin('users AS u', 'u.id', '=', 'league_members.user_id')
+            ->leftJoin('user_contacts AS uc', 'uc.user_id', '=', 'league_members.user_id')
+            ->where('league_id', '=', $this->id)
+            ->where('position', '=', 'player')
+            ->orderBy('u.last_name')
+            ->orderBy('u.first_name')
+            ->select('u.first_name', 'u.last_name', 'uc.name', 'uc.phone')
+            ->get();
+
+        $contacts = [];
+        foreach ($result as $row) {
+            $contacts[$row['first_name'].' '.$row['last_name']][] = [
+                'name' => $row['name'],
+                'phone' => $row['phone'],
+            ];
+        }
+
+        return $contacts;
+    }
+
+    public function fetchAllRequests()
+    {
+        $results = LeagueMember::fetchAnswersByLeague($this->id);
+
+        $data = [];
+        foreach ($results as $row) {
+            if ($row['league_team_id'] === null && isset($row['answers']['user_teams'])) {
+                $data[$row['first_name'].' '.$row['last_name']] = [
+                    'member' => $row['id'],
+                    'requested' => [
+                        'id' => $row['answers']['user_teams'],
+                        'name' => LeagueTeam::find($row['answers']['user_teams'])->name,
+                    ],
+                    'registered_at' => $row['registered_at'],
+                ];
+            }
+        }
+
+        return $data;
     }
 }

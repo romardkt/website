@@ -24,18 +24,18 @@
             <tbody>
                 <?php $playerOptions = [0 => 'Select a Player']; ?>
                 @foreach($players as $player)
-                @if($player->paid == 0 && $player->position == 'player')
+                @if($player->paid == 0 && ($player->position == 'player' || $player->position == 'waitlist' && $league->default_waitlist))
                 <?php $playerOptions[$player->id] = $player->user->fullname(); ?>
                 @endif
                 <tr>
                     <td class="col-xs-6">{{{ $player->user->fullname() }}}</td>
-                    <td class="col-xs-2 text-center">{{ ($player->position == 'player') ? '<button class="btn btn-success active">Registered</button>' : '<button class="btn btn-info active">Waitlisted</button>' }}</td>
+                    <td class="col-xs-2 text-center">{!! ($player->position == 'player') ? '<span class="label label-success active">Registered</span>' : '<span class="label label-info active">Waitlisted</span>' !!}</td>
                     @if($player->user->getAge() >= 18)
-                    <td class="col-xs-2 text-center">{{ ($player->user->hasWaiver($league->year)) ? '<button type="button" class="btn btn-success active">Signed</button>' : '<a href="' . route('waiver', [$league->year, $player->user->id]) . '" class="btn btn-danger">Sign Waiver</a>' }}</td>
+                    <td class="col-xs-2 text-center">{!! ($player->user->hasWaiver($league->year)) ? '<span class="label label-success active">Signed</span>' : '<a href="' . route('waiver', [$league->year, $player->user->id]) . '" class="label label-danger">Sign Waiver</a>' !!}</td>
                     @else
-                    <td class="col-xs-2 text-center">{{ ($player->user->hasWaiver($league->year)) ? '<button type="button" class="btn btn-success active">Signed</button>' : '<a href="' . route('waiver_download', [$league->year, (stristr($league->name, 'yuc') === false) ? null : 'yuc']) . '" class="btn btn-danger">Sign Waiver</a>' }}</td>
+                    <td class="col-xs-2 text-center">{!! ($player->user->hasWaiver($league->year)) ? '<span class="label label-success active">Signed</span>' : '<a href="' . route('waiver_download', [$league->year, (stristr($league->name, 'yuc') === false) ? null : 'yuc']) . '" class="label label-danger">Sign Waiver</a>' !!}</td>
                     @endif
-                    <td class="col-xs-2 text-center">{{ ($player->paid) ? '<button type="button" class="btn btn-success active">Yes</button>' : '<button type="button" class="btn btn-danger active">No</button>' }}</td>
+                    <td class="col-xs-2 text-center">{!! ($player->paid) ? '<span class="label label-success active">Yes</span>' : '<span class="label label-danger active">No</span>' !!}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -56,18 +56,18 @@
             Use this button to make a payment via paypal:
         </p>
 
-        {{ Form::open(['class' => 'form-inline', 'role' => 'form']) }}
+        {!! Form::open(['class' => 'form-inline', 'role' => 'form']) !!}
 
         <div class="form-group">
-            {{ Form::label('Pay for') }}
-            {{ Form::select('player', $playerOptions, null, ['class' => 'form-control', 'id' => 'player']) }}
+            {!! Form::label('Pay for') !!}
+            {!! Form::select('player', $playerOptions, null, ['class' => 'form-control', 'id' => 'player']) !!}
         </div>
 
         <div class="form-group">
             <button id="paypal-btn" type="submit" class="btn btn-success">Pay via Paypal</button>
         </div>
 
-        {{ Form:: close() }}
+        {!! Form:: close() !!}
         @else
         <p>
             All of your league <strong>players</strong> have been payed for.  <em>This does NOT include wait listed players.  Once the wait listed players are moved to players they will appear here for payment.</em>

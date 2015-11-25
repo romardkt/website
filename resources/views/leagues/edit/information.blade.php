@@ -3,21 +3,21 @@
 @section('content')
 <div class="row">
     <div class="col-xs-12 text-center">
-        <h2 class="page">Edit {{{ $league->displayName() }}} Information</h2>
+        <h2 class="page">Edit {{ $league->displayName() }} Information</h2>
     </div>
 </div>
 <hr/>
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::open(['class' => 'form form-vertical', 'role'=> 'form']) }}
+        {!! Form::open(['class' => 'form form-vertical', 'role'=> 'form']) !!}
 
         <legend>Information</legend>
 
         <div class="form-group">
-            {{ Form::label('Director(s)') }}
-            {{ Form::hidden('directors', $initial, ['id' => 'directors']) }}
+            {!! Form::label('Director(s)') !!}
+            {!! Form::hidden('directors', $initial, ['id' => 'directors']) !!}
             <span class="help-block">Start by typing a directors name</span>
         </div>
 
@@ -25,36 +25,36 @@
         <legend>{{ ucfirst($locType)}} Information</legend>
 
         @if($locType != 'league')
-        {{ Form::checkbox('is_' . $locType, 1, (isset($selectedLocations[$locType])) ? true : false, ['class' => 'location-check', 'id' => 'is-' . $locType, 'data-type' => $locType]) }} Check if there is a {{ $locType }}
+        {!! Form::checkbox('is_' . $locType, 1, (isset($selectedLocations[$locType])) ? true : false, ['class' => 'location-check', 'id' => 'is-' . $locType, 'data-type' => $locType]) !!} Check if there is a {{ $locType }}
         <br/><br/>
         @endif
 
         <div id="{{ $locType }}-view">
              <div class="form-group">
-                {{ Form::label('Location') }}
-                {{ Form::select($locType . '_location_id', $locations, (isset($selectedLocations[$locType])) ? $selectedLocations[$locType]->location_id : null, ['class' => 'form-control select2', 'id' => $locType . '_location_id']); }}
+                {!! Form::label('Location') !!}
+                {!! Form::select($locType . '_location_id', $locations, (isset($selectedLocations[$locType])) ? $selectedLocations[$locType]->location_id : null, ['class' => 'form-control select2', 'id' => $locType . '_location_id']); !!}
                 <span class="help-block">If location does not exist you may create one below</span>
                 <p>&nbsp; <button data-toggle="modal" data-target="#addLocation" type="button" class="btn btn-primary">Add a Location</button></p>
             </div>
 
             <div class="form-group">
-                {{ Form::label('Start Date') }}
-                {{ Form::text($locType . '_start_date', (isset($selectedLocations[$locType]->begin)) ? date('m/d/Y', strtotime($selectedLocations[$locType]->begin)) : null, ['class' => 'datepicker text-center form-control']) }}
+                {!! Form::label('Start Date') !!}
+                {!! Form::text($locType . '_start_date', (isset($selectedLocations[$locType]->begin)) ? date('m/d/Y', strtotime($selectedLocations[$locType]->begin)) : null, ['class' => 'datepicker text-center form-control']) !!}
             </div>
 
             <div class="form-group">
-                {{ Form::label('Start Time') }}
-                {{ Form::text($locType . '_start_time', (isset($selectedLocations[$locType]->begin)) ? date('h:i A', strtotime($selectedLocations[$locType]->begin)) : null, ['class' => 'clockpicker text-center form-control']) }}
+                {!! Form::label('Start Time') !!}
+                {!! Form::text($locType . '_start_time', (isset($selectedLocations[$locType]->begin)) ? date('h:i A', strtotime($selectedLocations[$locType]->begin)) : null, ['class' => 'clockpicker text-center form-control']) !!}
             </div>
 
             <div class="form-group">
-                {{ Form::label('End Date') }}
-                {{ Form::text($locType . '_end_date', (isset($selectedLocations[$locType]->end)) ? date('m/d/Y', strtotime($selectedLocations[$locType]->end)) : null, ['class' => 'datepicker text-center form-control']) }}
+                {!! Form::label('End Date') !!}
+                {!! Form::text($locType . '_end_date', (isset($selectedLocations[$locType]->end)) ? date('m/d/Y', strtotime($selectedLocations[$locType]->end)) : null, ['class' => 'datepicker text-center form-control']) !!}
             </div>
 
             <div class="form-group">
-                {{ Form::label('End Time') }}
-                {{ Form::text($locType . '_end_time', (isset($selectedLocations[$locType]->end)) ? date('h:i A', strtotime($selectedLocations[$locType]->end)) : null, ['class' => 'clockpicker text-center form-control']) }}
+                {!! Form::label('End Time') !!}
+                {!! Form::text($locType . '_end_time', (isset($selectedLocations[$locType]->end)) ? date('h:i A', strtotime($selectedLocations[$locType]->end)) : null, ['class' => 'clockpicker text-center form-control']) !!}
             </div>
         </div>
         @endforeach
@@ -67,9 +67,9 @@
                 <a class="btn btn-default" href="{{ route('league', [$league->slug]) }}">Cancel</a>
             </div>
         </div>
-        {{ Form::close() }}
+        {!! Form::close() !!}
 
-        @include('layouts.partials.location')
+        @include('partials.location')
     </div>
 </div>
 @endsection

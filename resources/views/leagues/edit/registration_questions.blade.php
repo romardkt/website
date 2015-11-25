@@ -3,7 +3,7 @@
 @section('content')
 <div class="row">
     <div class="col-xs-12 text-center">
-        <h2 class="page">Edit {{{ $league->displayName() }}} Registration Questions</h2>
+        <h2 class="page">Edit {{ $league->displayName() }} Registration Questions</h2>
     </div>
 </div>
 <hr/>
@@ -19,43 +19,43 @@
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
             @if ($league->user_teams && count($league->teams))
-            {{ Form::select('user_teams', array_merge([0 => 'Select a Team'], $league->fetchTeamsForSelect())) }}
+            {!! Form::select('user_teams', array_merge([0 => 'Select a Team'], $league->fetchTeamsForSelect())) !!}
             <span class="help-block">Select a team to join</span>
             @endif
             @foreach($questions as $i => $question)
             <div class="row league-question">
                 <div class="col-xs-1 text-center reg-question-count">
-                    {{{ $i + 1 }}}.)
+                    {{ $i + 1 }}.)
                 </div>
                 <div class="col-xs-11">
                     <div class="row">
                         <div class="col-xs-12 status">
-                            Question named <strong class="text-muted">{{{ $question->name }}}</strong>
+                            Question named <strong class="text-muted">{{ $question->name }}</strong>
                             of type
-                            <strong class="text-muted">{{{ $question->type }}}</strong>
+                            <strong class="text-muted">{{ $question->type }}</strong>
                             is
-                            <strong class="{{{ ($question->required) ? 'text-danger' : 'text-info' }}}">{{{ ($question->required) ? 'Required' : 'Optional' }}}</strong>
+                            <strong class="{{ ($question->required) ? 'text-danger' : 'text-info' }}">{{ ($question->required) ? 'Required' : 'Optional' }}</strong>
                         </div>
                     </div>
                     <div class="row title">
                         <div class="col-xs-12">
                             <div class="form-group">
-                                {{ Form::label($question->title) }}
+                                {!! Form::label($question->title) !!}
                                 @if ($question->type == 'text')
-                                {{ Form::text($question->name, null, ['class' => 'form-control', 'disabled']) }}
+                                {!! Form::text($question->name, null, ['class' => 'form-control', 'disabled']) !!}
                                 @elseif ($question->type == 'boolean')
                                 <div class="checkbox">
-                                    {{ Form::radio($question->name, 0, false, ['disabled']) }} No
-                                    {{ Form::radio($question->name, 1, false, ['disabled']) }} Yes
+                                    {!! Form::radio($question->name, 0, false, ['disabled']) !!} No
+                                    {!! Form::radio($question->name, 1, false, ['disabled']) !!} Yes
                                 </div>
                                 @elseif ($question->type == 'multiple')
                                 @foreach(json_decode($question->answers, true) as $value => $answer)
                                 <div class="checkbox disabled">
-                                    {{ Form::radio($question->name, $value, null, ['disabled']) }} {{ $answer }}
+                                    {!! Form::radio($question->name, $value, null, ['disabled']) !!} {{ $answer }}
                                 </div>
                                 @endforeach
                                 @elseif ($question->type == 'textarea')
-                                {{ Form::textarea($question->name, null, ['class' => 'form-control', 'disabled']) }}
+                                {!! Form::textarea($question->name, null, ['class' => 'form-control', 'disabled']) !!}
                                 @endif
                                 <span class="help-block">{{ (isset($question->required) && $question->required != 1) ? 'Optional' : '' }}</span>
                             </div>
@@ -67,16 +67,16 @@
                         <p>
                             <div class="btn-group">
                                 @if($i > 0)
-                                <button class="btn btn-default move-up-btn" data-question="{{{ $question->id }}}" type="button"><i class="fa fa-fw fa-lg fa-arrow-up"></i></button>
+                                <button class="btn btn-default move-up-btn" data-question="{{ $question->id }}" type="button"><i class="fa fa-fw fa-lg fa-arrow-up"></i></button>
                                 @endif
                                 @if($i + 1 < count($questions))
-                                <button class="btn btn-default move-down-btn" data-question="{{{ $question->id }}}" type="button"><i class="fa fa-fw fa-lg fa-arrow-down"></i></button>
+                                <button class="btn btn-default move-down-btn" data-question="{{ $question->id }}" type="button"><i class="fa fa-fw fa-lg fa-arrow-down"></i></button>
                                 @endif
-                                <button class="btn btn-danger remove-btn" data-question="{{{ $question->id }}}" type="button"><i class="fa fa-fw fa-lg fa-trash-o"></i></button>
+                                <button class="btn btn-danger remove-btn" data-question="{{ $question->id }}" type="button"><i class="fa fa-fw fa-lg fa-trash-o"></i></button>
                                 @if($question->required)
-                                <button class="btn btn-info required-btn" data-question="{{{ $question->id }}}" type="button">Optional</button>
+                                <button class="btn btn-info required-btn" data-question="{{ $question->id }}" type="button">Set to Optional</button>
                                 @else
-                                <button class="btn btn-info required-btn" data-question="{{{ $question->id }}}" type="button">Require</button>
+                                <button class="btn btn-info required-btn" data-question="{{ $question->id }}" type="button">Set to Required</button>
                                 @endif
                             </div>
                         </p>
@@ -99,24 +99,24 @@
             <div class="modal-body">
                 <div class="list-group">
                 @foreach($allQuestions as $question)
-                    <a class="list-group-item add-question-item" data-question="{{{ $question->id }}}">
+                    <a class="list-group-item add-question-item" data-question="{{ $question->id }}">
                         <p>
-                            {{ Form::label($question->title) }}
+                            {!! Form::label($question->title) !!}
                             @if ($question->type == 'text')
-                            {{ Form::text($question->name, null, ['class' => 'form-control disabled']) }}
+                            {!! Form::text($question->name, null, ['class' => 'form-control disabled']) !!}
                             @elseif ($question->type == 'boolean')
                             <div class="checkbox">
-                                {{ Form::radio($question->name, 0, false) }} No
-                                {{ Form::radio($question->name, 1, false) }} Yes
+                                {!! Form::radio($question->name, 0, false) !!} No
+                                {!! Form::radio($question->name, 1, false) !!} Yes
                             </div>
                             @elseif ($question->type == 'multiple')
                             @foreach(json_decode($question->answers, true) as $value => $answer)
                             <div class="checkbox">
-                                {{ Form::radio($question->name, $value, null) }} {{ $answer }}
+                                {!! Form::radio($question->name, $value, null) !!} {{ $answer }}
                             </div>
                             @endforeach
                             @elseif ($question->type == 'textarea')
-                            {{ Form::textarea($question->name, null, ['class' => 'form-control']) }}
+                            {!! Form::textarea($question->name, null, ['class' => 'form-control']) !!}
                             @endif
                             <span class="help-block">{{ (isset($question->required)) ? 'Optional' : '' }}</span>
                         </p>
@@ -145,7 +145,7 @@ $('.remove-btn').on('click touchstart', function (e) {
         $.ajax({
             url: '{{ route('league_edit', [$league->slug, 'registration_questions']) }}',
             type: 'post',
-            data: { _token: '{{{ csrf_token() }}}', question: question, type: 'remove'},
+            data: { _token: '{{ csrf_token() }}', question: question, type: 'remove'},
             success: function (resp) {
                 if (resp.status == 'success') {
                     window.location.reload();
@@ -162,7 +162,7 @@ $('.remove-btn').on('click touchstart', function (e) {
         $.ajax({
             url: '{{ route('league_edit', [$league->slug, 'registration_questions']) }}',
             type: 'post',
-            data: { _token: '{{{ csrf_token() }}}', question: question, type: item},
+            data: { _token: '{{ csrf_token() }}', question: question, type: item},
             success: function (resp) {
                 if (resp.status == 'success') {
                     window.location.reload();
@@ -200,7 +200,7 @@ $('#add-form-submit').on('click touchstart', function (e) {
     $.ajax({
         url: '{{ route('league_edit', [$league->slug, 'registration_questions']) }}',
         type: 'post',
-        data: { _token: '{{{ csrf_token() }}}', question: selectedQuestion, type: 'add-question'},
+        data: { _token: '{{ csrf_token() }}', question: selectedQuestion, type: 'add-question'},
         success: function (resp) {
             if (resp.status == 'success') {
                 window.location.reload();

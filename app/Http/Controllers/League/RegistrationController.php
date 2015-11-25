@@ -2,16 +2,23 @@
 
 namespace Cupa\Http\Controllers\League;
 
-use stdClass;
 use Cupa\Http\Controllers\Controller;
+use Cupa\Http\Requests\LeagueRegistrationRequest;
+use Cupa\Http\Requests\LeagueRegistrationSuccessRequest;
 use Cupa\League;
+use Cupa\LeagueMember;
 use Cupa\User;
-use Illuminate\Http\Request;
+use Cupa\UserBalance;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use stdClass;
 
 class RegistrationController extends Controller
 {
-    public function register($slug, $state = 'who')
+    public function register(LeagueRegistrationRequest $request, $slug, $state = 'who')
     {
         if ($state == 'who') {
             Session::set('league_registration', new stdClass());
@@ -64,34 +71,19 @@ class RegistrationController extends Controller
             return redirect()->route('league', [$league->slug]);
         }
 
-        return view('leagues.registration.register', compact('league', 'state', 'session', 'type'));
+        if ($request->method() == 'GET') {
+            return view('leagues.registration.register', compact('league', 'state', 'session', 'type'));
+        } else {
+            return $this->{'register'.ucfirst($state)}($league, $request);
+        }
     }
 
-    public function postRegister($slug, $state = 'who')
-    {
-        return $this->{'register_'.$state}($league);
-    }
-
-    private function registerWho($league, Request $request)
+    private function registerWho($league, LeagueRegistrationRequest $request)
     {
         $session = Session::get('league_registration');
-
         $input = $request->all();
 
-        $rules = [
-            'user' => 'required|numeric',
-        ];
-
-        $messages = [
-            'user.required' => 'Please select a player to register with',
-        ];
-
-        $validator = Validator::make($input, $rules, $messages);
-        if ($validator->fails()) {
-            return redirect()->route('league_register', [$league->slug, 'who'])->withInput()->withErrors($validator);
-        }
-
-        if (UserBalance::owesMoney(Auth::user()->id)) {
+        if (UserBalance::owesMoney(Auth::id())) {
             Session::flash('owe', 'You owe money');
 
             return redirect()->route('league_register', [$league->slug, 'who']);
@@ -103,41 +95,17 @@ class RegistrationController extends Controller
         return redirect()->route('league_register', [$league->slug, 'info']);
     }
 
-    private function registerInfo($league)
+    private function registerInfo($league, $request)
     {
         $session = Session::get('league_registration');
         $input = $request->all();
-        $userId = ($session->registrant->parent !== null) ? $session->registrant->parentObj->id : $session->registrant->id;
-
-        $rules = [
-            'email' => 'required|email|unique:users,email,'.$userId,
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'birthday' => 'required|date',
-            'gender' => 'required',
-            'phone' => 'required|regex:/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/',
-            'level' => 'required',
-            'height' => 'required|integer|min:24|max:108',
-            'experience' => 'required|integer|min:1950|max:'.date('Y'),
-        ];
-
-        $messages = [
-            'phone' => 'Please enter a valid phone number',
-        ];
-
-        $validator = Validator::make($input, $rules, $messages);
-        if ($validator->fails()) {
-            return redirect()->route('league_register', [$league->slug, 'info'])->withInput()->withErrors($validator);
-        }
-
         $input['birthday'] = convertDate($input['birthday']);
-
         $session->info = $input;
 
         return redirect()->route('league_register', [$league->slug, 'contacts']);
     }
 
-    private function registerContacts($league)
+    private function registerContacts($league, $request)
     {
         $session = Session::get('league_registration');
 
@@ -152,33 +120,11 @@ class RegistrationController extends Controller
         return redirect()->route('league_register', [$league->slug, 'league']);
     }
 
-    private function registerLeague($league)
+    private function registerLeague($league, $request)
     {
         $session = Session::get('league_registration');
 
         $input = $request->all();
-
-        if ($league->user_teams) {
-            $rules = ['user_teams' => 'required|not_in:0'];
-        } else {
-            $rules = [];
-        }
-
-        foreach (json_decode($league->registration()->first()->questions) as $i => $questionData) {
-            list($questionId, $required) = explode('-', $questionData);
-            $question = LeagueQuestion::find($questionId);
-            $rules[$question->name] = ($required == 1) ? 'required' : '';
-        }
-
-        $messages = [
-            'user_teams.not_in' => 'Please select a team',
-        ];
-
-        $validator = Validator::make($input, $rules, $messages);
-        if ($validator->fails()) {
-            return redirect()->route('league_register', [$league->slug, 'league'])->withInput()->withErrors($validator);
-        }
-
         unset($input['_token']);
         unset($input['_url']);
 
@@ -187,7 +133,7 @@ class RegistrationController extends Controller
         return redirect()->route('league_register', [$league->slug, 'finish']);
     }
 
-    private function registerFinish($league)
+    private function registerFinish($league, $request)
     {
         $session = Session::get('league_registration');
         $position = ($league->fetchRegistrationType($session) == 'registration') ? 'player' : 'waitlist';
@@ -227,7 +173,7 @@ class RegistrationController extends Controller
             'user_id' => $session->registrant->id,
             'position' => $position,
             'answers' => $session->league,
-            'updated_by' => View::shared('isAuthorized')['userData']->id,
+            'updated_by' => Auth::id(),
         ]);
 
         $data = [
@@ -280,28 +226,21 @@ class RegistrationController extends Controller
 
         Session::set('waiver_redirect', route('league_success', [$league->slug]));
 
-        $players = User::fetchAllPlayers($league->id, Auth::user()->id);
+        $players = User::fetchAllPlayers($league->id, Auth::id());
         if (count($players) < 1) {
             Session::flash('msg-error', 'You have not registered for this league yet');
 
             return redirect()->route('league_register', [$league->slug, 'who']);
         }
 
-        if (Request::method() == 'POST') {
-            $input = $request->all();
+        return view('leagues.registration.success', compact('league', 'players'));
+    }
 
-            $rules = [
-                'player' => 'required:not_in:0',
-            ];
+    public function postSuccess($slug, LeagueRegistrationSuccessRequest $request)
+    {
+        $league = League::fetchBySlug($slug);
+        $input = $request->all();
 
-            $validator = Validator::make($input, $rules);
-            if ($validator->fails()) {
-                return redirect()->route('league_success', [$league->slug])->withErrors($validator);
-            }
-
-            return redirect()->route('paypal', [$league->id, 'league', $input['player']]);
-        }
-
-        return view('leagues.success', compact('league', 'players'));
+        return redirect()->route('paypal', [$league->id, 'league', $input['player']]);
     }
 }

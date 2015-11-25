@@ -308,4 +308,47 @@ class LeagueMember extends Model
             ->where('league_team_id', '=', $leagueTeamId)
             ->delete();
     }
+
+    public static function fetchAllMembersFromUser($leagueId, array $userIds)
+    {
+        return static::with(['user', 'user.profile'])
+            ->where('league_id', '=', $leagueId)
+            ->whereIn('user_id', $userIds)
+            ->where(function ($query) {
+                $query->where('position', '=', 'player')
+                    ->orWhere('position', '=', 'waitlist');
+                })
+            ->get();
+    }
+
+    public static function fetchAnswersByLeague($leagueId)
+    {
+        $result = static::where('position', '=', 'player')
+            ->leftJoin('leagues', 'leagues.id', '=', 'league_members.league_id')
+            ->leftJoin('users', 'users.id', '=', 'league_members.user_id')
+            ->leftJoin('user_profiles', 'user_profiles.user_id', '=', 'users.id')
+            ->leftJoin('league_teams', 'league_teams.id', '=', 'league_members.league_team_id')
+            ->leftJoin('users AS parent', 'parent.id', '=', 'users.parent')
+            ->leftJoin('user_profiles AS parentProfile', 'parentProfile.user_id', '=', 'parent.id')
+            ->leftJoin('user_waivers', function ($join) {
+                $join->on('user_waivers.user_id', '=', 'users.id')
+                     ->on('user_waivers.year', '=', 'leagues.year');
+                })
+            ->leftJoin('user_balances', 'user_balances.user_id', '=', 'league_members.user_id')
+            ->orderBy('users.last_name')
+            ->orderBy('users.first_name')
+            ->orderBy('league_members.created_at', 'DESC')
+            ->select('league_members.id', 'league_members.league_team_id', 'league_teams.name AS team_name', 'league_members.paid', 'league_members.answers', 'league_members.created_at AS registered_at', 'users.id AS user_id', 'users.email', 'parent.email AS parent_email', 'users.avatar', 'users.first_name', 'users.last_name', 'users.gender', 'users.birthday', 'user_profiles.phone', 'user_profiles.nickname', 'user_profiles.height', 'user_profiles.level', 'user_profiles.experience', 'user_waivers.year AS waiver', 'user_balances.balance AS balance', 'user_balances.leagues AS balance_leagues', 'parentProfile.phone AS parent_phone')
+            ->where('leagues.id', '=', $leagueId)
+            ->groupBy('league_members.id')
+            ->get();
+
+        $data = [];
+        foreach ($result as $row) {
+            $row->answers = json_decode($row->answers, true);
+            $data[] = $row->toArray();
+        }
+
+        return $data;
+    }
 }
