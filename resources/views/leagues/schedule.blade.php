@@ -44,7 +44,7 @@
             ${$team->type}[] = $team;
         ?>
         @endforeach
-            <a class="row list-group-item" {{ (Gate::allows('is-manager')) ? ' href="' . route('league_schedule_edit', [$league->slug, $game->id]) . '"' : '' }}>
+            <a class="row list-group-item" {!! (Gate::allows('is-manager')) ? ' href="' . route('league_schedule_edit', [$league->slug, $game->id]) . '"' : '' !!}>
                 <div class="when pull-left">
                     <div class="month">{{ date('M', strtotime($game->played_at)) }}</div>
                     <div class="day">{{ date('d', strtotime($game->played_at)) }}</div>

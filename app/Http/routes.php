@@ -15,6 +15,8 @@ Route::model('tournament_team_id', 'Cupa\TournamentTeam');
 Route::model('tournament_member_id', 'Cupa\TournamentMember');
 Route::model('tournament_location_id', 'Cupa\TournamentLocation');
 Route::model('paypal_id', 'Cupa\Paypal');
+Route::model('league_team_id', 'Cupa\LeagueTeam');
+Route::model('league_game_id', 'Cupa\LeagueGame');
 
 Route::get('/', ['as' => 'home', 'uses' => 'PageController@home']);
 Route::post('location/add', ['as' => 'location_add', 'uses' => 'PageController@locationAdd']);
@@ -178,13 +180,20 @@ Route::group(['prefix' => 'leagues'], function () {
     Route::any('{slug}/register/success', ['as' => 'league_success', 'uses' => 'League\RegistrationController@success']);
     Route::any('{slug}/register/{state?}', ['as' => 'league_register', 'uses' => 'League\RegistrationController@register']);
 
-    // Editing
-    Route::any('{slug}/team/add', ['as' => 'league_team_add', 'uses' => 'LeagueController@team_add']);
-    Route::any('{slug}/team/{team_id}/edit', ['as' => 'league_team_edit', 'uses' => 'LeagueController@team_edit']);
-    Route::get('{slug}/team/{team_id}/remove', ['as' => 'league_team_remove', 'uses' => 'LeagueController@team_remove']);
-    Route::any('{slug}/schedule/edit/{game_id}', ['as' => 'league_schedule_edit', 'uses' => 'LeagueController@schedule_edit']);
-    Route::any('{slug}/schedule/remove/{game_id}', ['as' => 'league_schedule_remove', 'uses' => 'LeagueController@schedule_remove']);
-    Route::any('{slug}/schedule/add', ['as' => 'league_schedule_add', 'uses' => 'LeagueController@schedule_add']);
+    // Management
+    Route::get('{slug}/team/add', ['as' => 'league_team_add', 'uses' => 'League\ManageController@teamAdd']);
+    Route::post('{slug}/team/add', ['as' => 'league_team_add_post', 'uses' => 'League\ManageController@postTeamAdd']);
+    Route::get('{slug}/team/{league_team_id}/edit', ['as' => 'league_team_edit', 'uses' => 'League\ManageController@teamEdit']);
+    Route::post('{slug}/team/{league_team_id}/edit', ['as' => 'league_team_edit_post', 'uses' => 'League\ManageController@postTeamEdit']);
+    Route::get('{slug}/team/{league_team_id}/remove', ['as' => 'league_team_remove', 'uses' => 'League\ManageController@teamRemove']);
+
+    Route::get('{slug}/schedule/add', ['as' => 'league_schedule_add', 'uses' => 'League\ManageController@scheduleAdd']);
+    Route::post('{slug}/schedule/add', ['as' => 'league_schedule_add_post', 'uses' => 'League\ManageController@postScheduleAdd']);
+
+    Route::get('{slug}/schedule/edit/{league_game_id}', ['as' => 'league_schedule_edit', 'uses' => 'League\ManageController@scheduleEdit']);
+    Route::post('{slug}/schedule/edit/{league_game_id}', ['as' => 'league_schedule_edit_post', 'uses' => 'League\ManageController@postScheduleEdit']);
+    Route::get('{slug}/schedule/remove/{league_game_id}', ['as' => 'league_schedule_remove', 'uses' => 'League\ManageController@scheduleRemove']);
+
     Route::any('{slug}/schedule/generate', ['as' => 'league_schedule_generate', 'uses' => 'LeagueController@schedule_generate']);
     Route::any('{slug}/edit/{type}', ['as' => 'league_edit', 'uses' => 'LeagueController@league_edit']);
     Route::any('{slug}/coaches/{memberId}/edit', ['as' => 'league_coaches_edit', 'uses' => 'LeagueController@coaches_edit']);
@@ -205,9 +214,9 @@ Route::group(['prefix' => 'leagues'], function () {
     Route::get('{slug}/waitlist/accept/{member_id}', ['as' => 'league_waitlist_accept', 'uses' => 'LeagueController@waitlist_accept']);
 
     // Managing
-    Route::any('{slug}/archive', ['as' => 'league_archive', 'uses' => 'LeagueController@archive']);
-    Route::get('add/{season}', ['as' => 'league_add', 'uses' => 'League\ManageController@add']);
-    Route::post('add/{season}', ['as' => 'league_add_post', 'uses' => 'League\ManageController@postAdd']);
+    Route::any('{slug}/archive', ['as' => 'league_archive', 'uses' => 'League\AdminController@archive']);
+    Route::get('add/{season}', ['as' => 'league_add', 'uses' => 'League\AdminController@add']);
+    Route::post('add/{season}', ['as' => 'league_add_post', 'uses' => 'League\AdminController@postAdd']);
 });
 
 Route::group(['prefix' => 'around'], function () {

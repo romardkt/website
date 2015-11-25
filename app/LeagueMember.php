@@ -298,4 +298,14 @@ class LeagueMember extends Model
 
         return ['status' => 'text-success', 'msg' => 'Complete'];
     }
+
+    public static function clearCoaches($leagueTeamId)
+    {
+        $coaches = static::where(function ($query) {
+                $query->where('position', '=', 'assistant_coach')
+                    ->orWhere('position', '=', 'coach');
+            })
+            ->where('league_team_id', '=', $leagueTeamId)
+            ->delete();
+    }
 }

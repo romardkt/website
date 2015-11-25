@@ -123,7 +123,7 @@
                     {{ $registration['status'][array_keys($registration['status'])[0]] }}
                 </strong>
                 @if(array_keys($registration['status'])[0] == 'text-success')
-                @if($isAuthorized['user'])
+                @if(Auth::check())
                 <p>
                     <a class="btn btn-primary" href="{{ route('league_register', [$league->slug]) }}">Register for League</a>
                 </p>
@@ -151,7 +151,7 @@
         </dl>
         @if(!in_array($registration['status'][array_keys($registration['status'])[0]], ['Closed', 'Not Open Yet']))
         <div class="col-xs-12 col-sm-offset-2 col-sm-8 text-center">
-            {{ displayLeagueBars($league->limits, $league->counts) }}
+            {!! displayLeagueBars($league->limits, $league->counts) !!}
         </div>
         <div class="col-xs-12">
             <br/><br/>

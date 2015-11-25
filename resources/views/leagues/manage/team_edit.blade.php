@@ -3,17 +3,17 @@
 @section('content')
 <div class="row">
     <div class="col-xs-12 text-center">
-        <h2 class="page">Add a Team</h2>
+        <h2 class="page">Edit {{ $team->name }}</h2>
     </div>
 </div>
 <hr/>
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::open(['class' => 'form form-vertical', 'role' => 'form', 'files' => true]) }}
-            @include('leagues.partials.team', ['submitText' => 'Create Team'])
-        {{ Form::close() }}
+        {!! Form::model($team, ['class' => 'form form-vertical', 'role' => 'form', 'files' => true]) !!}
+            @include('leagues.partials.team', ['submitText' => 'Update Team'])
+        {!! Form::close() !!}
     </div>
 </div>
 @endsection
