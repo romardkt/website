@@ -3,12 +3,21 @@
 namespace Cupa\Http\Controllers\League;
 
 use Cupa\Http\Controllers\Controller;
+use Cupa\Http\Requests\LeagueCoachEmailRequest;
+use Cupa\Http\Requests\LeagueCoachRequest;
 use Cupa\Http\Requests\LeagueEditRequest;
 use Cupa\League;
 use Cupa\LeagueLocation;
 use Cupa\LeagueMember;
 use Cupa\LeagueQuestion;
 use Cupa\Location;
+use Cupa\UserRequirement;
+use Cupa\UserWaiver;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class EditController extends Controller
@@ -250,5 +259,103 @@ class EditController extends Controller
         Session::flash('msg-success', 'League settings updated');
 
         return redirect()->route('league', [$league->slug]);
+    }
+
+    public function coachesEdit($slug, $member)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('coach', $league, $member);
+        if (!$league) {
+            Session::flash('msg-error', 'Could not find league');
+
+            return redirect()->route('youth_leagues');
+        }
+        $requirements = json_decode(UserRequirement::fetchOrCreateRequirements($member->user_id, $league->year)->requirements, true);
+
+        if (Gate::denies('edit', $league) && $member->user_id != Auth::id()) {
+            Session::flash('msg-error', 'You may only edit your own coaching requirements');
+
+            return redirect()->route('league_coaches', [$slug]);
+        }
+
+        return view('leagues.edit.coaches_edit', compact('league', 'member', 'requirements'));
+    }
+
+    public function postCoachesEdit($slug, $member, LeagueCoachRequest $request)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('coach', $league, $member);
+        $input = $request->all();
+
+        $user = $member->user;
+        $profile = $user->profile;
+
+        $user->first_name = $input['first_name'];
+        $user->last_name = $input['last_name'];
+        $user->email = $input['email'];
+        $user->save();
+
+        $profile->phone = $input['phone'];
+        $profile->save();
+
+        if (isset($input['waiver'])) {
+            $user->signWaiver($league->year);
+        } else {
+            if ($user->hasWaiver($league->year)) {
+                UserWaiver::toggleWaiver($user->id, $league->year);
+            }
+        }
+
+        foreach (Config::get('cupa.coachingRequirements') as $req => $text) {
+            $requirements[$req] = (isset($input[$req])) ? 1 : 0;
+        }
+
+        UserRequirement::updateRequirements($member->user_id, $league->year, $requirements);
+        Session::flash('msg-success', 'Coach updated');
+
+        return redirect()->route('league_coaches', [$slug]);
+    }
+
+    public function coachesEmail($slug)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
+
+        return view('leagues.edit.coaches_email', compact('league'));
+    }
+
+    public function postCoachesEmail($slug, LeagueCoachEmailRequest $request)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
+
+        $input = $request->all();
+        $league = League::fetchBySlug($slug);
+
+        $coaches = LeagueMember::fetchAllLeagueMembers($league->id, ['coach', 'assistant_coach'], 'team');
+        foreach ($coaches as $coach) {
+            if ($coach->user->coachingRequirements($league->year)) {
+                $reqs = json_decode($coach->user->coachingRequirements($league->year)->requirements, true);
+            } else {
+                $reqs = [];
+            }
+
+            if (is_array($reqs) && in_array(0, array_values($reqs))) {
+                Mail::send('emails.league_coaches_email', ['coach' => $coach, 'data' => $input, 'requirements' => $reqs, 'league' => $league], function ($m) use ($input, $coach) {
+                    if (App::environment() == 'prod') {
+                        $m->to($coach->user->email);
+                    } else {
+                        $m->to('kcin1018@gmail.com', 'Nick Felicelli');
+                    }
+
+                    $m->subject($input['subject'])
+                        ->replyTo($input['from'], $input['name']);
+                });
+            }
+        }
+
+        Session::flash('msg-success', 'Email messages sent');
+
+        return redirect()->route('league_coaches', [$league->slug]);
     }
 }

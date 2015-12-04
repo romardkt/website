@@ -17,6 +17,7 @@ Route::model('tournament_location_id', 'Cupa\TournamentLocation');
 Route::model('paypal_id', 'Cupa\Paypal');
 Route::model('league_team_id', 'Cupa\LeagueTeam');
 Route::model('league_game_id', 'Cupa\LeagueGame');
+Route::model('league_member_id', 'Cupa\LeagueMember');
 
 Route::get('/', ['as' => 'home', 'uses' => 'PageController@home']);
 Route::post('location/add', ['as' => 'location_add', 'uses' => 'PageController@locationAdd']);
@@ -42,9 +43,11 @@ Route::post('login', ['as' => 'login', 'uses' => 'AuthController@login']);
 Route::get('logout', ['as' => 'logout', 'uses' => 'AuthController@logout']);
 Route::get('register', ['as' => 'register', 'uses' => 'AuthController@register']);
 Route::post('register', ['as' => 'register_handle', 'uses' => 'AuthController@postRegister']);
-Route::any('activate/{code}', ['as' => 'activate', 'uses' => 'AuthController@activate']);
-Route::any('reset', ['as' => 'reset', 'uses' => 'AuthController@reset']);
-Route::any('reset/{code}', ['as' => 'do_reset', 'uses' => 'AuthController@do_reset']);
+Route::get('activate/{code}', ['as' => 'activate', 'uses' => 'AuthController@activate']);
+Route::get('reset', ['as' => 'reset', 'uses' => 'AuthController@reset']);
+Route::post('reset', ['as' => 'reset_post', 'uses' => 'AuthController@postReset']);
+Route::get('reset/{code}', ['as' => 'do_reset', 'uses' => 'AuthController@doReset']);
+Route::post('reset/{code}', ['as' => 'do_reset_post', 'uses' => 'AuthController@postDoReset']);
 Route::get('daytonultimate', ['as' => 'leagues_dayton', 'uses' => 'PageController@dayton']);
 Route::get('daytonultimate/edit', ['as' => 'leagues_dayton_edit', 'uses' => 'PageController@daytonEdit']);
 Route::post('daytonultimate/edit', ['as' => 'leagues_dayton_edit_post', 'uses' => 'PageController@postDaytonEdit']);
@@ -144,7 +147,7 @@ Route::group(['prefix' => 'youth'], function () {
     Route::get('ycc', ['as' => 'youth_ycc', 'uses' => 'YouthController@ycc']);
     Route::get('leagues', ['as' => 'youth_leagues', 'uses' => 'YouthController@leagues']);
     Route::get('tournaments', ['as' => 'youth_tournaments', 'uses' => 'YouthController@tournaments']);
-    Route::any('tournaments/add', ['as' => 'youth_tournaments_add', 'uses' => 'YouthController@tournamentsAdd']);
+    Route::get('tournaments/add', ['as' => 'youth_tournaments_add', 'uses' => 'YouthController@tournamentsAdd']);
     Route::get('clinics', ['as' => 'youth_clinics', 'uses' => 'YouthController@clinics']);
     Route::get('clinics/add', ['as' => 'youth_clinics_add', 'uses' => 'YouthController@clinicAdd']);
     Route::post('clinics/add', ['as' => 'youth_clinics_add_post', 'uses' => 'YouthController@postClinicAdd']);
@@ -174,8 +177,8 @@ Route::group(['prefix' => 'leagues'], function () {
     Route::post('{slug}/email', ['as' => 'league_email_post', 'uses' => 'League\PageController@postEmail']);
     Route::get('{slug}/coaches', ['as' => 'league_coaches', 'uses' => 'League\PageController@coaches']);
     Route::get('{slug}/coaches/download', ['as' => 'league_coaches_download', 'uses' => 'League\PageController@coachesDownload']);
-    Route::get('{slug}/coaches/email', ['as' => 'league_coaches_email', 'uses' => 'League\PageController@coachesEmail']);
-    Route::post('{slug}/coaches/email', ['as' => 'league_coaches_email_post', 'uses' => 'League\PageController@postCoachesEmail']);
+    Route::get('{slug}/coaches/email', ['as' => 'league_coaches_email', 'uses' => 'League\EditController@coachesEmail']);
+    Route::post('{slug}/coaches/email', ['as' => 'league_coaches_email_post', 'uses' => 'League\EditController@postCoachesEmail']);
 
     // registration
     Route::get('{slug}/register/success', ['as' => 'league_success', 'uses' => 'League\RegistrationController@success']);
@@ -200,7 +203,8 @@ Route::group(['prefix' => 'leagues'], function () {
 
     Route::any('{slug}/edit/{type}', ['as' => 'league_edit', 'uses' => 'League\EditController@handle']);
 
-    Route::any('{slug}/coaches/{memberId}/edit', ['as' => 'league_coaches_edit', 'uses' => 'LeagueController@coachesEdit']);
+    Route::get('{slug}/coaches/{league_member_id}/edit', ['as' => 'league_coaches_edit', 'uses' => 'League\EditController@coachesEdit']);
+    Route::post('{slug}/coaches/{league_member_id}/edit', ['as' => 'league_coaches_edit_post', 'uses' => 'League\EditController@postCoachesEdit']);
     Route::get('{slug}/shirts', ['as' => 'league_shirts', 'uses' => 'League\ManageController@shirts']);
     Route::get('{slug}/shirts/download', ['as' => 'league_shirts_download', 'uses' => 'League\ManageController@shirtsDownload']);
     Route::get('{slug}/emergency', ['as' => 'league_emergency', 'uses' => 'League\ManageController@emergency']);
@@ -219,7 +223,7 @@ Route::group(['prefix' => 'leagues'], function () {
     Route::get('{slug}/waitlist/accept/{member_id}', ['as' => 'league_waitlist_accept', 'uses' => 'League\ManageController@waitlistAccept']);
 
     // Managing
-    Route::any('{slug}/archive', ['as' => 'league_archive', 'uses' => 'League\AdminController@archive']);
+    Route::get('{slug}/archive', ['as' => 'league_archive', 'uses' => 'League\AdminController@archive']);
     Route::get('add/{season}', ['as' => 'league_add', 'uses' => 'League\AdminController@add']);
     Route::post('add/{season}', ['as' => 'league_add_post', 'uses' => 'League\AdminController@postAdd']);
 });
@@ -307,9 +311,9 @@ Route::group(['prefix' => 'manage'], function () {
     Route::post('duplicates', ['as' => 'manage_duplicates_post', 'uses' => 'ManageController@postDuplicates']);
     Route::get('league_players', ['as' => 'manage_league_players', 'uses' => 'ManageController@leaguePlayers']);
     Route::post('league_players', ['as' => 'manage_league_players_handle', 'uses' => 'ManageController@postLeaguePlayers']);
-    Route::get('load_league_teams', ['as' => 'manage_load_league_teams', 'uses' => 'ManageController@load_league_teams']);
-    Route::any('users', ['as' => 'manage_users', 'uses' => 'ManageController@users']);
-    Route::post('users_detail', ['as' => 'manage_users_detail', 'uses' => 'ManageController@users_detail']);
+    Route::get('load_league_teams', ['as' => 'manage_load_league_teams', 'uses' => 'ManageController@loadLeagueTeams']);
+    Route::get('users', ['as' => 'manage_users', 'uses' => 'ManageController@users']);
+    Route::post('users_detail', ['as' => 'manage_users_detail', 'uses' => 'ManageController@usersDetail']);
     Route::get('impersonate/{user_id}', ['as' => 'manage_impersonate', 'uses' => 'ManageController@impersonate']);
     Route::get('forms', ['as' => 'manage_forms', 'uses' => 'ManageController@forms']);
     Route::get('forms/add', ['as' => 'manage_forms_add', 'uses' => 'ManageController@formsAdd']);
@@ -318,5 +322,5 @@ Route::group(['prefix' => 'manage'], function () {
     Route::post('forms/{slug}/edit', ['as' => 'manage_forms_edit_post', 'uses' => 'ManageController@postFormsEdit']);
     Route::get('forms/{slug}/remove', ['as' => 'manage_forms_remove', 'uses' => 'ManageController@formsRemove']);
     Route::get('coaches', ['as' => 'manage_coaches', 'uses' => 'ManageController@coaches']);
-    Route::get('coaches/download', ['as' => 'manage_coaches_download', 'uses' => 'ManageController@coaches_download']);
+    Route::get('coaches/download', ['as' => 'manage_coaches_download', 'uses' => 'ManageController@coachesDownload']);
 });

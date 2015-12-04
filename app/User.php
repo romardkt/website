@@ -3,7 +3,6 @@
 namespace Cupa;
 
 use Carbon\Carbon;
-use Cupa\UserWaiver;
 use Datetime;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -377,5 +376,20 @@ class User extends Model implements AuthenticatableContract,
     public function signWaiver($year)
     {
         return UserWaiver::signWaiver($this->id, $year);
+    }
+
+    public static function fetchBy($column, $value)
+    {
+        return static::where($column, '=', $value)->first();
+    }
+
+    public function fetchPasswordResetCode()
+    {
+        if ($this->reset_password_code === null) {
+            $this->reset_password_code = self::generateCode('reset_password_code');
+            $this->save();
+        }
+
+        return $this->reset_password_code;
     }
 }

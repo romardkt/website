@@ -43,4 +43,23 @@ class AdminController extends Controller
 
         return ($season == 'youth') ? redirect()->route('youth_leagues', [$league->slug]) : redirect()->route('league', [$league->slug]);
     }
+
+    public function archive($slug)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('archive', $league);
+        if (!$league) {
+            Session::flash('msg-error', 'Could not find league');
+
+            return redirect()->route('leagues');
+        }
+
+        $league->is_archived = ($league->is_archived == 1) ? 0 : 1;
+        $league->save();
+        $status = ($league->is_archived == 1) ? ' archived' : ' un-archived';
+
+        Session::flash('msg-success', $league->displayName().' '.$status);
+
+        return redirect()->route('league', [$league->slug]);
+    }
 }

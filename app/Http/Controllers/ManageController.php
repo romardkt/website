@@ -12,6 +12,7 @@ use Cupa\League;
 use Cupa\LeagueMember;
 use Cupa\User;
 use Cupa\UserBalance;
+use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\MessageBag;
@@ -28,7 +29,7 @@ class ManageController extends Controller
         return view('manage.users');
     }
 
-    public function users_detail(ManageUserRequest $request)
+    public function usersDetail(ManageUserRequest $request)
     {
         $user = User::find($request->get('user_id'));
 
@@ -72,7 +73,7 @@ class ManageController extends Controller
         return redirect()->route('manage_league_players');
     }
 
-    public function load_league_teams(LoadLeagueRequest $request)
+    public function loadLeagueTeams(LoadLeagueRequest $request)
     {
         $leagueId = $request->get('league_id');
         $league = League::find($leagueId);
@@ -223,10 +224,10 @@ class ManageController extends Controller
         return view('manage.coaches', compact('coaches'));
     }
 
-    public function coaches_download()
+    public function coachesDownload()
     {
         $coaches = LeagueMember::fetchAllCoaches();
-        $file = storage_path().'/cache/'.(new DateTime())->format('Y-m-d').'-CUPA-Coaches.csv';
+        $file = storage_path().'/app/'.(new DateTime())->format('Y-m-d').'-CUPA-Coaches.csv';
 
         $fp = fopen($file, 'w');
         if ($fp) {
