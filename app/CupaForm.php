@@ -36,4 +36,18 @@ class CupaForm extends Model
 
         return $select->count() === 0;
     }
+
+    public static function fetchWaiver($year, $type)
+    {
+        $select = static::where('year', '<=', $year)
+            ->orderBy('year', 'desc');
+
+        if ($type == 'yuc') {
+            $select->where('name', 'LIKE', 'yuc_waiver_release');
+        } else {
+            $select->where('name', 'LIKE', 'waiver_release');
+        }
+
+        return $select->first();
+    }
 }

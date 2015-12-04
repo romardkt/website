@@ -7,11 +7,11 @@
     </div>
 </div>
 @include('leagues.header')
-@if($isAuthorized['manager'])
+@can('edit', $league)
 <div class="row">
     <div class="col-sm-8 text-left">
         <h4>
-        # of players: <span class="text-info">{{{ $league->counts->total }}}</span> (<span class="text-info">{{{ $league->counts->male }}}</span> Male, <span class="text-info">{{{ $league->counts->female }}}</span> Female, <span class="text-info">{{{ $league->counts->other }}}</span> Unknown)
+        # of players: <span class="text-info">{{ $league->counts->total }}</span> (<span class="text-info">{{ $league->counts->male }}</span> Male, <span class="text-info">{{ $league->counts->female }}</span> Female, <span class="text-info">{{ $league->counts->other }}</span> Unknown)
         </h4>
     </div>
     <div class="col-sm-4 text-right">
@@ -40,13 +40,13 @@
             <tbody>
                 @foreach($players as $player)
                 <tr>
-                    <td class="col-xs-5 col-sm-3">{{ secureEmail($player['email'], $player['first_name'] . ' ' . $player['last_name']) }}</td>
-                    <td class="col-xs-6 col-sm-3">{{{ (empty($player['team_name'])) ? 'Not Assigned' : $player['team_name'] }}}</td>
-                    <td class="col-xs-1 text-center hidden-xs">{{{ $player['gender'] }}}</td>
-                    <td class="col-xs-1 text-center hidden-xs">{{{ displayAge($player['birthday']) }}}</td>
-                    <td class="col-xs-1 text-center hidden-xs">{{{ displayHeight($player['height']) }}}</td>
-                    <td class="col-xs-1 text-center hidden-xs">{{{ displayExperience($player['experience']) }}}</td>
-                    <td class="col-xs-3 text-center hidden-xs">{{{ displayLevel($player['level']) }}}</td>
+                    <td class="col-xs-5 col-sm-3">{!! secureEmail($player['email'], $player['first_name'] . ' ' . $player['last_name']) !!}</td>
+                    <td class="col-xs-6 col-sm-3">{{ (empty($player['team_name'])) ? 'Not Assigned' : $player['team_name'] }}</td>
+                    <td class="col-xs-1 text-center hidden-xs">{{ $player['gender'] }}</td>
+                    <td class="col-xs-1 text-center hidden-xs">{{ displayAge($player['birthday']) }}</td>
+                    <td class="col-xs-1 text-center hidden-xs">{{ displayHeight($player['height']) }}</td>
+                    <td class="col-xs-1 text-center hidden-xs">{{ displayExperience($player['experience']) }}</td>
+                    <td class="col-xs-3 text-center hidden-xs">{{ displayLevel($player['level']) }}</td>
                 </tr>
                 @endforeach
             </tbody>

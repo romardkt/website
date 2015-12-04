@@ -3,7 +3,7 @@
 @section('content')
 <div class="row">
     <div class="col-xs-12 text-center">
-        <h2 class="page">Sign player Waiver for {{{ $year }}}</h2>
+        <h2 class="page">Sign player Waiver for {{ $year }}</h2>
     </div>
 </div>
 <div class="row">
@@ -11,7 +11,7 @@
             <hr/>
             <p>In consideration of my participation in any way in the Cincinnati Ultimate
             Players Association’s leagues, related events and activities, I,
-            <strong>{{{ $user->fullname() }}}</strong>,</p>
+            <strong>{{ $user->fullname() }}</strong>,</p>
 
             <p>the undersigned acknowledge, appreciate, and agree that:</p>
 
@@ -63,20 +63,20 @@
 </div>
 <div class="row">
     <div class="col-xs-12 col-sm-offset-2 col-sm-8">
-        @include('layouts.partials.errors')
+        @include('partials.errors')
 
-        {{ Form::open(['class' => 'form form-vertical', 'role' => 'form']) }}
+        {!! Form::open(['class' => 'form form-vertical', 'role' => 'form']) !!}
 
         <legend>Sign Waiver for {{ $year }}</legend>
 
         <div class="form-group">
-            {{ Form::label('Enter your name exactly as it appears in the waiver text') }}
-            {{ Form::text('fullname', null, ['class' => 'form-control']) }}
+            {!! Form::label('Enter your name exactly as it appears in the waiver text') !!}
+            {!! Form::text('fullname', null, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
             <div class="checkbox">
-                {{ Form::checkbox('read', 1, false) }} I have read and agree to the above waiver
+                {!! Form::checkbox('read', 1, false) !!} I have read and agree to the above waiver
             </div>
         </div>
 
@@ -88,7 +88,7 @@
             </div>
         </div>
 
-        {{ Form::close() }}
+        {!! Form::close() !!}
     </div>
 </div>
 @endsection

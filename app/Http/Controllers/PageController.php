@@ -2,9 +2,11 @@
 
 namespace Cupa\Http\Controllers;
 
+use Cupa\CupaForm;
 use Cupa\Http\Requests\ContactRequest;
 use Cupa\Http\Requests\LocationAddRequest;
 use Cupa\Http\Requests\PageEditRequest;
+use Cupa\Http\Requests\WaiverRequest;
 use Cupa\League;
 use Cupa\LeagueMember;
 use Cupa\Location;
@@ -15,6 +17,7 @@ use Cupa\Pickup;
 use Cupa\Post;
 use Cupa\Tournament;
 use Cupa\TournamentTeam;
+use Cupa\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
@@ -385,5 +388,50 @@ class PageController extends Controller
         Session::flash('msg-success', $page->display.' updated.');
 
         return redirect()->route('leagues_dayton');
+    }
+
+    public function waiver($year, $user = null)
+    {
+        $redirect = (Session::has('waiver_redirect')) ?  Session::get('waiver_redirect') : route('home');
+        if(empty($user)) {
+            $user = Auth::user();
+        }
+
+        if ($user->hasWaiver($year)) {
+            Session::flash('msg-error', 'You have already signed a waiver for the '.$year.' year');
+
+            return redirect()->to($redirect);
+        }
+
+        if ($user->getAge() < 18) {
+            Session::flash('msg-error', 'Player is too young to sign a waiver.');
+
+            return redirect()->to($redirect);
+        }
+
+        return view('page.waiver', compact('user', 'year'));
+    }
+
+    public function postWaiver($year, $user, WaiverRequest $request)
+    {
+        $redirect = (Session::has('waiver_redirect')) ?  Session::get('waiver_redirect') : route('home');
+        $input = $request->all();
+        $user->signWaiver($year);
+        Session::flash('msg-success', 'Waiver signed for the '.$year.' year');
+        Session::forget('waiver_redirect');
+
+        return redirect()->to($redirect);
+    }
+
+    public function waiverDownload($year, $type = null)
+    {
+        $form = CupaForm::fetchWaiver($year, $type);
+        if ($form) {
+            return response()->download(public_path().$form->location);
+        }
+
+        Session::flash('msg-error', 'Could not find form to download');
+
+        return redirect()->to(Session::get('waiver_redirect'));
     }
 }

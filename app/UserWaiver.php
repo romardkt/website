@@ -2,8 +2,9 @@
 
 namespace Cupa;
 
-use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class UserWaiver extends Model
 {
@@ -29,5 +30,36 @@ class UserWaiver extends Model
     {
         return static::where('user_id', '=', $userId)
             ->get();
+    }
+
+    public static function toggleWaiver($userId, $year = null)
+    {
+        if ($year === null) {
+            $year = date('Y');
+        }
+
+        $row = static::where('user_id', '=', $userId)
+            ->where('year', '=', $year)
+            ->first();
+        if (!$row) {
+            $row = static::create([
+                'user_id' => $userId,
+                'year' => $year,
+                'updated_by' => Auth::id(),
+            ]);
+        } else {
+            $row->delete();
+        }
+    }
+
+    public static function signWaiver($userId, $year)
+    {
+        if (!static::hasWaiver($userId, $year)) {
+            static::create([
+                'user_id' => $userId,
+                'year' => $year,
+                'updated_by' => Auth::id(),
+            ]);
+        }
     }
 }

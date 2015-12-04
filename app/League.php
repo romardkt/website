@@ -4,6 +4,7 @@ namespace Cupa;
 
 use Auth;
 use Carbon\Carbon;
+use Cupa\LeagueMember;
 use DB;
 use DateTime;
 use Gate;
@@ -633,5 +634,10 @@ class League extends Model
         }
 
         return $data;
+    }
+
+    public function getAllPlayers($teamId = null)
+    {
+        return LeagueMember::fetchAllLeagueMembers($this->id, 'player');
     }
 }

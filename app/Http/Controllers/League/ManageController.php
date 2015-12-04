@@ -476,7 +476,7 @@ class ManageController extends Controller
         return view('leagues.manage.players', compact('league', 'players'));
     }
 
-    public function players_download($slug)
+    public function playersDownload($slug)
     {
         $league = League::fetchBySlug($slug);
         $this->authorize('edit', $league);
@@ -685,7 +685,7 @@ class ManageController extends Controller
         return redirect()->route('league_shirts');
     }
 
-    public function manage($slug)
+    public function manage($slug, Request $request)
     {
         $league = League::fetchBySlug($slug);
         $this->authorize('edit', $league);
@@ -699,45 +699,49 @@ class ManageController extends Controller
         $members = $league->getAllPlayers();
         $teams = $league->teams;
 
-        if (Request::method() == 'POST') {
-            $input = $request->all();
-            if (isset($input['add'])) {
-                $member = LeagueMember::find($input['member_id']);
-                $member->league_team_id = $input['team_id'];
-                $member->save();
+        return view('leagues.manage.manage', compact('league', 'members', 'teams', 'initial'));
+    }
 
-                return json_encode(['success' => 'ok']);
-            } elseif (isset($input['remove'])) {
-                $member = LeagueMember::find($input['member_id']);
-                $member->league_team_id = null;
-                $member->save();
+    public function postManage($slug, Request $request)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
 
-                return json_encode(['success' => 'ok']);
-            } elseif (isset($input['delete'])) {
-                $member = LeagueMember::find($input['member_id']);
-                $member->delete();
+        $input = $request->all();
+        if (isset($input['add'])) {
+            $member = LeagueMember::find($input['member_id']);
+            $member->league_team_id = $input['team_id'];
+            $member->save();
 
-                return json_encode(['success' => 'ok']);
-            } elseif (isset($input['add_players'])) {
-                $players = explode(',', $input['players']);
-                if (count($players) && $players[0] != '') {
-                    foreach ($players as $player) {
-                        LeagueMember::create([
-                            'league_id' => $league->id,
-                            'user_id' => $player,
-                            'position' => 'player',
-                            'updated_by' => Auth::id(),
-                        ]);
-                    }
-                } else {
-                    Session::flash('msg-error', 'Please select at least one player to add');
+            return json_encode(['success' => 'ok']);
+        } elseif (isset($input['remove'])) {
+            $member = LeagueMember::find($input['member_id']);
+            $member->league_team_id = null;
+            $member->save();
+
+            return json_encode(['success' => 'ok']);
+        } elseif (isset($input['delete'])) {
+            $member = LeagueMember::find($input['member_id']);
+            $member->delete();
+
+            return json_encode(['success' => 'ok']);
+        } elseif (isset($input['add_players'])) {
+            $players = explode(',', $input['players']);
+            if (count($players) && $players[0] != '') {
+                foreach ($players as $player) {
+                    LeagueMember::create([
+                        'league_id' => $league->id,
+                        'user_id' => $player,
+                        'position' => 'player',
+                        'updated_by' => Auth::id(),
+                    ]);
                 }
+            } else {
+                Session::flash('msg-error', 'Please select at least one player to add');
             }
-
-            return redirect()->route('league_manage', [$slug]);
         }
 
-        return view('leagues.manage.manage', compact('league', 'members', 'teams', 'initial'));
+        return redirect()->route('league_manage', [$slug]);
     }
 
     public function waitlist($slug)
@@ -755,7 +759,7 @@ class ManageController extends Controller
         return view('leagues.manage.waitlist', compact('league', 'players'));
     }
 
-    public function waitlist_accept($slug, $memberId)
+    public function waitlistAccept($slug, $memberId)
     {
         $member = LeagueMember::find($memberId);
         $this->authorize('edit', $member->league);
@@ -768,7 +772,7 @@ class ManageController extends Controller
         return redirect()->route('league_waitlist', [$slug]);
     }
 
-    public function waitlist_download($slug)
+    public function waitlistDownload($slug)
     {
         $league = League::fetchBySlug($slug);
         $this->authorize('edit', $league);
@@ -873,5 +877,80 @@ class ManageController extends Controller
         Session::flash('msg-error', 'Error downloading file');
 
         return redirect()->route('league_waitlist');
+    }
+
+    public function statusToggle(Request $request)
+    {
+        $input = $request->all();
+        $member = LeagueMember::find($input['member']);
+        if ($member) {
+            $league = League::find($member->league_id);
+
+            if ($input['type'] == 'paid') {
+                $member->paid = ($member->paid == 1) ? 0 : 1;
+                $member->save();
+            } elseif ($input['type'] == 'waiver') {
+                UserWaiver::toggleWaiver($member->user_id, $league->year);
+            }
+
+            $balance = UserBalance::find($member->user_id);
+            if ($balance) {
+                $balance = $balance->balance;
+            }
+
+            return response()->json(['status' => 'success', 'paid' => $member->paid, 'waiver' => UserWaiver::hasWaiver($member->user_id, $league->year), 'balance' => $balance]);
+        }
+
+        return response()->json(['status' => 'error', 'msg' => 'No Player Found']);
+    }
+
+    public function statusDownload($slug, $all)
+    {
+        $league = League::fetchBySlug($slug);
+        if (!$league) {
+            Session::flash('msg-error', 'Could not find league');
+
+            return redirect()->route('leagues');
+        }
+
+        $statuses = LeagueMember::fetchAnswersByLeague($league->id);
+        $file = storage_path().'/app/'.str_slug($league->displayName().' '.(new DateTime())->format('Y-m-d').' statuses').'.csv';
+
+        $fp = fopen($file, 'w');
+        if ($fp) {
+            $line = ['player', 'paid', 'waiver', 'balance', 'outstanding_leagues'];
+            fputcsv($fp, $line);
+
+            foreach ($statuses as $status) {
+                if ($all == 'outstanding' && ($status['paid'] == 1 && $status['waiver'] !== null && $status['balance'] < 1)) {
+                    continue;
+                }
+
+                $leagues = [];
+                if (!empty($status['balance_leagues'])) {
+                    foreach (League::whereIn('id', explode(',', $status['balance_leagues']))->get() as $league) {
+                        $leagues[] = $league->displayName();
+                    }
+                }
+
+                $line = [
+                    $status['first_name'].' '.$status['last_name'],
+                    ($status['paid'] == 1) ? 'Yes' : 'No',
+                    ($status['waiver'] === null) ? 'No' : 'Yes',
+                    ($status['balance'] === null) ? '0' : $status['balance'],
+                    (empty($leagues)) ? '' : implode(', ', $leagues),
+                ];
+
+                fputcsv($fp, $line);
+            }
+
+            fclose($fp);
+
+            return response()->download($file);
+        }
+
+        Session::flash('msg-error', 'Error downloading file');
+
+        return redirect()->route('league_shirts');
     }
 }

@@ -3,6 +3,7 @@
 namespace Cupa;
 
 use Carbon\Carbon;
+use Cupa\UserWaiver;
 use Datetime;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -371,5 +372,10 @@ class User extends Model implements AuthenticatableContract,
     public function getAge()
     {
         return (new DateTime($this->birthday))->diff(new DateTime('now'))->y;
+    }
+
+    public function signWaiver($year)
+    {
+        return UserWaiver::signWaiver($this->id, $year);
     }
 }

@@ -12,9 +12,9 @@
         <form class="form" method="post" role="form">
             <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
             <div class="form-group">
-                {{ Form::hidden('add_players', 'Add Players') }}
-                {{ Form::label('Add players to league') }}
-                {{ Form::hidden('players', $initial, ['id' => 'add_players']) }}
+                {!! Form::hidden('add_players', 'Add Players') !!}
+                {!! Form::label('Add players to league') !!}
+                {!! Form::hidden('players', $initial, ['id' => 'add_players']) !!}
                 <span class="help-block">Start by typing a players name</span>
             </div>
             <div class="form-group">

@@ -29,6 +29,7 @@ elixir(function(mix) {
             '../../../bower_components/pickadate/lib/compressed/picker.date.js',
             '../../../bower_components/select2/select2.js',
             '../../../bower_components/clockpicker/dist/bootstrap-clockpicker.min.js',
+            '../../../bower_components/list.js/dist/list.js',
             'global.js'
         ], 'public/js/cupa.min.js')
         .copy('bower_components/font-awesome/fonts', 'public/build/fonts')
