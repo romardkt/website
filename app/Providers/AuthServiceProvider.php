@@ -43,8 +43,10 @@ class AuthServiceProvider extends ServiceProvider
         foreach ($roles as $name => $perms) {
             $gate->define('is-'.$name, function ($user) use ($perms) {
                 $roles = $user->roles();
-                if ($roles->count() > 0 && in_array($roles->first()->role->name, $perms)) {
-                    return true;
+                foreach ($roles->get() as $role) {
+                    if (in_array($role->role->name, $perms)) {
+                        return true;
+                    }
                 }
 
                 return false;

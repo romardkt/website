@@ -20,8 +20,10 @@ class PickupPolicy
     private function isAuthorized(User $user, Pickup $pickup)
     {
         $roles = $user->roles();
-        if ($roles->count() > 0 && in_array($roles->first()->role->name, $this->globalPerms)) {
-            return true;
+        foreach ($roles->get() as $role) {
+            if (in_array($role->role->name, $this->globalPerms)) {
+                return true;
+            }
         }
 
         return $pickup->contacts()->contains('user_id', $user->id);

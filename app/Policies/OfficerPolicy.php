@@ -20,9 +20,10 @@ class OfficerPolicy
     private function isAuthorized(User $user, Officer $officer)
     {
         $roles = $user->roles();
-
-        if ($roles->count() > 0 && in_array($roles->first()->role->name, $this->globalPerms)) {
-            return true;
+        foreach ($roles->get() as $role) {
+            if (in_array($role->role->name, $this->globalPerms)) {
+                return true;
+            }
         }
 
         return $officer->user_id == $user->id;

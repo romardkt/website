@@ -20,8 +20,10 @@ class LeaguePolicy
     private function isAuthorized(User $user, League $league)
     {
         $roles = $user->roles();
-        if ($roles->count() > 0 && in_array($roles->first()->role->name, $this->globalPerms)) {
-            return true;
+        foreach ($roles->get() as $role) {
+            if (in_array($role->role->name, $this->globalPerms)) {
+                return true;
+            }
         }
 
         return $league->directors()->contains('user_id', $user->id);
@@ -44,7 +46,7 @@ class LeaguePolicy
             }
 
             foreach ($user->roles()->get() as $userRole) {
-                if ($userRole->role()->first()->name == 'background') {
+                if ($userRole->role->name == 'background') {
                     return true;
                 }
             }
