@@ -4,7 +4,6 @@ namespace Cupa;
 
 use Auth;
 use Carbon\Carbon;
-use Cupa\LeagueMember;
 use DB;
 use DateTime;
 use Gate;
@@ -455,7 +454,7 @@ class League extends Model
             $contacts['all-directors'] = LeagueMember::fetchLeagueMembers($this->id, 'director');
         }
 
-        if (Gate::allows('is-manager')) {
+        if (Gate::allows('edit', $this)) {
             if ($this->is_youth == 1) {
                 $contacts['all-coaches'] = LeagueMember::fetchLeagueMembers($this->id, ['coach', 'assistant-coach']);
                 $contacts['head-coaches'] = LeagueMember::fetchLeagueMembers($this->id, 'coach');
@@ -465,7 +464,7 @@ class League extends Model
         }
 
         $member = LeagueMember::fetchMemberNoTeam($this->id, (isset($user->id)) ? $user->id : null, ['player', 'waitlist']);
-        if (Gate::allows('is-manager') || Auth::check() && $user->isLeagueMember($this->id)) {
+        if (Gate::allows('edit', $this) || Auth::check() && $user->isLeagueMember($this->id)) {
             if ($member && $member->league_team_id !== null) {
                 if ($this->is_youth == 1) {
                     $contacts['my-coaches'] = LeagueMember::fetchLeagueMembers($this->id, ['coach', 'assistant-coach'], $member->league_team_id);
@@ -476,7 +475,7 @@ class League extends Model
             }
         }
 
-        if (Gate::allows('is-manager')) {
+        if (Gate::allows('edit', $this)) {
             $contacts['unpaid-players'] = LeagueMember::fetchUnpaidLeagueMembers($this->id);
             if (count($contacts['unpaid-players']) < 1) {
                 unset($contacts['unpaid-players']);
