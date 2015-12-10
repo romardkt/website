@@ -351,4 +351,17 @@ class LeagueMember extends Model
 
         return $data;
     }
+
+    public static function fetchUnpaidLeagueMembers($leagueId)
+    {
+        return static::with(['user', 'user.profile'])
+            ->join('users', 'users.id', '=', 'league_members.user_id')
+            ->where('league_id', '=', $leagueId)
+            ->where('paid', '=', 0)
+            ->where('position', '=', 'player')
+            ->select('league_members.*')
+            ->orderBy('users.last_name')
+            ->orderBy('users.first_name')
+            ->get();
+    }
 }
