@@ -12,7 +12,7 @@
     <div class="col-xs-12 text-center">
         <div class="btn-group btn-group-justified hidden-xs">
             @foreach(Config::get('cupa.league_manage_menu') as $route => $data)
-            @if($data['auth'] === null || Gate::allows('is-' . $data['auth']))
+            @if($data['auth'] === null || Gate::allows($data['auth'], $league))
             @if(($route != 'league_requests' && $route != 'league_coaches') || ($league->user_teams == 1 && $route == 'league_requests') || ($league->is_youth == 1 && $route == 'league_coaches'))
             <a class="btn btn-default{{{ (Route::currentRouteName() == $route) ? ' active' : '' }}}" href="{{ route($route, [$league->slug]) }}">{{{ $data['name'] }}}</a>
             @endif
@@ -27,7 +27,7 @@
             @endif
             @endforeach
             @foreach(Config::get('cupa.league_manage_menu') as $route => $data)
-            @if($data['auth'] === null || Gate::allows('is-' . $data['auth']))
+            @if($data['auth'] === null || Gate::allows($data['auth'], $league))
             @if(($route != 'league_requests' && $route != 'league_coaches') || ($league->user_teams == 1 && $route == 'league_requests') || ($league->is_youth == 1 && $route == 'league_coaches'))
             <option value="{{ route($route, [$league->slug]) }}"{{{ (Route::currentRouteName() == $route) ? ' selected' : '' }}}>{{{ $data['name'] }}}</option>
             @endif

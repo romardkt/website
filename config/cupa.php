@@ -40,7 +40,7 @@ return [
             'Off-Field Event Help' => 'Off-Field Event Help',
             'Public Relations Efforts' => 'Public Relations Efforts',
             'Other' => 'Other',
-        ]
+        ],
     ],
     'clinics' => [
         'youth',
@@ -48,23 +48,23 @@ return [
     ],
     'distinctSeasons' => [
         0 => 'Select Season',
-        'winter'  => 'Winter',
+        'winter' => 'Winter',
         'spring' => 'Spring',
         'summer' => 'Summer',
         'fall' => 'Fall',
     ],
     'seasons' => [
-        1  => 'winter',
-        2  => 'winter',
-        3  => 'spring',
-        4  => 'spring',
-        5  => 'summer',
-        6  => 'summer',
-        7  => 'summer',
-        8  => 'fall',
-        9  => 'fall',
-        10  => 'fall',
-        11  => 'fall',
+        1 => 'winter',
+        2 => 'winter',
+        3 => 'spring',
+        4 => 'spring',
+        5 => 'summer',
+        6 => 'summer',
+        7 => 'summer',
+        8 => 'fall',
+        9 => 'fall',
+        10 => 'fall',
+        11 => 'fall',
         12 => 'winter',
     ],
     'levels' => [
@@ -119,31 +119,31 @@ return [
     'league_manage_menu' => [
         'league_shirts' => [
             'name' => 'Shirts',
-            'auth' => 'manager',
+            'auth' => 'edit',
         ],
         'league_emergency' => [
             'name' => 'Emergency',
-            'auth' => 'manager',
+            'auth' => 'edit',
         ],
         'league_requests' => [
             'name' => 'Requests',
-            'auth' => 'manager',
+            'auth' => 'edit',
         ],
         'league_players' => [
             'name' => 'Players',
-            'auth' => 'manager',
+            'auth' => 'edit',
         ],
         'league_waitlist' => [
             'name' => 'Waitlist',
-            'auth' => 'manager',
+            'auth' => 'edit',
         ],
         'league_status' => [
             'name' => 'Status',
-            'auth' => 'manager',
+            'auth' => 'edit',
         ],
         'league_manage' => [
             'name' => 'Manage',
-            'auth' => 'manager',
+            'auth' => 'edit',
         ],
     ],
     'shirts' => [
