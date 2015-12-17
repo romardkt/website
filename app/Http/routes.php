@@ -14,7 +14,6 @@ Route::model('tournament_feed_id', 'Cupa\TournamentFeed');
 Route::model('tournament_team_id', 'Cupa\TournamentTeam');
 Route::model('tournament_member_id', 'Cupa\TournamentMember');
 Route::model('tournament_location_id', 'Cupa\TournamentLocation');
-Route::model('paypal_id', 'Cupa\Paypal');
 Route::model('league_team_id', 'Cupa\LeagueTeam');
 Route::model('league_game_id', 'Cupa\LeagueGame');
 Route::model('league_member_id', 'Cupa\LeagueMember');

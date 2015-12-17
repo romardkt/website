@@ -20,6 +20,7 @@ use Cupa\TournamentTeam;
 use Cupa\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -224,8 +225,9 @@ class PageController extends Controller
         return new PaypalPayment($paypalConfig, (App::environment() == 'prod') ? false : true);
     }
 
-    public function paypalSuccess(Paypal $paypal, Request $request)
+    public function paypalSuccess(Request $request, $paypalId)
     {
+        $paypal = Paypal::find($paypalId);
         $paypalPayment = $this->_paypalPayment($paypal->id);
 
         $paypal->state = 'approved';
@@ -282,8 +284,9 @@ class PageController extends Controller
         }
     }
 
-    public function paypalFail(Paypal $paypal)
+    public function paypalFail($paypalId)
     {
+        $paypal = Paypal::find($paypalId);
         $paypal->state = 'cancelled';
         $paypal->save();
 
@@ -393,8 +396,12 @@ class PageController extends Controller
     public function waiver($year, $user = null)
     {
         $redirect = (Session::has('waiver_redirect')) ?  Session::get('waiver_redirect') : route('home');
-        if(empty($user)) {
+        if (empty($user)) {
             $user = Auth::user();
+        }
+
+        if (is_numeric($user)) {
+            $user = User::find($user);
         }
 
         if ($user->hasWaiver($year)) {
