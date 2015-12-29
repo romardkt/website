@@ -30,6 +30,12 @@ class ProfileController extends Controller
 
     public function profile(Request $request)
     {
+        if (Auth::guest()) {
+            Session::flash('msg-error', 'Please login to view your profile');
+            
+            return redirect()->route('home');
+        }
+
         $user = Auth::user();
         $data = $user->toArray() + $user->profile->toArray();
         $data['birthday'] = convertDate($data['birthday'], 'm/d/Y');
