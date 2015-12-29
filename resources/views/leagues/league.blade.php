@@ -35,7 +35,7 @@
         @endif
     </div>
     <div class="col-xs-6 text-right">
-        @can('is-manager')
+        @can('edit', $league)
         <a class="btn btn-primary" href="{{ route('league_edit', [$league->slug, 'settings']) }}"><i class="fa fa-lg fa-fw fa-edit"></i> Settings</a>
             @if($league->is_archived == 0)
         <a class="btn btn-danger" onclick="return confirm('This will hide the league from the list, are you sure?');" href="{{ route('league_archive', [$league->slug]) }}"><i class="fa fa-lg fa-fw fa-lock"></i> Archive League</a>
@@ -49,7 +49,7 @@
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
         <h3 class="text-center">Description</h3>
-        @can('is-manager')
+        @can('edit', $league)
         <div class="pull-right page-action">
             <a class="btn btn-primary" href="{{ route('league_edit', [$league->slug, 'description']) }}"><i class="fa fa-fw fa-lg fa-edit"></i> Edit</a>
         </div>
@@ -61,7 +61,7 @@
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
         <h3 class="text-center">Information</h3>
-        @can('is-manager')
+        @can('edit', $league)
         <div class="pull-right page-action">
             <a class="btn btn-primary" href="{{ route('league_edit', [$league->slug, 'information']) }}"><i class="fa fa-fw fa-lg fa-edit"></i> Edit</a>
         </div>
@@ -110,7 +110,7 @@
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
         <h3 class="text-center">Registration</h3>
-        @can('is-manager')
+        @can('edit', $league)
         <div class="pull-right page-action">
             <a class="btn btn-primary" href="{{ route('league_edit', [$league->slug, 'registration']) }}"><i class="fa fa-fw fa-lg fa-edit"></i> Edit</a>
         </div>
