@@ -307,8 +307,8 @@ class TournamentController extends Controller
 
     public function feedAdd($name, $year)
     {
-        $this->authorize('edit', $tournament);
         $tournament = $this->fetchTournament($name, $year);
+        $this->authorize('edit', $tournament);
 
         return view('tournament.feed_add', compact('tournament'));
     }
@@ -331,8 +331,8 @@ class TournamentController extends Controller
 
     public function feedEdit(TournamentFeed $feed)
     {
-        $this->authorize('edit', $tournament);
         $tournament = $feed->tournament;
+        $this->authorize('edit', $tournament);
 
         return view('tournament.feed_edit', compact('feed', 'tournament'));
     }
@@ -351,6 +351,7 @@ class TournamentController extends Controller
 
     public function feedRemove(TournamentFeed $feed)
     {
+        $tournament = $feed->tournament;
         $this->authorize('delete', $tournament);
         $title = $feed->title;
         $feed->delete();

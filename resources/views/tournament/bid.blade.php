@@ -17,7 +17,7 @@
         <p>
             The cost for this tournament is <strong class="text-info">${{ $tournament->cost }}</strong>, which you may pay
             upon successful bid submission with Paypal.  If you have already submitted a bid and would just like
-            to pay the tournament fee you may
+            to pay the tournament fee you may:
         </p>
         <p>
             <a class="btn btn-primary" href="{{ route('tournament_payment', [$tournament->name, $tournament->year]) }}">Make a Payment for your team</a>

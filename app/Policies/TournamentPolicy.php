@@ -49,6 +49,6 @@ class TournamentPolicy
 
     public function delete(User $user, Tournament $tournament)
     {
-        return $user->roles()->first()->name === 'admin';
+        return $this->isAuthorized($user, $tournament);
     }
 }
