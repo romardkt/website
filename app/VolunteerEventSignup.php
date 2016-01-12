@@ -14,6 +14,10 @@ class VolunteerEventSignup extends Model
         'notes',
     ];
 
+    public function event(){
+        return $this->belongsTo('Cupa\VolunteerEvent', 'volunteer_event_id', 'id');
+    }
+
     public function volunteer()
     {
         return $this->belongsTo('Cupa\Volunteer');

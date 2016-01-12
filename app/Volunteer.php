@@ -19,6 +19,12 @@ class Volunteer extends Model
         return $this->belongsTo('Cupa\User');
     }
 
+    public function signups()
+    {
+        return $this->hasMany('Cupa\VolunteerEventSignup')
+            ->with('event');
+    }
+
     public static function fetchAllVolunteers()
     {
         return static::join('users', 'users.id', '=', 'volunteers.user_id')

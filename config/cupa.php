@@ -193,6 +193,7 @@ return [
         'profile_leagues' => 'My Leagues',
         'profile_minors' => 'My Minors',
         'profile_contacts' => 'My Contacts',
+        'profile_volunteer' => 'My Volunteering',
         'profile_password' => 'Password Change',
     ],
 ];

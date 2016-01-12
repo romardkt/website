@@ -27,6 +27,30 @@
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-offset-1 col-sm-10">
+            <h3>Volunteering Participation</h3>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th class="text-center">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($signups as $signup)
+                    <tr>
+                        <td>{{$signup->event->title}}</td>
+                        <td class="text-center">{{date('m/d/Y', strtotime($signup->event->start))}}</td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="2" class="text-center">No volunteer events attended</td>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-offset-1 col-sm-10">
             <h3>League Participation</h3>
             <table class="table table-hover">
                 <thead>

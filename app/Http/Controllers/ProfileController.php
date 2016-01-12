@@ -21,10 +21,17 @@ class ProfileController extends Controller
     public function __construct()
     {
         if (Auth::check()) {
-            View::share('user', Auth::user());
-            View::share('leagues', Auth::user()->fetchAllLeagues());
-            View::share('minors', Auth::user()->children);
-            View::share('contacts', Auth::user()->contacts);
+            $user = Auth::user();
+            View::share('user', $user);
+            View::share('leagues', $user->fetchAllLeagues());
+            View::share('minors', $user->children);
+            View::share('contacts', $user->contacts);
+
+            $signups = [];
+            if ($user->volunteer) {
+                $signups = $user->volunteer->signups;
+            }
+            View::share('signups', $signups);
         }
     }
 
@@ -32,7 +39,7 @@ class ProfileController extends Controller
     {
         if (Auth::guest()) {
             Session::flash('msg-error', 'Please login to view your profile');
-            
+
             return redirect()->route('home');
         }
 
@@ -246,5 +253,10 @@ class ProfileController extends Controller
         } else {
             return redirect()->route('profile_contacts');
         }
+    }
+
+    public function volunteer(Request $request)
+    {
+        return view('profile.volunteer');
     }
 }

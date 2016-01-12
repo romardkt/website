@@ -28,6 +28,7 @@
                 {!! ($route == 'profile_leagues') ? '<span class="badge">' . count($leagues) . '</span>' : '' !!}
                 {!! ($route == 'profile_minors') ? '<span class="badge">' . count($minors) . '</span>' : '' !!}
                 {!! ($route == 'profile_contacts') ? '<span class="badge">' . count($contacts) . '</span>' : '' !!}
+                {!! ($route == 'profile_volunteer') ? '<span class="badge">' . count($signups) . '</span>' : '' !!}
                 {{ $name }}
             </a>
             @endif
