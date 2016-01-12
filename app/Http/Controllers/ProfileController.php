@@ -95,7 +95,12 @@ class ProfileController extends Controller
     {
         $user = User::find($userId);
 
-        return view('profile.public', compact('user'));
+        $signups = [];
+        if ($user->volunteer) {
+            $signups = $user->volunteer->signups;
+        }
+
+        return view('profile.public', compact('user', 'signups'));
     }
 
     public function password()
