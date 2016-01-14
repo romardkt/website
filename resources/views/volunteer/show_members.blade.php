@@ -10,7 +10,11 @@
 <div class="row">
     <div class="col-xs-12 text-center">
         <div class="btn-group">
+            @if($past)
+            <a class="btn btn-default" href="{{ route('volunteer_show_past') }}"><i class="fa fa-lg fa-arrow-circle-left"></i> Back To Events</a>
+            @else
             <a class="btn btn-default" href="{{ route('volunteer_show') }}"><i class="fa fa-lg fa-arrow-circle-left"></i> Back To Events</a>
+            @endif
             <a class="btn btn-default" href="{{ route('volunteer_show_members_export', array($event->id)) }}"><i class="fa fa-lg fa-list"></i> Export Data</a>
         </div>
         <p>

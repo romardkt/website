@@ -3,7 +3,7 @@
 @section('content')
 <div class="row">
     <div class="col-xs-12 text-center">
-        <h2 class="page">Add a Volunteer Opportunity</h2>
+        <h2 class="page">Edit a Volunteer Opportunity</h2>
     </div>
 </div>
 <br/>

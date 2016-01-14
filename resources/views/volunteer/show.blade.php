@@ -4,7 +4,19 @@
 @include('page_header')
 <div class="row">
     <div class="col-xs-12 text-center">
-        <h2 class="page">Volunteer Opportunities</h2>
+        @can('is-volunteer')
+        @if($past)
+        <div class="pull-right">
+            <a class="btn btn-default" href="{{route('volunteer_show')}}">Show Current Events</a>
+        </div>
+        <h2 class="page">Past Volunteer Opportunities</h2>
+        @else
+        <div class="pull-right">
+            <a class="btn btn-default" href="{{route('volunteer_show_past')}}">Show Past Events</a>
+        </div>
+        <h2 class="page">Current Volunteer Opportunities</h2>
+        @endif
+        @endif
     </div>
 </div>
 <br/>
@@ -18,9 +30,9 @@
                         <div class="month">{{ date('M', strtotime($event->start)) }}</div>
                         <div class="day">{{ date('d', strtotime($event->start)) }}</div>
                         <div class="year">{{ date('Y', strtotime($event->start)) }}</div>
-                        @if(Auth::check())
+                        @if(Auth::check() and $past == false)
                         <div class="action"><a class="btn btn-success btn-xs" href="{{ route('volunteer_show_signup', array($event->id)) }}">Sign Up!</a></div>
-                        @else
+                        @elsif($past == false)
                         <div class="action"><a class="btn btn-success btn-xs" data-toggle="modal" data-target="#login" title="Login">Login to<br/> Sign Up!</a></div>
                         @endif
                         @can('edit', $event)

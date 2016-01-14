@@ -101,6 +101,7 @@ Route::group(['prefix' => 'volunteer'], function () {
     Route::get('signup', ['as' => 'volunteer_signup', 'uses' => 'VolunteerController@signup']);
     Route::post('signup', ['as' => 'volunteer_signup_post', 'uses' => 'VolunteerController@postSignup']);
     Route::get('show', ['as' => 'volunteer_show', 'uses' => 'VolunteerController@show']);
+    Route::get('show/past', ['as' => 'volunteer_show_past', 'uses' => 'VolunteerController@showPast']);
     Route::get('show/add', ['as' => 'volunteer_show_add', 'uses' => 'VolunteerController@showAdd']);
     Route::post('show/add', ['as' => 'volunteer_show_add_post', 'uses' => 'VolunteerController@postShowAdd']);
     Route::get('show/edit/{event_id}', ['as' => 'volunteer_show_edit', 'uses' => 'VolunteerController@showEdit']);

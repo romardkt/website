@@ -2,6 +2,7 @@
 
 namespace Cupa\Http\Controllers;
 
+use Carbon\Carbon;
 use Cupa\Http\Requests\PageEditRequest;
 use Cupa\Http\Requests\VolunteerShowRequest;
 use Cupa\Http\Requests\VolunteerShowSignupRequest;
@@ -38,6 +39,7 @@ class VolunteerController extends Controller
 
     public function aboutEdit()
     {
+        $this->authorize('is-volunteer');
         $page = Page::fetchBy('route', 'volunteer_about');
 
         return view('volunteer.about_edit', compact('page'));
@@ -45,6 +47,7 @@ class VolunteerController extends Controller
 
     public function postAboutEdit(PageEditRequest $request)
     {
+        $this->authorize('is-volunteer');
         $page = Page::fetchBy('route', 'volunteer_about');
 
         // get the posted data
@@ -63,14 +66,16 @@ class VolunteerController extends Controller
         $page = Page::fetchBy('route', 'volunteer_signup');
         $actions = null;
         $user = Auth::user();
-        $volunteer = $user->volunteer;
         $isVolunteer = Auth::check() && $user->isVolunteer();
-        $volunteerChoices = Config::get('cupa.volunteer');
-        $primaryInterest = null;
-        if ($user && $volunteer) {
-            $primaryInterest = [];
-            foreach (explode(', ', $volunteer->primary_interest) as $interest) {
-                $primaryInterest[$interest] = $interest;
+        if ($user) {
+            $volunteer = $user->volunteer;
+            $volunteerChoices = Config::get('cupa.volunteer');
+            $primaryInterest = null;
+            if ($volunteer) {
+                $primaryInterest = [];
+                foreach (explode(', ', $volunteer->primary_interest) as $interest) {
+                    $primaryInterest[$interest] = $interest;
+                }
             }
         }
 
@@ -120,15 +125,17 @@ class VolunteerController extends Controller
 
     public function show()
     {
-        $events = VolunteerEvent::fetchAllCurrentEvents();
+        $events = VolunteerEvent::fetchAllEvents();
         $page = Page::fetchBy('route', 'volunteer_show');
         $actions = 'add';
+        $past = false;
 
-        return view('volunteer.show', compact('page', 'actions', 'events'));
+        return view('volunteer.show', compact('page', 'actions', 'events', 'past'));
     }
 
     public function showAdd(Request $request)
     {
+        $this->authorize('is-volunteer');
         $locations = Location::fetchForSelect();
         $volunteerCategories = VolunteerEventCategory::fetchForSelect();
         $initial = $request->old('contacts');
@@ -138,7 +145,6 @@ class VolunteerController extends Controller
 
     public function postShowAdd(VolunteerShowRequest $request)
     {
-        $this->authorize('is-volunteer');
         $input = $request->all();
         $input['contacts'] = explode(',', $input['contacts']);
 
@@ -295,15 +301,19 @@ class VolunteerController extends Controller
 
     public function showMembers(VolunteerEvent $event)
     {
+        $this->authorize('is-volunteer');
         $page = Page::fetchBy('route', 'volunteer_show');
         $actions = null;
         $event = VolunteerEvent::with(array('members', 'members.volunteer', 'members.volunteer.user', 'members.volunteer.user.profile'))->find($event->id);
+        $now = Carbon::now();
+        $past = $event->end < $now->format('Y-m-d 23:59:00');
 
-        return view('volunteer.show_members', compact('page', 'actions', 'event'));
+        return view('volunteer.show_members', compact('page', 'actions', 'event', 'past'));
     }
 
     public function showMembersExport(VolunteerEvent $event)
     {
+        $this->authorize('is-volunteer');
         $event = VolunteerEvent::with(array('members', 'members.volunteer', 'members.volunteer.user', 'members.volunteer.user.profile'))->find($event->id);
 
         $date = date('Y-m-d');
@@ -358,5 +368,16 @@ class VolunteerController extends Controller
         Session::flash('msg-error', 'Error downloading file');
 
         return redirect()->route('volunteer_show_members', array($eventId));
+    }
+
+    public function showPast()
+    {
+        $this->authorize('is-volunteer');
+        $past = true;
+        $events = VolunteerEvent::fetchAllEvents($past);
+        $page = Page::fetchBy('route', 'volunteer_show');
+        $actions = null;
+
+        return view('volunteer.show', compact('page', 'actions', 'events', 'past'));
     }
 }

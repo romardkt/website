@@ -47,14 +47,19 @@ class VolunteerEvent extends Model
         return ($count < 0) ? 0 : $count;
     }
 
-    public static function fetchAllCurrentEvents()
+    public static function fetchAllEvents($past = false)
     {
         $now = Carbon::now();
+        $query = static::with(['members', 'category', 'contacts', 'contacts.user'])
+            ->orderBy('start', 'asc');
 
-        return static::with(['members', 'category', 'contacts', 'contacts.user'])
-            ->where('end', '>=', $now->format('Y-m-d 23:59:00'))
-            ->orderBy('start', 'asc')
-            ->get();
+        if ($past) {
+            $query->where('end', '<', $now->format('Y-m-d 23:59:00'));
+        } else {
+            $query->where('end', '>=', $now->format('Y-m-d 23:59:00'));
+        }
+
+        return $query->get();
     }
 
     public static function fetchBySlug($slug)
