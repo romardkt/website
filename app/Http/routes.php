@@ -1,23 +1,5 @@
 <?php
 
-Route::model('scholarship_id', 'Cupa\Scholarship');
-Route::model('minute_id', 'Cupa\Minute');
-Route::model('officer_id', 'Cupa\Officer');
-Route::model('user_id', 'Cupa\User');
-Route::model('league_id', 'Cupa\League');
-Route::model('pickup_id', 'Cupa\Pickup');
-Route::model('event_id', 'Cupa\VolunteerEvent');
-Route::model('minor_id', 'Cupa\User');
-Route::model('contact_id', 'Cupa\UserContact');
-Route::model('tournament_id', 'Cupa\Tournament');
-Route::model('tournament_feed_id', 'Cupa\TournamentFeed');
-Route::model('tournament_team_id', 'Cupa\TournamentTeam');
-Route::model('tournament_member_id', 'Cupa\TournamentMember');
-Route::model('tournament_location_id', 'Cupa\TournamentLocation');
-Route::model('league_team_id', 'Cupa\LeagueTeam');
-Route::model('league_game_id', 'Cupa\LeagueGame');
-Route::model('league_member_id', 'Cupa\LeagueMember');
-
 Route::get('/', ['as' => 'home', 'uses' => 'PageController@home']);
 Route::post('location/add', ['as' => 'location_add', 'uses' => 'PageController@locationAdd']);
 Route::get('contact', ['as' => 'contact', 'uses' => 'PageController@contact']);
@@ -81,7 +63,6 @@ Route::group(['prefix' => 'profile'], function () {
     Route::get('contacts/{contact_id}/remove', ['as' => 'profile_contact_remove', 'uses' => 'ProfileController@contactRemove']);
     Route::get('{userId}', ['as' => 'profile_public', 'uses' => 'ProfileController@publicProfile'])->where('userId', '[0-9]+');
     Route::get('volunteer', ['as' => 'profile_volunteer', 'uses' => 'ProfileController@volunteer']);
-
 
 });
 

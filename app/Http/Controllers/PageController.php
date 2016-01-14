@@ -225,9 +225,9 @@ class PageController extends Controller
         return new PaypalPayment($paypalConfig, (App::environment() == 'prod') ? false : true);
     }
 
-    public function paypalSuccess(Request $request, $paypalId)
+    public function paypalSuccess(Request $request, Paypal $paypal)
     {
-        $paypal = Paypal::find($paypalId);
+        //$paypal = Paypal::find($paypalId);
         $paypalPayment = $this->_paypalPayment($paypal->id);
 
         $paypal->state = 'approved';
@@ -284,9 +284,9 @@ class PageController extends Controller
         }
     }
 
-    public function paypalFail($paypalId)
+    public function paypalFail(Paypal $paypal)
     {
-        $paypal = Paypal::find($paypalId);
+        //$paypal = Paypal::find($paypalId);
         $paypal->state = 'cancelled';
         $paypal->save();
 
