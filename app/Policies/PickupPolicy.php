@@ -26,7 +26,7 @@ class PickupPolicy
             }
         }
 
-        return $pickup->contacts()->contains('user_id', $user->id);
+        return $pickup->contacts->contains('user_id', $user->id);
     }
 
     public function show(User $user, Pickup $pickup)

@@ -16,7 +16,7 @@ class TournamentBidRequest extends Request
     {
         $tournament = Tournament::fetchTournament($this->route('name'), $this->route('year'));
 
-        return Gate::allows('edit', $tournament);
+        return Gate::allows('show', $tournament);
     }
 
     /**
