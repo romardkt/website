@@ -608,33 +608,7 @@ class ManageController extends Controller
         return view('leagues.manage.status', compact('league', 'statuses', 'all'));
     }
 
-    public function status_toggle()
-    {
-        $input = $request->all();
-        $member = LeagueMember::find($input['member']);
-        if ($member) {
-            $league = League::find($member->league_id);
-            $this->authorize('edit', $league);
-
-            if ($input['type'] == 'paid') {
-                $member->paid = ($member->paid == 1) ? 0 : 1;
-                $member->save();
-            } elseif ($input['type'] == 'waiver') {
-                UserWaiver::toggleWaiver($member->user_id, $league->year);
-            }
-
-            $balance = UserBalance::find($member->user_id);
-            if ($balance) {
-                $balance = $balance->balance;
-            }
-
-            return response()->json(['status' => 'success', 'paid' => $member->paid, 'waiver' => UserWaiver::hasWaiver($member->user_id, $league->year), 'balance' => $balance]);
-        }
-
-        return response()->json(['status' => 'error', 'msg' => 'No Player Found']);
-    }
-
-    public function status_download($slug, $all)
+    public function statusDownload($slug, $all)
     {
         $league = League::fetchBySlug($slug);
         $this->authorize('edit', $league);
@@ -759,9 +733,8 @@ class ManageController extends Controller
         return view('leagues.manage.waitlist', compact('league', 'players'));
     }
 
-    public function waitlistAccept($slug, $memberId)
+    public function waitlistAccept($slug, LeagueMember $member)
     {
-        $member = LeagueMember::find($memberId);
         $this->authorize('edit', $member->league);
 
         $member->position = 'player';
@@ -902,55 +875,5 @@ class ManageController extends Controller
         }
 
         return response()->json(['status' => 'error', 'msg' => 'No Player Found']);
-    }
-
-    public function statusDownload($slug, $all)
-    {
-        $league = League::fetchBySlug($slug);
-        if (!$league) {
-            Session::flash('msg-error', 'Could not find league');
-
-            return redirect()->route('leagues');
-        }
-
-        $statuses = LeagueMember::fetchAnswersByLeague($league->id);
-        $file = storage_path().'/app/'.str_slug($league->displayName().' '.(new DateTime())->format('Y-m-d').' statuses').'.csv';
-
-        $fp = fopen($file, 'w');
-        if ($fp) {
-            $line = ['player', 'paid', 'waiver', 'balance', 'outstanding_leagues'];
-            fputcsv($fp, $line);
-
-            foreach ($statuses as $status) {
-                if ($all == 'outstanding' && ($status['paid'] == 1 && $status['waiver'] !== null && $status['balance'] < 1)) {
-                    continue;
-                }
-
-                $leagues = [];
-                if (!empty($status['balance_leagues'])) {
-                    foreach (League::whereIn('id', explode(',', $status['balance_leagues']))->get() as $league) {
-                        $leagues[] = $league->displayName();
-                    }
-                }
-
-                $line = [
-                    $status['first_name'].' '.$status['last_name'],
-                    ($status['paid'] == 1) ? 'Yes' : 'No',
-                    ($status['waiver'] === null) ? 'No' : 'Yes',
-                    ($status['balance'] === null) ? '0' : $status['balance'],
-                    (empty($leagues)) ? '' : implode(', ', $leagues),
-                ];
-
-                fputcsv($fp, $line);
-            }
-
-            fclose($fp);
-
-            return response()->download($file);
-        }
-
-        Session::flash('msg-error', 'Error downloading file');
-
-        return redirect()->route('league_shirts');
     }
 }

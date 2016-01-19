@@ -3,7 +3,7 @@
         <h5>Menu</h5>
         <select class="form-control" onchange="window.location = $(this).val();">
             @foreach(Config::get('cupa.profileMenu') as $route => $name)
-            @if($route == 'public_profile')
+            @if($route == 'profile_public')
             <option value="{{ route($route, [Auth::id()]) }}"{{ (Route::currentRouteName() == $route) ? ' selected' : '' }}>{{ $name }}</option>
             @else
             <option value="{{ route($route) }}"{{ (Route::currentRouteName() == $route) ? ' selected' : '' }}>{{ $name }}</option>

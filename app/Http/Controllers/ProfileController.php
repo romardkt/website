@@ -91,10 +91,8 @@ class ProfileController extends Controller
         return redirect()->route('profile');
     }
 
-    public function publicProfile($userId)
+    public function publicProfile(User $user)
     {
-        $user = User::find($userId);
-
         $signups = [];
         if ($user->volunteer) {
             $signups = $user->volunteer->signups;

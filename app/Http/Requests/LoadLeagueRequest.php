@@ -13,7 +13,7 @@ class LoadLeagueRequest extends Request
      */
     public function authorize()
     {
-        return Gate::allows('is-manager')  && $this->ajax();
+        return Gate::allows('is-manager') && $this->ajax();
     }
 
     /**

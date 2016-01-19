@@ -13,7 +13,7 @@ class TournamentScheduleRequest extends Request
      */
     public function authorize()
     {
-        return Gate::allows('edit', $this->route('tournament_id'));
+        return Gate::allows('edit', $this->route('tournament'));
     }
 
     /**

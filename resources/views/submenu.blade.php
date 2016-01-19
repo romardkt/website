@@ -26,12 +26,13 @@
                             @endif
                         @elseif($subMenu->route == 'youth_leagues' && isset($league->is_youth) && isset($league->is_youth))
                             <li class="active"><a href="{{ route($subMenu->route) }}">{{{ $subMenu->display }}}</a></li>
-                        @elseif($subMenu->route == 'about_scholarship_hoy')
-                            <li{!! $active !!}><a href="{{ route('scholarship_hoy') }}">{{{ $subMenu->display }}}</a></li>
                         @else
                             <li{!! $active !!}><a href="{{ route($subMenu->route) }}">{{{ $subMenu->display }}}</a></li>
                         @endif
                     @endforeach
+                    @if($pageRoot == 'about')
+                            <li{!! $active !!}><a href="{{ route('scholarship_hoy') }}">Chris Hoy Memorial Scholarship</a></li>
+                    @endif
                     @endif
                 </ul>
             </div>

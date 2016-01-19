@@ -26,7 +26,7 @@ class LeagueCoachRequest extends Request
      */
     public function rules()
     {
-        $member = $this->route('league_member_id');
+        $member = $this->route('member');
 
         return [
             'first_name' => 'required',

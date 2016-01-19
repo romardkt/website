@@ -16,21 +16,21 @@ class ScholarshipController extends Controller
 {
     public function hoy()
     {
-        $page = Page::fetchBy('route', 'about_scholarship_hoy');
+        $page = Page::fetchBy('route', 'scholarship_hoy');
 
         return view('scholarship.hoy', compact('page'));
     }
 
     public function hoyEdit()
     {
-        $page = Page::fetchBy('route', 'about_scholarship_hoy');
+        $page = Page::fetchBy('route', 'scholarship_hoy');
 
         return view('scholarship.hoy_edit', compact('page'));
     }
 
     public function postHoyEdit(PageEditRequest $request)
     {
-        $page = Page::fetchBy('route', 'about_scholarship_hoy');
+        $page = Page::fetchBy('route', 'scholarship_hoy');
 
         // get the posted data
         $input = $request->all();
@@ -41,12 +41,12 @@ class ScholarshipController extends Controller
 
         Session::flash('msg-success', 'Hoy Scholarship updated.');
 
-        return redirect()->route('about_scholarship_hoy');
+        return redirect()->route('scholarship_hoy');
     }
 
     public function hoySubmit()
     {
-        $page = Page::fetchBy('route', 'about_scholarship_hoy');
+        $page = Page::fetchBy('route', 'scholarship_hoy');
 
         return view('scholarship.hoy_submit', compact('page'));
     }
@@ -80,25 +80,25 @@ class ScholarshipController extends Controller
         unset($data['updated_at']);
 
         Mail::send('emails.scholarship', ['route' => 'scholarship_hoy_manage', 'title' => 'Chris Hoy Scholarship', 'data' => $data], function ($m) {
-                if (App::environment() == 'prod') {
-                    $m->to('hoy-scholarship@cincyultimate.org', 'Chris Hoy Scholarship');
-                } elseif (Auth::check()) {
-                    $m->to(Auth::user()->email, Auth::user()->fullname());
-                } else {
-                    $m->to('kcin1018@gmail.com', 'Nick Felicelli');
-                }
+            if (App::environment() == 'prod') {
+                $m->to('hoy-scholarship@cincyultimate.org', 'Chris Hoy Scholarship');
+            } elseif (Auth::check()) {
+                $m->to(Auth::user()->email, Auth::user()->fullname());
+            } else {
+                $m->to('kcin1018@gmail.com', 'Nick Felicelli');
+            }
 
-                $m->subject('[CUPA] Chis Hoy Scholarship submission');
-            });
+            $m->subject('[CUPA] Chis Hoy Scholarship submission');
+        });
 
         Session::flash('msg-success', 'Your scholarship submission was sent');
 
-        return redirect()->route('about_scholarship_hoy');
+        return redirect()->route('scholarship_hoy');
     }
 
     public function hoyManage()
     {
-        $page = Page::fetchBy('route', 'about_scholarship_hoy');
+        $page = Page::fetchBy('route', 'scholarship_hoy');
         $submissions = Scholarship::fetchSubmissions('hoy');
 
         return view('scholarship.hoy_manage', compact('page', 'submissions'));
@@ -106,7 +106,7 @@ class ScholarshipController extends Controller
 
     public function hoyManageEdit(Scholarship $submission)
     {
-        $page = Page::fetchBy('route', 'about_scholarship_hoy');
+        $page = Page::fetchBy('route', 'scholarship_hoy');
 
         return view('scholarship.hoy_manage_edit', compact('page', 'submission'));
     }

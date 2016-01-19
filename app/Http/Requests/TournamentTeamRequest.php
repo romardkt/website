@@ -14,7 +14,7 @@ class TournamentTeamRequest extends Request
      */
     public function authorize()
     {
-        $tournamentTeam = $this->route('tournament_team_id');
+        $tournamentTeam = $this->route('team');
         if (!$tournamentTeam) {
             $tournament = Tournament::fetchTournament($this->route('name'), $this->route('year'));
         } else {

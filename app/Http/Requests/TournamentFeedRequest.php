@@ -14,7 +14,7 @@ class TournamentFeedRequest extends Request
      */
     public function authorize()
     {
-        $tournamentFeed = $this->route('tournament_feed_id');
+        $tournamentFeed = $this->route('feed');
         if (!$tournamentFeed) {
             $tournament = Tournament::fetchTournament($this->route('name'), $this->route('year'));
         } else {

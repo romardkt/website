@@ -5,21 +5,20 @@ Route::post('location/add', ['as' => 'location_add', 'uses' => 'PageController@l
 Route::get('contact', ['as' => 'contact', 'uses' => 'PageController@contact']);
 Route::post('contact', ['as' => 'contact_handle', 'uses' => 'PageController@postContact']);
 Route::get('waiver/{year}/download/{type?}', ['as' => 'waiver_download', 'uses' => 'PageController@waiverDownload']);
-Route::get('waiver/{year}/{user_id?}', ['as' => 'waiver', 'uses' => 'PageController@waiver']);
-Route::post('waiver/{year}/{user_id?}', ['as' => 'waiver_post', 'uses' => 'PageController@postWaiver']);
-Route::get('paypal/success/{paypal_id}', ['as' => 'paypal_success', 'uses' => 'PageController@paypalSuccess']);
-Route::get('paypal/fail/{paypal_id}', ['as' => 'paypal_fail', 'uses' => 'PageController@paypalFail']);
-Route::get('paypal/{id}/{type}/{paypal_user_id?}/{team_id?}', ['as' => 'paypal', 'uses' => 'PageController@paypal']);
-Route::get('/scholarship/hoy', ['as' => 'about_scholarship_hoy', 'uses' => 'ScholarshipController@hoy']);
+Route::get('waiver/{year}/{user?}', ['as' => 'waiver', 'uses' => 'PageController@waiver']);
+Route::post('waiver/{year}/{user?}', ['as' => 'waiver_post', 'uses' => 'PageController@postWaiver']);
+Route::get('paypal/success/{paypal}', ['as' => 'paypal_success', 'uses' => 'PageController@paypalSuccess']);
+Route::get('paypal/fail/{paypal}', ['as' => 'paypal_fail', 'uses' => 'PageController@paypalFail']);
+Route::get('paypal/{id}/{type}/{paypal_user?}/{team?}', ['as' => 'paypal', 'uses' => 'PageController@paypal']);
 Route::get('/scholarship/hoy', ['as' => 'scholarship_hoy', 'uses' => 'ScholarshipController@hoy']);
 Route::get('/scholarship/hoy/edit', ['as' => 'scholarship_hoy_edit', 'uses' => 'ScholarshipController@hoyEdit']);
 Route::post('/scholarship/hoy/edit', ['as' => 'scholarship_hoy_edit_post', 'uses' => 'ScholarshipController@postHoyEdit']);
 Route::get('/scholarship/hoy/submit', ['as' => 'scholarship_hoy_submit', 'uses' => 'ScholarshipController@hoySubmit']);
 Route::post('/scholarship/hoy/submit', ['as' => 'scholarship_hoy_submit_post', 'uses' => 'ScholarshipController@postHoySubmit']);
 Route::get('/scholarship/hoy/manage', ['as' => 'scholarship_hoy_manage', 'uses' => 'ScholarshipController@hoyManage']);
-Route::get('/scholarship/hoy/manage/{scholarship_id}', ['as' => 'scholarship_hoy_manage_edit', 'uses' => 'ScholarshipController@hoyManageEdit']);
-Route::post('/scholarship/hoy/manage/{scholarship_id}', ['as' => 'scholarship_hoy_manage_edit_post', 'uses' => 'ScholarshipController@postHoyManageEdit']);
-Route::get('/scholarship/hoy/manage/{scholarship_id}/delete', ['as' => 'scholarship_hoy_manage_delete', 'uses' => 'ScholarshipController@hoyManageDelete']);
+Route::get('/scholarship/hoy/manage/{scholarship}', ['as' => 'scholarship_hoy_manage_edit', 'uses' => 'ScholarshipController@hoyManageEdit']);
+Route::post('/scholarship/hoy/manage/{scholarship}', ['as' => 'scholarship_hoy_manage_edit_post', 'uses' => 'ScholarshipController@postHoyManageEdit']);
+Route::get('/scholarship/hoy/manage/{scholarship}/delete', ['as' => 'scholarship_hoy_manage_delete', 'uses' => 'ScholarshipController@hoyManageDelete']);
 Route::post('login', ['as' => 'login', 'uses' => 'AuthController@login']);
 Route::get('logout', ['as' => 'logout', 'uses' => 'AuthController@logout']);
 Route::get('register', ['as' => 'register', 'uses' => 'AuthController@register']);
@@ -50,18 +49,18 @@ Route::group(['prefix' => 'profile'], function () {
     Route::get('minors', ['as' => 'profile_minors', 'uses' => 'ProfileController@minors']);
     Route::get('minors/add', ['as' => 'profile_minor_add', 'uses' => 'ProfileController@minorAdd']);
     Route::post('minors/add', ['as' => 'profile_minor_add_post', 'uses' => 'ProfileController@postMinorAdd']);
-    Route::get('minors/{minor_id}/edit', ['as' => 'profile_minor_edit', 'uses' => 'ProfileController@minorEdit']);
-    Route::post('minors/{minor_id}/edit', ['as' => 'profile_minor_edit_post', 'uses' => 'ProfileController@postMinorEdit']);
-    Route::get('minors/{minor_id}/remove', ['as' => 'profile_minor_remove', 'uses' => 'ProfileController@minorRemove']);
+    Route::get('minors/{minor}/edit', ['as' => 'profile_minor_edit', 'uses' => 'ProfileController@minorEdit']);
+    Route::post('minors/{minor}/edit', ['as' => 'profile_minor_edit_post', 'uses' => 'ProfileController@postMinorEdit']);
+    Route::get('minors/{minor}/remove', ['as' => 'profile_minor_remove', 'uses' => 'ProfileController@minorRemove']);
     Route::get('leagues', ['as' => 'profile_leagues', 'uses' => 'ProfileController@leagues']);
     Route::get('teams', ['as' => 'profile_teams', 'uses' => 'ProfileController@teams']);
     Route::get('contacts', ['as' => 'profile_contacts', 'uses' => 'ProfileController@contacts']);
     Route::get('contacts/add', ['as' => 'profile_contact_add', 'uses' => 'ProfileController@contactAdd']);
     Route::post('contacts/add', ['as' => 'profile_contact_add_post', 'uses' => 'ProfileController@postContactAdd']);
-    Route::get('contacts/{contact_id}/edit', ['as' => 'profile_contact_edit', 'uses' => 'ProfileController@contactEdit']);
-    Route::post('contacts/{contact_id}/edit', ['as' => 'profile_contact_edit_post', 'uses' => 'ProfileController@postContactEdit']);
-    Route::get('contacts/{contact_id}/remove', ['as' => 'profile_contact_remove', 'uses' => 'ProfileController@contactRemove']);
-    Route::get('{userId}', ['as' => 'profile_public', 'uses' => 'ProfileController@publicProfile'])->where('userId', '[0-9]+');
+    Route::get('contacts/{contact}/edit', ['as' => 'profile_contact_edit', 'uses' => 'ProfileController@contactEdit']);
+    Route::post('contacts/{contact}/edit', ['as' => 'profile_contact_edit_post', 'uses' => 'ProfileController@postContactEdit']);
+    Route::get('contacts/{contact}/remove', ['as' => 'profile_contact_remove', 'uses' => 'ProfileController@contactRemove']);
+    Route::get('{user}', ['as' => 'profile_public', 'uses' => 'ProfileController@publicProfile'])->where('user', '[0-9]+');
     Route::get('volunteer', ['as' => 'profile_volunteer', 'uses' => 'ProfileController@volunteer']);
 
 });
@@ -78,16 +77,16 @@ Route::group(['prefix' => 'about'], function () {
     Route::get('board', ['as' => 'about_board', 'uses' => 'AboutController@board']);
     Route::get('board/add', ['as' => 'about_board_add', 'uses' => 'AboutController@boardAdd']);
     Route::post('board/add', ['as' => 'about_board_add_post', 'uses' => 'AboutController@postBoardAdd']);
-    Route::get('board/edit/{officer_id}', ['as' => 'about_board_edit', 'uses' => 'AboutController@boardEdit']);
-    Route::post('board/edit/{officer_id}', ['as' => 'about_board_edit_post', 'uses' => 'AboutController@postBoardEdit']);
-    Route::get('board/remove/{officer_id}', ['as' => 'about_board_remove', 'uses' => 'AboutController@boardRemove']);
+    Route::get('board/edit/{officer}', ['as' => 'about_board_edit', 'uses' => 'AboutController@boardEdit']);
+    Route::post('board/edit/{officer}', ['as' => 'about_board_edit_post', 'uses' => 'AboutController@postBoardEdit']);
+    Route::get('board/remove/{officer}', ['as' => 'about_board_remove', 'uses' => 'AboutController@boardRemove']);
     Route::get('minutes', ['as' => 'about_minutes', 'uses' => 'AboutController@minutes']);
     Route::get('minutes/add', ['as' => 'about_minutes_add', 'uses' => 'AboutController@minutesAdd']);
     Route::post('minutes/add', ['as' => 'about_minutes_add_post', 'uses' => 'AboutController@postMinutesAdd']);
-    Route::get('minutes/edit/{minute_id}', ['as' => 'about_minutes_edit', 'uses' => 'AboutController@minutesEdit']);
-    Route::post('minutes/edit/{minute_id}', ['as' => 'about_minutes_edit_post', 'uses' => 'AboutController@postMinutesEdit']);
-    Route::get('minutes/download/{minute_id}', ['as' => 'about_minutes_download', 'uses' => 'AboutController@minutesDownload']);
-    Route::get('minutes/remove/{minute_id}', ['as' => 'about_minutes_remove', 'uses' => 'AboutController@minutesRemove']);
+    Route::get('minutes/edit/{minute}', ['as' => 'about_minutes_edit', 'uses' => 'AboutController@minutesEdit']);
+    Route::post('minutes/edit/{minute}', ['as' => 'about_minutes_edit_post', 'uses' => 'AboutController@postMinutesEdit']);
+    Route::get('minutes/download/{minute}', ['as' => 'about_minutes_download', 'uses' => 'AboutController@minutesDownload']);
+    Route::get('minutes/remove/{minute}', ['as' => 'about_minutes_remove', 'uses' => 'AboutController@minutesRemove']);
     Route::get('links', ['as' => 'about_links', 'uses' => 'AboutController@links']);
     Route::get('links/edit', ['as' => 'about_links_edit', 'uses' => 'AboutController@linksEdit']);
     Route::post('links/edit', ['as' => 'about_links_edit_post', 'uses' => 'AboutController@postLinksEdit']);
@@ -104,12 +103,12 @@ Route::group(['prefix' => 'volunteer'], function () {
     Route::get('show/past', ['as' => 'volunteer_show_past', 'uses' => 'VolunteerController@showPast']);
     Route::get('show/add', ['as' => 'volunteer_show_add', 'uses' => 'VolunteerController@showAdd']);
     Route::post('show/add', ['as' => 'volunteer_show_add_post', 'uses' => 'VolunteerController@postShowAdd']);
-    Route::get('show/edit/{event_id}', ['as' => 'volunteer_show_edit', 'uses' => 'VolunteerController@showEdit']);
-    Route::post('show/edit/{event_id}', ['as' => 'volunteer_show_edit_post', 'uses' => 'VolunteerController@postShowEdit']);
-    Route::get('show/members/{event_id}', ['as' => 'volunteer_show_members', 'uses' => 'VolunteerController@showMembers']);
-    Route::get('show/members/export/{event_id}', ['as' => 'volunteer_show_members_export', 'uses' => 'VolunteerController@showMembersExport']);
-    Route::get('show/signup/{event_id}', ['as' => 'volunteer_show_signup', 'uses' => 'VolunteerController@showSignup']);
-    Route::post('show/signup/{event_id}', ['as' => 'volunteer_show_signup_post', 'uses' => 'VolunteerController@postShowSignup']);
+    Route::get('show/edit/{event}', ['as' => 'volunteer_show_edit', 'uses' => 'VolunteerController@showEdit']);
+    Route::post('show/edit/{event}', ['as' => 'volunteer_show_edit_post', 'uses' => 'VolunteerController@postShowEdit']);
+    Route::get('show/members/{event}', ['as' => 'volunteer_show_members', 'uses' => 'VolunteerController@showMembers']);
+    Route::get('show/members/export/{event}', ['as' => 'volunteer_show_members_export', 'uses' => 'VolunteerController@showMembersExport']);
+    Route::get('show/signup/{event}', ['as' => 'volunteer_show_signup', 'uses' => 'VolunteerController@showSignup']);
+    Route::post('show/signup/{event}', ['as' => 'volunteer_show_signup_post', 'uses' => 'VolunteerController@postShowSignup']);
     Route::get('list', ['as' => 'volunteer_list', 'uses' => 'VolunteerController@pool']);
     Route::get('list/download', ['as' => 'volunteer_list_download', 'uses' => 'VolunteerController@poolDownload']);
 });
@@ -172,23 +171,23 @@ Route::group(['prefix' => 'leagues'], function () {
     // Management
     Route::get('{slug}/team/add', ['as' => 'league_team_add', 'uses' => 'League\ManageController@teamAdd']);
     Route::post('{slug}/team/add', ['as' => 'league_team_add_post', 'uses' => 'League\ManageController@postTeamAdd']);
-    Route::get('{slug}/team/{league_team_id}/edit', ['as' => 'league_team_edit', 'uses' => 'League\ManageController@teamEdit']);
-    Route::post('{slug}/team/{league_team_id}/edit', ['as' => 'league_team_edit_post', 'uses' => 'League\ManageController@postTeamEdit']);
-    Route::get('{slug}/team/{league_team_id}/remove', ['as' => 'league_team_remove', 'uses' => 'League\ManageController@teamRemove']);
+    Route::get('{slug}/team/{team}/edit', ['as' => 'league_team_edit', 'uses' => 'League\ManageController@teamEdit']);
+    Route::post('{slug}/team/{team}/edit', ['as' => 'league_team_edit_post', 'uses' => 'League\ManageController@postTeamEdit']);
+    Route::get('{slug}/team/{team}/remove', ['as' => 'league_team_remove', 'uses' => 'League\ManageController@teamRemove']);
 
     Route::get('{slug}/schedule/add', ['as' => 'league_schedule_add', 'uses' => 'League\ManageController@scheduleAdd']);
     Route::post('{slug}/schedule/add', ['as' => 'league_schedule_add_post', 'uses' => 'League\ManageController@postScheduleAdd']);
 
-    Route::get('{slug}/schedule/edit/{league_game_id}', ['as' => 'league_schedule_edit', 'uses' => 'League\ManageController@scheduleEdit']);
-    Route::post('{slug}/schedule/edit/{league_game_id}', ['as' => 'league_schedule_edit_post', 'uses' => 'League\ManageController@postScheduleEdit']);
-    Route::get('{slug}/schedule/remove/{league_game_id}', ['as' => 'league_schedule_remove', 'uses' => 'League\ManageController@scheduleRemove']);
+    Route::get('{slug}/schedule/edit/{game}', ['as' => 'league_schedule_edit', 'uses' => 'League\ManageController@scheduleEdit']);
+    Route::post('{slug}/schedule/edit/{game}', ['as' => 'league_schedule_edit_post', 'uses' => 'League\ManageController@postScheduleEdit']);
+    Route::get('{slug}/schedule/remove/{game}', ['as' => 'league_schedule_remove', 'uses' => 'League\ManageController@scheduleRemove']);
 
     //Route::any('{slug}/schedule/generate', ['as' => 'league_schedule_generate', 'uses' => 'LeagueController@schedule_generate']);
 
     Route::any('{slug}/edit/{type}', ['as' => 'league_edit', 'uses' => 'League\EditController@handle']);
 
-    Route::get('{slug}/coaches/{league_member_id}/edit', ['as' => 'league_coaches_edit', 'uses' => 'League\EditController@coachesEdit']);
-    Route::post('{slug}/coaches/{league_member_id}/edit', ['as' => 'league_coaches_edit_post', 'uses' => 'League\EditController@postCoachesEdit']);
+    Route::get('{slug}/coaches/{member}/edit', ['as' => 'league_coaches_edit', 'uses' => 'League\EditController@coachesEdit']);
+    Route::post('{slug}/coaches/{member}/edit', ['as' => 'league_coaches_edit_post', 'uses' => 'League\EditController@postCoachesEdit']);
     Route::get('{slug}/shirts', ['as' => 'league_shirts', 'uses' => 'League\ManageController@shirts']);
     Route::get('{slug}/shirts/download', ['as' => 'league_shirts_download', 'uses' => 'League\ManageController@shirtsDownload']);
     Route::get('{slug}/emergency', ['as' => 'league_emergency', 'uses' => 'League\ManageController@emergency']);
@@ -204,7 +203,7 @@ Route::group(['prefix' => 'leagues'], function () {
     Route::post('{slug}/manage', ['as' => 'league_manage_post', 'uses' => 'League\ManageController@postManage']);
     Route::get('{slug}/waitlist', ['as' => 'league_waitlist', 'uses' => 'League\ManageController@waitlist']);
     Route::get('{slug}/waitlist/download', ['as' => 'league_waitlist_download', 'uses' => 'League\ManageController@waitlistDownload']);
-    Route::get('{slug}/waitlist/accept/{member_id}', ['as' => 'league_waitlist_accept', 'uses' => 'League\ManageController@waitlistAccept']);
+    Route::get('{slug}/waitlist/accept/{member}', ['as' => 'league_waitlist_accept', 'uses' => 'League\ManageController@waitlistAccept']);
 
     // Managing
     Route::get('{slug}/archive', ['as' => 'league_archive', 'uses' => 'League\AdminController@archive']);
@@ -217,9 +216,9 @@ Route::group(['prefix' => 'around'], function () {
     Route::get('pickups', ['as' => 'around_pickups', 'uses' => 'AroundController@pickups']);
     Route::get('pickups/add', ['as' => 'around_pickups_add', 'uses' => 'AroundController@pickupsAdd']);
     Route::post('pickups/add', ['as' => 'around_pickups_add_post', 'uses' => 'AroundController@postPickupsAdd']);
-    Route::get('pickups/{pickup_id}/edit', ['as' => 'around_pickups_edit', 'uses' => 'AroundController@pickupsEdit']);
-    Route::post('pickups/{pickup_id}/edit', ['as' => 'around_pickups_edit_post', 'uses' => 'AroundController@postPickupsEdit']);
-    Route::get('pickups/{pickup_id}/remove', ['as' => 'around_pickups_remove', 'uses' => 'AroundController@pickupsRemove']);
+    Route::get('pickups/{pickup}/edit', ['as' => 'around_pickups_edit', 'uses' => 'AroundController@pickupsEdit']);
+    Route::post('pickups/{pickup}/edit', ['as' => 'around_pickups_edit_post', 'uses' => 'AroundController@postPickupsEdit']);
+    Route::get('pickups/{pickup}/remove', ['as' => 'around_pickups_remove', 'uses' => 'AroundController@pickupsRemove']);
     Route::get('tournaments', ['as' => 'around_tournaments', 'uses' => 'AroundController@tournaments']);
     Route::get('tournaments/add', ['as' => 'around_tournaments_add', 'uses' => 'AroundController@tournamentsAdd']);
     Route::post('tournaments/add', ['as' => 'around_tournaments_add_post', 'uses' => 'AroundController@postTournamentsAdd']);
@@ -248,34 +247,34 @@ Route::group(['prefix' => 'tournament'], function () {
     Route::post('/{name}/{year}/bid/edit', ['as' => 'tournament_bid_edit_post', 'uses' => 'TournamentController@postBidEdit']);
     Route::get('/{name}/{year}/teams/add', ['as' => 'tournament_teams_add', 'uses' => 'TournamentController@teamsAdd']);
     Route::post('/{name}/{year}/teams/add', ['as' => 'tournament_teams_add_post', 'uses' => 'TournamentController@postTeamsAdd']);
-    Route::get('/teams/{tournament_team_id}/edit', ['as' => 'tournament_teams_edit', 'uses' => 'TournamentController@teamsEdit']);
-    Route::post('/teams/{tournament_team_id}/edit', ['as' => 'tournament_teams_edit_post', 'uses' => 'TournamentController@postTeamsEdit']);
-    Route::get('/teams/{tournament_team_id}/remove', ['as' => 'tournament_teams_remove', 'uses' => 'TournamentController@teamsRemove']);
+    Route::get('/teams/{team}/edit', ['as' => 'tournament_teams_edit', 'uses' => 'TournamentController@teamsEdit']);
+    Route::post('/teams/{team}/edit', ['as' => 'tournament_teams_edit_post', 'uses' => 'TournamentController@postTeamsEdit']);
+    Route::get('/teams/{team}/remove', ['as' => 'tournament_teams_remove', 'uses' => 'TournamentController@teamsRemove']);
     Route::get('/{name}/{year}/teams/{division?}', ['as' => 'tournament_teams', 'uses' => 'TournamentController@teams']);
     Route::get('/{name}/{year}/schedule', ['as' => 'tournament_schedule', 'uses' => 'TournamentController@schedule']);
     Route::post('/{name}/{year}/schedule', ['as' => 'tournament_schedule_post', 'uses' => 'TournamentController@postSchedule']);
     Route::get('/{name}/{year}/location', ['as' => 'tournament_location', 'uses' => 'TournamentController@location']);
     Route::get('/{name}/{year}/contact', ['as' => 'tournament_contact', 'uses' => 'TournamentController@contact']);
     Route::post('/{name}/{year}/contact', ['as' => 'tournament_contact_post', 'uses' => 'TournamentController@postContact']);
-    Route::get('/description/{tournament_id}/edit', ['as' => 'tournament_description_edit', 'uses' => 'TournamentController@descriptionEdit']);
-    Route::post('/description/{tournament_id}/edit', ['as' => 'tournament_description_edit_post', 'uses' => 'TournamentController@postDescriptionEdit']);
+    Route::get('/description/{tournament}/edit', ['as' => 'tournament_description_edit', 'uses' => 'TournamentController@descriptionEdit']);
+    Route::post('/description/{tournament}/edit', ['as' => 'tournament_description_edit_post', 'uses' => 'TournamentController@postDescriptionEdit']);
     Route::get('/{name}/{year}/feed/add', ['as' => 'tournament_feed_add', 'uses' => 'TournamentController@feedAdd']);
     Route::post('/{name}/{year}/feed/add', ['as' => 'tournament_feed_add_post', 'uses' => 'TournamentController@postFeedAdd']);
-    Route::get('/feed/{tournament_feed_id}/edit', ['as' => 'tournament_feed_edit', 'uses' => 'TournamentController@feedEdit']);
-    Route::post('/feed/{tournament_feed_id}/edit', ['as' => 'tournament_feed_edit_post', 'uses' => 'TournamentController@postFeedEdit']);
-    Route::get('/feed/{tournament_feed_id}/remove', ['as' => 'tournament_feed_remove', 'uses' => 'TournamentController@feedRemove']);
-    Route::get('/schedule/{tournament_id}/edit', ['as' => 'tournament_schedule_edit', 'uses' => 'TournamentController@scheduleEdit']);
-    Route::post('/schedule/{tournament_id}/edit', ['as' => 'tournament_schedule_edit_post', 'uses' => 'TournamentController@postScheduleEdit']);
+    Route::get('/feed/{feed}/edit', ['as' => 'tournament_feed_edit', 'uses' => 'TournamentController@feedEdit']);
+    Route::post('/feed/{feed}/edit', ['as' => 'tournament_feed_edit_post', 'uses' => 'TournamentController@postFeedEdit']);
+    Route::get('/feed/{feed}/remove', ['as' => 'tournament_feed_remove', 'uses' => 'TournamentController@feedRemove']);
+    Route::get('/schedule/{tournament}/edit', ['as' => 'tournament_schedule_edit', 'uses' => 'TournamentController@scheduleEdit']);
+    Route::post('/schedule/{tournament}/edit', ['as' => 'tournament_schedule_edit_post', 'uses' => 'TournamentController@postScheduleEdit']);
     Route::get('/{name}/{year}/contact/add', ['as' => 'tournament_contact_add', 'uses' => 'TournamentController@contactAdd']);
     Route::post('/{name}/{year}/contact/add', ['as' => 'tournament_contact_add_post', 'uses' => 'TournamentController@postContactAdd']);
-    Route::get('/contact/{tournament_member_id}/remove', ['as' => 'tournament_contact_remove', 'uses' => 'TournamentController@contactRemove']);
-    Route::get('/contact/{tournament_member_id}/{direction}', ['as' => 'tournament_contact_order', 'uses' => 'TournamentController@contactOrder']);
+    Route::get('/contact/{member}/remove', ['as' => 'tournament_contact_remove', 'uses' => 'TournamentController@contactRemove']);
+    Route::get('/contact/{member}/{direction}', ['as' => 'tournament_contact_order', 'uses' => 'TournamentController@contactOrder']);
     Route::get('/nationals/2014/fans', ['as' => 'tournament_2014_nationals_fans', 'uses' => 'TournamentController@nationals2014Fans']);
     Route::get('/{name}/{year}/location/add', ['as' => 'tournament_location_add', 'uses' => 'TournamentController@locationAdd']);
     Route::post('/{name}/{year}/location/add', ['as' => 'tournament_location_add_post', 'uses' => 'TournamentController@postLocationAdd']);
-    Route::get('/location/{tournament_location_id}/edit', ['as' => 'tournament_location_edit', 'uses' => 'TournamentController@locationEdit']);
-    Route::post('/location/{tournament_location_id}/edit', ['as' => 'tournament_location_edit_post', 'uses' => 'TournamentController@postLocationEdit']);
-    Route::get('/location/{tournament_location_id}/remove', ['as' => 'tournament_location_remove', 'uses' => 'TournamentController@locationRemove']);
+    Route::get('/location/{location}/edit', ['as' => 'tournament_location_edit', 'uses' => 'TournamentController@locationEdit']);
+    Route::post('/location/{location}/edit', ['as' => 'tournament_location_edit_post', 'uses' => 'TournamentController@postLocationEdit']);
+    Route::get('/location/{location}/remove', ['as' => 'tournament_location_remove', 'uses' => 'TournamentController@locationRemove']);
     Route::get('/{name}/{year}/location/map/edit', ['as' => 'tournament_location_map_edit', 'uses' => 'TournamentController@locationMapEdit']);
     Route::post('/{name}/{year}/location/map/edit', ['as' => 'tournament_location_map_edit_post', 'uses' => 'TournamentController@postLocationMapEdit']);
     Route::get('/{name}/{year}/payment', ['as' => 'tournament_payment', 'uses' => 'TournamentController@payment']);
@@ -285,7 +284,7 @@ Route::group(['prefix' => 'tournament'], function () {
 
 Route::group(['prefix' => 'typeahead'], function () {
     Route::get('users/{filter?}', ['as' => 'typeahead_users', 'uses' => 'TypeaheadController@users']);
-    Route::get('members/{league_id?}', ['as' => 'typeahead_members', 'uses' => 'TypeaheadController@members']);
+    Route::get('members/{league?}', ['as' => 'typeahead_members', 'uses' => 'TypeaheadController@members']);
 });
 
 Route::group(['prefix' => 'manage'], function () {
@@ -298,7 +297,7 @@ Route::group(['prefix' => 'manage'], function () {
     Route::get('load_league_teams', ['as' => 'manage_load_league_teams', 'uses' => 'ManageController@loadLeagueTeams']);
     Route::get('users', ['as' => 'manage_users', 'uses' => 'ManageController@users']);
     Route::post('users_detail', ['as' => 'manage_users_detail', 'uses' => 'ManageController@usersDetail']);
-    Route::get('impersonate/{user_id}', ['as' => 'manage_impersonate', 'uses' => 'ManageController@impersonate']);
+    Route::get('impersonate/{user}', ['as' => 'manage_impersonate', 'uses' => 'ManageController@impersonate']);
     Route::get('forms', ['as' => 'manage_forms', 'uses' => 'ManageController@forms']);
     Route::get('forms/add', ['as' => 'manage_forms_add', 'uses' => 'ManageController@formsAdd']);
     Route::post('forms/add', ['as' => 'manage_forms_add_post', 'uses' => 'ManageController@postFormsAdd']);

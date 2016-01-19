@@ -166,33 +166,33 @@ class EditController extends Controller
         return redirect()->route('league', [$league->slug]);
     }
 
-    private function edit_registration_questions($league)
-    {
-        $currentQuestions = json_decode($league->registration()->first()->questions);
-        $questions = LeagueQuestion::fetchQuestions($currentQuestions);
-        $allQuestions = LeagueQuestion::fetchAllQuestions($currentQuestions);
+    // private function editRegistrationQuestions(League $league)
+    // {
+    //     $currentQuestions = json_decode($league->registration()->first()->questions);
+    //     $questions = LeagueQuestion::fetchQuestions($currentQuestions);
+    //     $allQuestions = LeagueQuestion::fetchAllQuestions($currentQuestions);
 
-        if (Request::method() == 'POST') {
-            $input = $request->all();
+    //     if (Request::method() == 'POST') {
+    //         $input = $request->all();
 
-            $rules = ['question' => 'required'];
+    //         $rules = ['question' => 'required'];
 
-            $validator = Validator::make($input, $rules);
-            if ($validator->fails()) {
-                return response()->json(['status' => 'error']);
-            }
+    //         $validator = Validator::make($input, $rules);
+    //         if ($validator->fails()) {
+    //             return response()->json(['status' => 'error']);
+    //         }
 
-            $league->updateQuestion($input['question'], $input['type']);
+    //         $league->updateQuestion($input['question'], $input['type']);
 
-            return response()->json(['status' => 'success']);
-        }
+    //         return response()->json(['status' => 'success']);
+    //     }
 
-        $isYouth = $league->is_youth;
+    //     $isYouth = $league->is_youth;
 
-        return view('leagues.edit_registration_questions', compact('league', 'questions', 'allQuestions', 'isYouth'));
-    }
+    //     return view('leagues.edit_registration_questions', compact('league', 'questions', 'allQuestions', 'isYouth'));
+    // }
 
-    private function editRegistrationQuestions($league, $request)
+    private function editRegistrationQuestions(League $league, $request)
     {
         $currentQuestions = json_decode($league->registration()->first()->questions);
         $questions = LeagueQuestion::fetchQuestions($currentQuestions);
@@ -203,7 +203,7 @@ class EditController extends Controller
         return view('leagues.edit.registration_questions', compact('league', 'questions', 'allQuestions', 'isYouth'));
     }
 
-    private function postEditRegistrationQuestions($league, $request)
+    private function postEditRegistrationQuestions(League $league, $request)
     {
         $input = $request->all();
         $league->updateQuestion($input['question'], $input['type']);
@@ -261,7 +261,7 @@ class EditController extends Controller
         return redirect()->route('league', [$league->slug]);
     }
 
-    public function coachesEdit($slug, $member)
+    public function coachesEdit($slug, LeagueMember $member)
     {
         $league = League::fetchBySlug($slug);
         $this->authorize('coach', $league, $member);
@@ -281,7 +281,7 @@ class EditController extends Controller
         return view('leagues.edit.coaches_edit', compact('league', 'member', 'requirements'));
     }
 
-    public function postCoachesEdit($slug, $member, LeagueCoachRequest $request)
+    public function postCoachesEdit($slug, LeagueMember $member, LeagueCoachRequest $request)
     {
         $league = League::fetchBySlug($slug);
         $this->authorize('coach', $league, $member);

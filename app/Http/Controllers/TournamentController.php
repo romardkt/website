@@ -240,6 +240,7 @@ class TournamentController extends Controller
 
     public function teamsEdit(TournamentTeam $team)
     {
+        $this->authorize('edit', $team->tournament);
         $tournament = $team->tournament;
         $divisions = array_combine(json_decode($tournament->divisions, true), json_decode($tournament->divisions, true));
 

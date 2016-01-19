@@ -14,7 +14,7 @@ class TournamentLocationRequest extends Request
      */
     public function authorize()
     {
-        $tournamentLocation = $this->route('tournament_location_id');
+        $tournamentLocation = $this->route('location');
         if (!$tournamentLocation) {
             $tournament = Tournament::fetchTournament($this->route('name'), $this->route('year'));
         } else {
