@@ -2,22 +2,22 @@
 
 namespace Cupa\Http\Controllers;
 
-use Carbon\Carbon;
-use Cuap\EmailList;
-use Cupa\Http\Requests\LoginRequest;
-use Cupa\Http\Requests\PasswordDoResetRequest;
-use Cupa\Http\Requests\PasswordResetRequest;
-use Cupa\Http\Requests\UserRegisterRequest;
 use Cupa\User;
-use Cupa\UserProfile;
+use Carbon\Carbon;
+use Cupa\EmailList;
 use Cupa\Volunteer;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Cupa\UserProfile;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\URL;
+use Cupa\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\MessageBag;
+use Cupa\Http\Requests\UserRegisterRequest;
+use Cupa\Http\Requests\PasswordResetRequest;
+use Cupa\Http\Requests\PasswordDoResetRequest;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 
 class AuthController extends Controller
 {
