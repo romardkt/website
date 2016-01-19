@@ -11,4 +11,9 @@ class EmailList extends Model
         'email',
         'name',
     ];
+
+    public static function fetchAllNotEmailed()
+    {
+        return static::where('emailed', '=', 0)->get();
+    }
 }
