@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \Cupa\Console\Commands\Dump::class,
+        \Cupa\Console\Commands\SendEmails::class,
     ];
 
     /**
@@ -23,5 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->call(function () {
+            Artisan::call('cupa:emails');
+        })->weekly()->mondays()->at('9:00');
     }
 }
