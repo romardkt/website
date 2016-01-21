@@ -1,5 +1,5 @@
 @section('profile_content')
-<legend>My Minors</legend>
+<legend>My Emergency Contacts</legend>
 <div class="row">
     <div class="col-xs-12">
         <div class="list-group">

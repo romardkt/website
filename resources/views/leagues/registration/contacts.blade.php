@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-xs-12 col-sm-3 text-center">&nbsp;</div>
     <div class="col-xs-12 col-sm-6 text-center">
-        @if(count($session->registrant->contacts()->get()) < 2)
+        @if(count($contacts) < 2)
         <div class="alert alert-warning">You must enter at least 2 contacts</div>
         @endif
     </div>
@@ -17,26 +17,25 @@
         {!! Form::open(['class' => 'form form-vertical', 'role' => 'form']) !!}
 
         <legend>Enter Emergency Contacts</legend>
-
-        @foreach($session->registrant->contacts()->get() as $i => $contact)
+        @foreach($contacts as $i => $contact)
             <h4 class="col-sm-offset-2">Contact #{{ $i + 1}} &nbsp; <button class="btn btn-danger remove-contact-btn" data-contact="{{ $contact->id }}" type="button"><i class="fa fa-fw fa-lg fa-trash-o"></i></button></h4>
 
-        <div class="form-group">
-            {!! Form::label('Name') !!}
-            {!! Form::text('name[]', $contact->name, ['class' => 'form-control', 'disabled']) !!}
-        </div>
+            <div class="form-group">
+                {!! Form::label('Name') !!}
+                {!! Form::text('name[]', $contact->name, ['class' => 'form-control', 'disabled']) !!}
+            </div>
 
-        <div class="form-group">
-            {!! Form::label('Phone') !!}
-            {!! Form::text('phone[]', $contact->phone, ['class' => 'form-control', 'disabled']) !!}
-        </div>
+            <div class="form-group">
+                {!! Form::label('Phone') !!}
+                {!! Form::text('phone[]', $contact->phone, ['class' => 'form-control', 'disabled']) !!}
+            </div>
 
-        <hr>
+            <hr>
         @endforeach
         <div class="form-group">
             <div class="col-xs-12 text-center">
                 <a class="btn btn-default" href="{{ route('league_register', [$league->slug, 'info']) }}"><i class="fa fa-fw fa-lg fa-arrow-left"></i> Back</a>
-                @if(count($session->registrant->contacts()->get()) >= 2)
+                @if(count($contacts) >= 2)
                 <button type="submit" class="btn btn-primary">Next <i class="fa fa-fw fa-lg fa-arrow-right"></i></button>
                 @else
                 <button type="submit" class="btn btn-primary" disabled>Next <i class="fa fa-fw fa-lg fa-arrow-right"></i></button>

@@ -55,8 +55,9 @@ class RegistrationController extends Controller
                 break;
         }
 
+        $user = User::with(['profile', 'parentObj', 'parentObj.profile'])->find($session->registrant->id);
+
         if ($state != 'who') {
-            $user = User::with(['profile', 'parentObj', 'parentObj.profile'])->find($session->registrant->id);
             if ($user->isLeagueMember($league->id)) {
                 Session::flash('msg-error', $user->fullname().' is already registered for this league.');
 
@@ -71,10 +72,15 @@ class RegistrationController extends Controller
             return redirect()->route('league', [$league->slug]);
         }
 
+        // calculate contacts
+        $contacts = ($user->parentObj == null) ? $user->contacts : $user->parentObj->contacts;
+
         if ($request->method() == 'GET') {
-            return view('leagues.registration.register', compact('league', 'state', 'session', 'type'));
-        } else {
+            return view('leagues.registration.register', compact('league', 'state', 'session', 'type', 'contacts'));
+        } elseif ($state != 'contacts') {
             return $this->{'register'.ucfirst($state)}($league, $request);
+        } else {
+            return $this->{'register'.ucfirst($state)}($league, $request, $contacts);
         }
     }
 
@@ -105,11 +111,11 @@ class RegistrationController extends Controller
         return redirect()->route('league_register', [$league->slug, 'contacts']);
     }
 
-    private function registerContacts($league, $request)
+    private function registerContacts($league, $request, $contacts)
     {
         $session = Session::get('league_registration');
 
-        if (count($session->registrant->contacts()->get()) < 2) {
+        if (count($contacts) < 2) {
             Session::flash('msg-error', 'You must enter at least 2 contacts');
 
             return redirect()->route('league_register', [$league->slug, 'contacts']);
