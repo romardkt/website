@@ -55,14 +55,16 @@ class RegistrationController extends Controller
                 break;
         }
 
-        $user = User::with(['profile', 'parentObj', 'parentObj.profile'])->find($session->registrant->id);
-
         if ($state != 'who') {
+            $user = User::with(['profile', 'parentObj', 'parentObj.profile'])->find($session->registrant->id);
             if ($user->isLeagueMember($league->id)) {
                 Session::flash('msg-error', $user->fullname().' is already registered for this league.');
 
                 return redirect()->route('league_success', [$league->slug]);
             }
+
+            // calculate contacts
+            $contacts = ($user->parentObj == null) ? $user->contacts : $user->parentObj->contacts;
         }
 
         $type = $league->fetchRegistrationType($session);
@@ -71,9 +73,6 @@ class RegistrationController extends Controller
 
             return redirect()->route('league', [$league->slug]);
         }
-
-        // calculate contacts
-        $contacts = ($user->parentObj == null) ? $user->contacts : $user->parentObj->contacts;
 
         if ($request->method() == 'GET') {
             return view('leagues.registration.register', compact('league', 'state', 'session', 'type', 'contacts'));
