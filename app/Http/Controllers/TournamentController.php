@@ -40,7 +40,7 @@ class TournamentController extends Controller
         return $tournament;
     }
 
-    public function tournament($name, $year = null, Request $request)
+    public function tournament(Request $request, $name, $year = null)
     {
         $tournament = $this->fetchTournament($name, $year);
 

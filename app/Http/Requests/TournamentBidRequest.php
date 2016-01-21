@@ -2,9 +2,6 @@
 
 namespace Cupa\Http\Requests;
 
-use Cupa\Tournament;
-use Illuminate\Support\Facades\Gate;
-
 class TournamentBidRequest extends Request
 {
     /**
@@ -14,9 +11,7 @@ class TournamentBidRequest extends Request
      */
     public function authorize()
     {
-        $tournament = Tournament::fetchTournament($this->route('name'), $this->route('year'));
-
-        return Gate::allows('show', $tournament);
+        return true;
     }
 
     /**

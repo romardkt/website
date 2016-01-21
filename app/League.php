@@ -146,7 +146,7 @@ class League extends Model
             ->leftJoin('league_locations AS ll', function ($join) {
                 $join->on('ll.league_id', '=', 'l.id')
                     ->where('ll.type', '=', 'league');
-             })
+            })
             ->leftJoin('league_registrations AS lr', 'lr.league_id', '=', 'l.id')
             ->where('l.type', '=', 'league')
             ->where('l.date_visible', '<=', $now)
@@ -194,14 +194,17 @@ class League extends Model
             $select->where('l.season', '=', $season);
         }
 
-        if (Auth::check() && Gate::denies('is-manager')) {
-            $select->whereIn('lm.user_id', [Auth::id()]);
-        } else if(Gate::denies('is-manager')) {
-            // not logged in hide
-            $select->where('l.is_archived', '=', 0)
-                ->whereNotNull('l.date_visible')
-                ->where('l.date_visible', '<', $now);
-
+        // show leagues for that are visible and that are directed by the user
+        // if the user is not a manager
+        if (Gate::denies('is-manager')) {
+            $select->where(function ($query) use ($now) {
+                $query->whereIn('lm.user_id', [Auth::id()])
+                    ->orWhere(function ($query2) use ($now) {
+                        $query2->where('l.is_archived', '=', 0)
+                            ->whereNotNull('l.date_visible')
+                            ->where('l.date_visible', '<', $now);
+                    });
+            });
         }
 
         return $select->paginate(10);
@@ -632,5 +635,15 @@ class League extends Model
     public function getAllPlayers($teamId = null)
     {
         return LeagueMember::fetchAllLeagueMembers($this->id, 'player');
+    }
+
+    public static function fetchByOldSlug($slug, $season)
+    {
+        $search = substr($slug, 0, 4).'%'.preg_replace('( |\-)', '%', str_replace('league', '', substr($slug, 5, 4))).'%';
+        Log::info('Searching for old league: '.$search);
+
+        return static::where('slug', 'LIKE', $search)
+                     ->where('season', '=', $season)
+                     ->first();
     }
 }
