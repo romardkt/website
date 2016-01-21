@@ -31,7 +31,7 @@ class TournamentController extends Controller
     private function fetchTournament($name, $year)
     {
         $tournament = Tournament::fetchTournament($name, $year);
-        if ($tournament->is_visible == 0 && Gate::denies('show', $tournament)) {
+        if (!$tournament || $tournament->is_visible == 0 && Gate::denies('show', $tournament)) {
             Session::flash('msg-error', 'That tournament page does not exist.');
 
             return redirect()->route('around_tournaments')->send();
@@ -40,7 +40,7 @@ class TournamentController extends Controller
         return $tournament;
     }
 
-    public function tournament(Request $request, $name, $year = null)
+    public function tournament($name, $year = null)
     {
         $tournament = $this->fetchTournament($name, $year);
 
