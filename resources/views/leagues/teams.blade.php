@@ -7,7 +7,7 @@
     </div>
 </div>
 @include('leagues.header')
-@can('is-manager')
+@can('edit', $league)
 <div class="row">
     <div class="col-xs-12 text-right">
         <div class="btn-group">
@@ -78,7 +78,7 @@
                 <div class="btn-group btn-group-justified">
                     <a class="btn btn-default show-players-btn" href="#" data-team="{{ $team->id }}" title="Show Players"><i class="fa fa-lg fa-fw fa-user"></i><span class="hidden-xs hidden-sm"> Players</span></a>
                     <a class="btn btn-default show-record-btn" href="#" data-team="{{ $team->id }}" title="Show Record"><i class="fa fa-lg fa-fw fa-list"></i><span class="hidden-xs hidden-sm"> Record</span></a>
-                    @can('is-manager')
+                    @can('edit', $league)
                     <a class="btn btn-default" href="{{ route('league_team_edit', [$league->slug, $team->id]) }}" title="Edit Team"><i class="fa fa-lg fa-fw fa-edit"></i><span class="hidden-xs hidden-sm"> Edit</span></a>
                     <a class="btn btn-default" href="{{ route('league_team_remove', [$league->slug, $team->id]) }}" onclick="return confirm('Are you sure you want to delete this team?');" title="Remove Team"><i class="text-danger fa fa-lg fa-fw fa-trash-o"></i><span class="hidden-xs hidden-sm text-danger"> Delete</span></a>
                     @endif
