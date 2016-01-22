@@ -3,6 +3,7 @@
 namespace Cupa\Exceptions;
 
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -31,13 +32,14 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        \Rollbar::init(Config::get('rollbar'));
+        $config = Config::get('rollbar');
+        $config['person'] = (Auth::check()) ? Auth::user()->toArray() : 'No User';
+        \Rollbar::init($config);
 
         if ($e instanceof NotFoundHttpException) {
             \Rollbar::report_message('Page not found: '.Request::url(), 'info');
         } else {
-            $user = (Auth::check()) ? Auth::user()->toArray() : ['No User'];
-            \Rollbar::report_exception($e, $user);
+            \Rollbar::report_exception($e);
         }
 
         return parent::report($e);
