@@ -33,6 +33,7 @@ elixir(function(mix) {
             'global.js'
         ], 'public/js/cupa.min.js')
         .copy('bower_components/font-awesome/fonts', 'public/build/fonts')
+        .copy('bower_components/select2/select2x2.png', 'public/build/css')
         .copy('bower_components/select2/select2.png', 'public/build/css')
         .copy('bower_components/select2/select2-spinner.gif', 'public/build/css')
         .copy('bower_components/ckeditor', 'public/ckeditor')
