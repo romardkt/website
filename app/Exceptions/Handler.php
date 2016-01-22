@@ -34,7 +34,7 @@ class Handler extends ExceptionHandler
         \Rollbar::init(Config::get('rollbar'));
 
         if ($e instanceof NotFoundHttpException) {
-            \Rollbar::report_exception('Page not found: '.Request::url(), 'info');
+            \Rollbar::report_message('Page not found: '.Request::url(), 'info');
         } else {
             $user = (Auth::check()) ? Auth::user()->toArray() : ['No User'];
             \Rollbar::report_exception($e, $user);
