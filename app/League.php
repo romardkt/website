@@ -2,13 +2,14 @@
 
 namespace Cupa;
 
-use Auth;
-use Carbon\Carbon;
-use DB;
 use DateTime;
-use Gate;
-use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Database\Eloquent\Model;
 
 class League extends Model
 {
