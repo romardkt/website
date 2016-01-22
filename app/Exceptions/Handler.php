@@ -3,10 +3,12 @@
 namespace Cupa\Exceptions;
 
 use Exception;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -29,12 +31,14 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        $monolog = Log::getMonolog();
+        \Rollbar::init(Config::get('rollbar'));
 
-        // if($e instanceof NotFoundHttpException) {
-
-        // }
-        // dd($e);
+        if ($e instanceof NotFoundHttpException) {
+            \Rollbar::report_exception('Page not found: ', Request::url());
+        } else {
+            $user = (Auth::check()) ? Auth::user()->toArray() : ['No User'];
+            \Rollbar::report_exception($e, $user);
+        }
 
         return parent::report($e);
     }

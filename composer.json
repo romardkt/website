@@ -11,7 +11,8 @@
         "anhskohbo/no-captcha": "~2.0",
         "intervention/image": "^2.3",
         "intervention/imagecache": "^2.3",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "rollbar/rollbar": "^0.15.0"
     },
     "require-dev": {
         "symfony/dom-crawler": "~3.0",
