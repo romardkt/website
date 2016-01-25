@@ -479,10 +479,11 @@ class League extends Model
                 unset($contacts['unpaid-players']);
             }
 
-            $contacts['waitlisted-players'] = LeagueMember::fetchAllLeagueMembers($this->id, 'players');
+            $contacts['waitlisted-players'] = LeagueMember::fetchAllLeagueMembers($this->id, 'waitlist');
             if (count($contacts['waitlisted-players']) < 1) {
                 unset($contacts['waitlisted-players']);
             }
+
             $contacts['all-players'] = LeagueMember::fetchAllLeagueMembers($this->id, 'player');
 
             foreach ($this->teams as $team) {

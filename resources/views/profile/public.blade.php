@@ -62,11 +62,13 @@
                 </thead>
                 <tbody>
                     @foreach($user->fetchAllLeagues() as $member)
+                    @if($member->position == 'player')
                     <tr>
                         <td><a href="{{ route('league', [$member->league->slug]) }}">{{ $member->league->displayName() }}</a></td>
                         <td>{{ (isset($member->team->name)) ? $member->team->name : 'Not Assigned' }}</td>
                         <td class="text-center">{{ (isset($member->team)) ? $member->team->record->record() : 'N/A' }}</td>
                     </tr>
+                    @endif
                     @endforeach
                 </tbody>
             </table>

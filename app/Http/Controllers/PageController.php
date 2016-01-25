@@ -2,6 +2,7 @@
 
 namespace Cupa\Http\Controllers;
 
+use Exception;
 use Cupa\CupaForm;
 use Cupa\Http\Requests\ContactRequest;
 use Cupa\Http\Requests\LocationAddRequest;

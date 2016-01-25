@@ -34,7 +34,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        if (App::environment() == 'production') {
+        if (App::environment() == 'prod') {
             $config = Config::get('rollbar');
             $config['person'] = (Auth::check()) ? Auth::user()->toArray() : 'No User';
             \Rollbar::init($config);
@@ -80,6 +80,7 @@ class Handler extends ExceptionHandler
         ];
 
         $data = [
+            'url' => $this->getUrl(),
             'status_code' => ($exception instanceof NotFoundHttpException) ? 404 : 500,
             'method' => Request::method(),
             'access_token' => $accessToken,
@@ -88,8 +89,12 @@ class Handler extends ExceptionHandler
             'level' => 'error',
             //'language' => 'php',
             'person' => (Auth::check()) ? Auth::user()->toArray() : null,
-            // 'server' => $_SERVER,
-            'ip' => '111.111.111.111',
+            'server' => [
+                'os' => $this->getOS(),
+                'broswer' => $this->getBrowser(),
+                //'data' => $_SERVER,
+            ],
+            'ip' => $this->getIp(),
             'host' => gethostname(),
             'trace' => $trace,
         ];
@@ -123,6 +128,130 @@ class Handler extends ExceptionHandler
         } else {
             Log::info('Bugger Success');
         }
+    }
+
+    protected function getIp()
+    {
+        $forwardFor = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : null;
+        if ($forwardFor) {
+            // return everything until the first comma
+            $parts = explode(',', $forwardFor);
+
+            return $parts[0];
+        }
+        $realIp = isset($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : null;
+        if ($realIp) {
+            return $realIp;
+        }
+
+        return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
+    }
+
+    protected function getUrl()
+    {
+        if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+            $proto = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']);
+        } elseif (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+            $proto = 'https';
+        } else {
+            $proto = 'http';
+        }
+
+        if (!empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+            $host = $_SERVER['HTTP_X_FORWARDED_HOST'];
+        } elseif (!empty($_SERVER['HTTP_HOST'])) {
+            $parts = explode(':', $_SERVER['HTTP_HOST']);
+            $host = $parts[0];
+        } elseif (!empty($_SERVER['SERVER_NAME'])) {
+            $host = $_SERVER['SERVER_NAME'];
+        } else {
+            $host = 'unknown';
+        }
+
+        if (!empty($_SERVER['HTTP_X_FORWARDED_PORT'])) {
+            $port = $_SERVER['HTTP_X_FORWARDED_PORT'];
+        } elseif (!empty($_SERVER['SERVER_PORT'])) {
+            $port = $_SERVER['SERVER_PORT'];
+        } elseif ($proto === 'https') {
+            $port = 443;
+        } else {
+            $port = 80;
+        }
+
+        $path = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
+
+        $url = $proto.'://'.$host;
+
+        if (($proto == 'https' && $port != 443) || ($proto == 'http' && $port != 80)) {
+            $url .= ':'.$port;
+        }
+
+        $url .= $path;
+
+        return $url;
+    }
+
+    protected function getOS()
+    {
+        $osPlatform = 'Unknown OS Platform';
+        $osArray = [
+            '/windows nt 10/i' => 'Windows 10',
+            '/windows nt 6.3/i' => 'Windows 8.1',
+            '/windows nt 6.2/i' => 'Windows 8',
+            '/windows nt 6.1/i' => 'Windows 7',
+            '/windows nt 6.0/i' => 'Windows Vista',
+            '/windows nt 5.2/i' => 'Windows Server 2003/XP x64',
+            '/windows nt 5.1/i' => 'Windows XP',
+            '/windows xp/i' => 'Windows XP',
+            '/windows nt 5.0/i' => 'Windows 2000',
+            '/windows me/i' => 'Windows ME',
+            '/win98/i' => 'Windows 98',
+            '/win95/i' => 'Windows 95',
+            '/win16/i' => 'Windows 3.11',
+            '/macintosh|mac os x/i' => 'Mac OS X',
+            '/mac_powerpc/i' => 'Mac OS 9',
+            '/linux/i' => 'Linux',
+            '/ubuntu/i' => 'Ubuntu',
+            '/iphone/i' => 'iPhone',
+            '/ipod/i' => 'iPod',
+            '/ipad/i' => 'iPad',
+            '/android/i' => 'Android',
+            '/blackberry/i' => 'BlackBerry',
+            '/webos/i' => 'Mobile',
+        ];
+
+        foreach ($osArray as $regex => $value) {
+            if (preg_match($regex, $_SERVER['HTTP_USER_AGENT'])) {
+                $osPlatform = $value;
+            }
+        }
+
+        return $osPlatform;
+    }
+
+    public function getBrowser()
+    {
+        $browser = 'Unknown Browser';
+        $browserArray = [
+            '/msie/i' => 'Internet Explorer',
+            '/firefox/i' => 'Firefox',
+            '/safari/i' => 'Safari',
+            '/chrome/i' => 'Chrome',
+            '/edge/i' => 'Edge',
+            '/opera/i' => 'Opera',
+            '/netscape/i' => 'Netscape',
+            '/maxthon/i' => 'Maxthon',
+            '/konqueror/i' => 'Konqueror',
+            '/mobile/i' => 'Handheld Browser',
+        ];
+
+        foreach ($browserArray as $regex => $value) {
+            if (preg_match($regex, $_SERVER['HTTP_USER_AGENT'])) {
+                $browser = $value;
+            }
+        }
+
+        return $browser;
     }
 
     /**

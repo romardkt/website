@@ -108,7 +108,7 @@ class LeagueMember extends Model
     {
         return static::with(['league', 'team', 'team.record'])
             ->whereIn('user_id', $userIds)
-            ->where('position', '=', 'player')
+            ->whereIn('position', ['player', 'waitlist'])
             ->join('leagues AS l', 'l.id', '=', 'league_members.league_id')
             ->join('league_registrations AS lr', 'lr.league_id', '=', 'l.id')
             ->orderBy('l.year', 'desc')
@@ -304,7 +304,7 @@ class LeagueMember extends Model
         $coaches = static::where(function ($query) {
                 $query->where('position', '=', 'assistant_coach')
                     ->orWhere('position', '=', 'coach');
-            })
+        })
             ->where('league_team_id', '=', $leagueTeamId)
             ->delete();
     }
@@ -317,7 +317,7 @@ class LeagueMember extends Model
             ->where(function ($query) {
                 $query->where('position', '=', 'player')
                     ->orWhere('position', '=', 'waitlist');
-                })
+            })
             ->get();
     }
 
@@ -333,7 +333,7 @@ class LeagueMember extends Model
             ->leftJoin('user_waivers', function ($join) {
                 $join->on('user_waivers.user_id', '=', 'users.id')
                      ->on('user_waivers.year', '=', 'leagues.year');
-                })
+            })
             ->leftJoin('user_balances', 'user_balances.user_id', '=', 'league_members.user_id')
             ->orderBy('users.last_name')
             ->orderBy('users.first_name')

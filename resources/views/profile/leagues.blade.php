@@ -17,7 +17,11 @@
             <tr>
                 <td><a href="{{ route('league', [$member->league->slug]) }}">{{ $member->league->displayName() }}</a></td>
                 <td>{{ $member->user->fullname() }}</td>
+                @if($member->position == 'player')
                 <td class="hidden-xs">{{ (isset($member->team->name)) ? $member->team->name : 'Not Assigned' }}</td>
+                @else
+                <td class="hidden-xs"><span class="label label-info">On Waitlist</span></td>
+                @endif
                 <td class="text-center hidden-xs">{{ (isset($member->team)) ? $member->team->record->record() : 'N/A' }}</td>
                 <td class="text-center">{!! ($member->paid == 0 && $member->league->registration->cost > 0) ? '<span class="text-danger"><a class="text-danger" href="' . route('league_success', [$member->league->slug]) . '"><strong>$' . $member->league->registration->cost . '</strong></a></span>': '<span class="text-success">$0</span>' !!}</td>
                 <td class="text-center">
