@@ -151,7 +151,7 @@ class PageController extends Controller
         if (!$league) {
             Session::flash('msg-error', 'Could not find league');
 
-            return redirec()->route('leagues');
+            return redirect()->route('leagues');
         }
 
         $tos = $league->fetchContacts();

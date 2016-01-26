@@ -25,7 +25,7 @@ class TeamPolicy
             }
         }
 
-        return $team->captians()->contains('user_id', $user->id);
+        return $team->captains()->contains('user_id', $user->id);
     }
 
     public function show(User $user, Team $team)

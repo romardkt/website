@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -41,6 +42,8 @@ class Handler extends ExceptionHandler
 
             if ($e instanceof NotFoundHttpException) {
                 \Rollbar::report_message('Page not found: '.Request::url(), 'info');
+            } elseif ($e instanceof MethodNotAllowedHttpException) {
+                \Rollbar::report_message('Method Not Allowed: '.Request::url(), 'info');
             } elseif (get_class($e) != 'Illuminate\Http\Exception\HttpResponseException') {
                 \Rollbar::report_exception($e);
             }

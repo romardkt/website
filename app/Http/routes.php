@@ -62,7 +62,6 @@ Route::group(['prefix' => 'profile'], function () {
     Route::get('contacts/{contact}/remove', ['as' => 'profile_contact_remove', 'uses' => 'ProfileController@contactRemove']);
     Route::get('{user}', ['as' => 'profile_public', 'uses' => 'ProfileController@publicProfile'])->where('user', '[0-9]+');
     Route::get('volunteer', ['as' => 'profile_volunteer', 'uses' => 'ProfileController@volunteer']);
-
 });
 
 Route::group(['prefix' => 'form'], function () {

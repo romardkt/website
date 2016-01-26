@@ -33,6 +33,7 @@ class LeagueRegistrationRequest extends Request
 
         switch ($this->state) {
             case 'who':
+            case null:
                 $rules['user'] = 'required|numeric';
                 break;
             case 'info':

@@ -222,6 +222,10 @@ class VolunteerController extends Controller
 
     public function showSignup(VolunteerEvent $event)
     {
+        if (Auth::guest()) {
+            return redirect()->route('volunteer_show');
+        }
+
         $user = Auth::user();
         if (!$user->isVolunteer()) {
             Session::flash('msg-error', 'You must sign up to be a volunteer before signing up for the opportunity');

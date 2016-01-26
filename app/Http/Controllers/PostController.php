@@ -22,8 +22,13 @@ class PostController extends Controller
     public function view($slug)
     {
         $post = Post::fetchBySlug($slug);
+        if (!$post) {
+            Session::flash('msg-error', 'Could not find post: '.$slug);
 
-        return view('post.view', compact('post'));
+            return redirect()->route('posts');
+        }
+
+        return view('post.view', compact('post', 'slug'));
     }
 
     public function add(Request $request)
@@ -58,8 +63,8 @@ class PostController extends Controller
         if ($request->hasFile('image')) {
             $filePath = public_path().'/data/posts/'.time().'-'.$post->id.'.jpg';
             $img = Image::cache(function ($image) use ($filePath, $request) {
-                    return $image->make($request->file('image')->getRealPath())->resize(800, 400)->orientate()->save($filePath);
-                });
+                return $image->make($request->file('image')->getRealPath())->resize(800, 400)->orientate()->save($filePath);
+            });
             $post->image = str_replace(public_path(), '', $filePath);
             $post->save();
         }
@@ -106,8 +111,8 @@ class PostController extends Controller
         } elseif ($request->hasFile('image')) {
             $filePath = public_path().'/data/posts/'.time().'-'.$post->id.'.jpg';
             $img = Image::cache(function ($image) use ($filePath, $request) {
-                    return $image->make($request->file('image')->getRealPath())->resize(800, 400)->orientate()->save($filePath);
-                });
+                return $image->make($request->file('image')->getRealPath())->resize(800, 400)->orientate()->save($filePath);
+            });
             $post->image = str_replace(public_path(), '', $filePath);
         }
 
