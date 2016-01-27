@@ -222,6 +222,12 @@ class RegistrationController extends Controller
 
     public function success($slug)
     {
+        if (Auth::guest()) {
+            Session::flash('msg-error', 'Please login before going to the league status screen');
+
+            return redirect()->route('league', [$slug]);
+        }
+
         $league = League::fetchBySlug($slug);
         if (!$league) {
             Session::flash('msg-error', 'Could not find league');

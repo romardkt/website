@@ -79,7 +79,7 @@ class ProfileController extends Controller
             $user->avatar = '/data/users/default.png';
         } elseif ($request->hasFile('avatar')) {
             $filePath = public_path().'/data/users/'.time().'-'.$user->id.'.jpg';
-            $img = Image::cache(function ($image) use ($filePath) {
+            $img = Image::cache(function ($image) use ($filePath, $request) {
                 return $image->make($request->file('avatar')->getRealPath())->resize(400, 400)->orientate()->save($filePath);
             });
             $user->avatar = str_replace(public_path(), '', $filePath);

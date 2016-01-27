@@ -2,29 +2,29 @@
 
 namespace Cupa\Http\Controllers;
 
-use Cupa\Http\Requests\TournamentAdminRequest;
-use Cupa\Http\Requests\TournamentBidEditRequest;
-use Cupa\Http\Requests\TournamentBidRequest;
-use Cupa\Http\Requests\TournamentContactRequest;
-use Cupa\Http\Requests\TournamentDescriptionRequest;
-use Cupa\Http\Requests\TournamentFeedRequest;
-use Cupa\Http\Requests\TournamentLocationMapRequest;
-use Cupa\Http\Requests\TournamentLocationRequest;
-use Cupa\Http\Requests\TournamentScheduleRequest;
-use Cupa\Http\Requests\TournamentTeamRequest;
 use Cupa\Location;
 use Cupa\Tournament;
 use Cupa\TournamentFeed;
-use Cupa\TournamentLocation;
-use Cupa\TournamentMember;
 use Cupa\TournamentTeam;
+use Cupa\TournamentMember;
+use Cupa\TournamentLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Session;
+use Cupa\Http\Requests\TournamentBidRequest;
+use Cupa\Http\Requests\TournamentFeedRequest;
+use Cupa\Http\Requests\TournamentTeamRequest;
+use Cupa\Http\Requests\TournamentAdminRequest;
+use Cupa\Http\Requests\TournamentBidEditRequest;
+use Cupa\Http\Requests\TournamentContactRequest;
+use Cupa\Http\Requests\TournamentLocationRequest;
+use Cupa\Http\Requests\TournamentScheduleRequest;
+use Cupa\Http\Requests\TournamentDescriptionRequest;
+use Cupa\Http\Requests\TournamentLocationMapRequest;
 
 class TournamentController extends Controller
 {
@@ -32,9 +32,7 @@ class TournamentController extends Controller
     {
         $tournament = Tournament::fetchTournament($name, $year);
         if (!$tournament || $tournament->is_visible == 0 && Gate::denies('show', $tournament)) {
-            Session::flash('msg-error', 'That tournament page does not exist.');
-
-            return redirect()->route('around_tournaments')->send();
+            abort(404);
         }
 
         return $tournament;
