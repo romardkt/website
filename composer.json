@@ -12,7 +12,7 @@
         "intervention/image": "^2.3",
         "intervention/imagecache": "^2.3",
         "doctrine/dbal": "^2.5",
-        "rollbar/rollbar": "^0.15.0"
+        "bugsnag/bugsnag-laravel": "1.*"
     },
     "require-dev": {
         "symfony/dom-crawler": "~3.0",
