@@ -11,19 +11,15 @@
                 https://groups.google.com/forum/#!managemembers/cupa_announcements/invite
             </a>
         </p>
-        <p>
-            @if(count($users))
-            @foreach($users as $id => $email)
-            {{ $email }}
 
-            @if($id % 10 === 0)
-            <br/>
-            @endif
-            @endforeach
-            @else
-            There are no additions at this time.
-            @endif
-        </p>
+<pre>
+@forelse($users as $emails)
+{{ implode(',', $emails) }}
+
+@empty
+There are no additions at this time.
+@endforelse
+</pre>
         <p>
 <pre>
 If you wish to join the CUPA Announcement group, just accept this invite.  This email list allows you to keep up to date on what is going on with CUPA.

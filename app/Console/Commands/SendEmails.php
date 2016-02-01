@@ -43,8 +43,11 @@ class SendEmails extends Command
         // loop through and add to array
         $users = [];
         foreach ($emails as $email) {
-            $users[] = $email->email;
+            $users[$email->email] = $email->email;
         }
+
+        // chunk users by 10
+        $users = array_chunk($users, 10);
 
         // send email
         Mail::send('emails.groups_invite', ['users' => $users], function ($m) {
