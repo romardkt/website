@@ -21,7 +21,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        HttpException::class,
+        // HttpException::class,
         ModelNotFoundException::class,
     ];
 
@@ -34,6 +34,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
+        app('bugsnag')->setAppVersion(env('BUGSNAG_APP_VERSION', 'Unknown'));
         // if (get_class($e) != 'Illuminate\Http\Exception\HttpResponseException') {
         //     $this->sendToBugger($e);
         // }

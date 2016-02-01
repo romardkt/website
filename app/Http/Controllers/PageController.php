@@ -401,6 +401,12 @@ class PageController extends Controller
             $user = Auth::user();
         }
 
+        if (!$user || Auth::guest()) {
+            Session::flash('msg-error', 'Please login to sign a waiver');
+
+            return redirect()->to($redirect);
+        }
+
         if (is_numeric($user)) {
             $user = User::find($user);
         }
