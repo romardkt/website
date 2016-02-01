@@ -918,14 +918,19 @@ body {
         }
     }
 
-    .bugsnag {
-        position: relative;
-        margin-bottom: 15px;
-        width: 150px;
-        text-align: right;
-
+    .mentions {
         img {
-            padding: 5px;
+            width: 100px;
+
+            &.bugsnag {
+                padding: 6px;
+                margin-bottom: 9px;
+            }
+
+            &.digitalocean {
+                padding-bottom: 15px;
+                background-color: transparent;
+            }
         }
     }
 }
