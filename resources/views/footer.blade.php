@@ -54,3 +54,8 @@
         <p>&copy; 2010-{{ date('Y') }} Cincinnati Ultimate Players Association</p>
     </div>
 </div>
+<div class="bugsnag pull-right">
+    <a target="_blank" href="https://bugsnag.com/blog/bugsnag-loves-open-source">
+        <img src="https://dbd6j53uzcole.cloudfront.net/assets/images/website/logo-dark.f9b367d9.png" alt="Bugsnag logo"/>
+    </a>
+</div>

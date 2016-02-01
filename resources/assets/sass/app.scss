@@ -917,6 +917,17 @@ body {
             color: $white;
         }
     }
+
+    .bugsnag {
+        position: relative;
+        margin-bottom: 15px;
+        width: 150px;
+        text-align: right;
+
+        img {
+            padding: 5px;
+        }
+    }
 }
 
 .volunteer-event {
