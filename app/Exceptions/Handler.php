@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler
 
         // catch the Token Missmatch
         if ($e instanceof TokenMismatchException) {
-            return response(view('error.token'), 401);
+            return response(view('errors.token'), 401);
         }
 
         return parent::render($request, $e);
