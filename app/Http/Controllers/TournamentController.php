@@ -71,7 +71,7 @@ class TournamentController extends Controller
 
         if ($request->hasFile('header')) {
             $filePath = public_path().'/data/tournaments/'.time().'-'.$tournament->id.'.jpg';
-            $img = Image::cache(function ($image) use ($filePath) {
+            $img = Image::cache(function ($image) use ($filePath, $request) {
                 return $image->make($request->file('header')->getRealPath())->resize(1200, 300)->orientate()->save($filePath);
             });
             $tournament->image = str_replace(public_path(), '', $filePath);
