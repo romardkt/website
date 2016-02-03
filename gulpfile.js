@@ -40,5 +40,6 @@ elixir(function(mix) {
         .version([
             'css/cupa.min.css',
             'js/cupa.min.js'
-        ]);
+        ])
+        .phpUnit();
 });
