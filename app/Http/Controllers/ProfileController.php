@@ -2,24 +2,32 @@
 
 namespace Cupa\Http\Controllers;
 
-use Cupa\Http\Requests\ProfileContactRequest;
-use Cupa\Http\Requests\ProfileMinorRequest;
-use Cupa\Http\Requests\ProfilePasswordRequest;
-use Cupa\Http\Requests\ProfileRequest;
 use Cupa\User;
 use Cupa\UserContact;
 use Cupa\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Route;
 use Intervention\Image\Facades\Image;
+use Cupa\Http\Requests\ProfileRequest;
+use Illuminate\Support\Facades\Session;
+use Cupa\Http\Requests\ProfileMinorRequest;
+use Cupa\Http\Requests\ProfileContactRequest;
+use Cupa\Http\Requests\ProfilePasswordRequest;
 
 class ProfileController extends Controller
 {
     public function __construct()
     {
+        // redirect to home page if they are not logged in
+        if (Route::currentRouteName() != 'profile_public' && Auth::guest()) {
+            Session::flash('msg-error', 'Please login to view your profile');
+
+            return redirect()->route('home')->send();
+        }
+
         if (Auth::check()) {
             $user = Auth::user();
             View::share('user', $user);
@@ -37,12 +45,6 @@ class ProfileController extends Controller
 
     public function profile(Request $request)
     {
-        if (Auth::guest()) {
-            Session::flash('msg-error', 'Please login to view your profile');
-
-            return redirect()->route('home');
-        }
-
         $user = Auth::user();
         $data = $user->toArray() + $user->profile->toArray();
         $data['birthday'] = convertDate($data['birthday'], 'm/d/Y');
@@ -91,8 +93,13 @@ class ProfileController extends Controller
         return redirect()->route('profile');
     }
 
-    public function publicProfile(User $user)
+    public function publicProfile($slug)
     {
+        $user = User::fetchBySlug($slug);
+        if (!$user) {
+            abort(404);
+        }
+
         $signups = [];
         if ($user->volunteer) {
             $signups = $user->volunteer->signups;

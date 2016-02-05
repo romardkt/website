@@ -101,6 +101,7 @@ class PageController extends Controller
 
             $players[] = [
                 'id' => $player->user->id,
+                'slug' => str_replace(' ', '-', strtolower($player->user->fullname())),
                 'name' => $player->user->fullname(),
                 'height' => displayHeight($player->user->profile->height),
                 'level' => $level,
