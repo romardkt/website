@@ -60,8 +60,8 @@ Route::group(['prefix' => 'profile'], function () {
     Route::get('contacts/{contact}/edit', ['as' => 'profile_contact_edit', 'uses' => 'ProfileController@contactEdit']);
     Route::post('contacts/{contact}/edit', ['as' => 'profile_contact_edit_post', 'uses' => 'ProfileController@postContactEdit']);
     Route::get('contacts/{contact}/remove', ['as' => 'profile_contact_remove', 'uses' => 'ProfileController@contactRemove']);
-    Route::get('{user}', ['as' => 'profile_public', 'uses' => 'ProfileController@publicProfile'])->where('user', '[0-9]+');
     Route::get('volunteer', ['as' => 'profile_volunteer', 'uses' => 'ProfileController@volunteer']);
+    Route::get('{slug}', ['as' => 'profile_public', 'uses' => 'ProfileController@publicProfile']);
 });
 
 Route::group(['prefix' => 'form'], function () {

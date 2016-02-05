@@ -1,7 +1,7 @@
 <div class="list-group">
     @if(count($players))
     @foreach($players as $player)
-    <a class="list-group-item" href="{{ route('profile_public', [$player['id']]) }}">
+    <a class="list-group-item" href="{{ route('profile_public', [$player['slug']]) }}">
         <span class="badge">{{ $player['height'] }}</span>
         <p><strong>{{ $player['name'] }}</strong> - {!! $player['level'] !!}</p>
     </a>
