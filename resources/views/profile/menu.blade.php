@@ -20,7 +20,7 @@
         <div class="list-group">
             @foreach(Config::get('cupa.profileMenu') as $route => $name)
             @if($route == 'profile_public')
-            <a class="list-group-item" href="{{ route('profile_public', [str_replace(' ', '-', Auth::user()->fullname)]) }}">
+            <a class="list-group-item" href="{{ route('profile_public', [Auth::user()->slug()]) }}">
                 {{ $name }}
             </a>
             @else
