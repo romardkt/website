@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
-class User extends Model implements AuthenticatableContract,
-                                    AuthorizableContract,
-                                    CanResetPasswordContract
+class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
 
@@ -391,5 +389,13 @@ class User extends Model implements AuthenticatableContract,
         }
 
         return $this->reset_password_code;
+    }
+
+    public static function fetchBySlug($slug)
+    {
+        $fullname = str_replace('-', ' ', $slug);
+        $user = static::where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'LIKE', $fullname)->first();
+
+        return $user;
     }
 }
