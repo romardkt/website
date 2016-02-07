@@ -4,7 +4,7 @@
     <div class="col-xs-12">
         <div class="list-group">
             <a href="{{ route('profile_minor_add') }}" class="list-group-item active">Add a minor...</a>
-            @foreach($minors as $minor)
+            @forelse($minors as $minor)
             <a href="{{ route('profile_minor_edit', [$minor->id]) }}" class="list-group-item">
                 <h4 class="list-group-item-heading">
                     {{ $minor->fullname() }}
@@ -14,7 +14,9 @@
                 </h4>
                 <p class="list-group-item-text">{{ $minor->gender }}, {{ displayAge($minor->birthday) }} years old, {{ displayHeight($minor->profile->height) }}, playing for {{ displayExperience($minor->profile->experience) }}</p>
             </a>
-            @endforeach
+            @empty
+            <h4 class="text-center">No minors created yet.</h4>
+            @endforelse
         </div>
     </div>
 </div>
