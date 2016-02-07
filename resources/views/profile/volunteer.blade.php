@@ -3,14 +3,16 @@
 <div class="row">
     <div class="col-xs-12">
         <div class="list-group">
-            @foreach($signups as $signup)
+            @forelse($signups as $signup)
             <div class="list-group-item">
                 <span class="badge">{{date('m/d/Y', strtotime($signup->event->start))}}</span>
                 <h4 class="list-group-item-heading">
                     {{$signup->event->title}}
                 </h4>
             </div>
-            @endforeach
+            @empty
+            <h4 class="text-center">You have not signed up for any volunteer opportunities.</h4>
+            @endforelse
         </div>
     </div>
 </div>
