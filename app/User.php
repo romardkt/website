@@ -85,6 +85,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->first_name.' '.$this->last_name;
     }
 
+    public function slug()
+    {
+        return str_replace(' ', '-', strtolower($this->fullname()));
+    }
+
     public function isVolunteer()
     {
         return (isset($this->volunteer()->first()->involvement)) ? true : false;

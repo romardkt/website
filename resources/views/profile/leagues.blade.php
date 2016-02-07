@@ -13,7 +13,7 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach($leagues as $member)
+            @forelse($leagues as $member)
             <tr>
                 <td><a href="{{ route('league', [$member->league->slug]) }}">{{ $member->league->displayName() }}</a></td>
                 <td>{{ $member->user->fullname() }}</td>
@@ -36,7 +36,13 @@
                     @endif
                 </td>
             </tr>
-            @endforeach
+            @empty
+            <tr>
+                <td colspan="6" class="text-center">
+                    You have not registered for any leagues yet.
+                </td>
+            </tr>
+            @endforelse
             </tbody>
         </table>
     </div>
