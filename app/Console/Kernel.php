@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \Cupa\Console\Commands\Dump::class,
         \Cupa\Console\Commands\SendEmails::class,
+        \Cupa\Console\Commands\ImportUploads::class,
     ];
 
     /**
