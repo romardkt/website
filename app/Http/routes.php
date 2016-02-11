@@ -42,25 +42,25 @@ Route::group(['prefix' => 'post'], function () {
 });
 
 Route::group(['prefix' => 'profile'], function () {
-    Route::get('/', ['as' => 'profile', 'uses' => 'ProfileController@profile']);
-    Route::post('/', ['as' => 'profile_post', 'uses' => 'ProfileController@postProfile']);
-    Route::get('password', ['as' => 'profile_password', 'uses' => 'ProfileController@password']);
-    Route::post('password', ['as' => 'profile_password_post', 'uses' => 'ProfileController@postPassword']);
-    Route::get('minors', ['as' => 'profile_minors', 'uses' => 'ProfileController@minors']);
-    Route::get('minors/add', ['as' => 'profile_minor_add', 'uses' => 'ProfileController@minorAdd']);
-    Route::post('minors/add', ['as' => 'profile_minor_add_post', 'uses' => 'ProfileController@postMinorAdd']);
-    Route::get('minors/{minor}/edit', ['as' => 'profile_minor_edit', 'uses' => 'ProfileController@minorEdit']);
-    Route::post('minors/{minor}/edit', ['as' => 'profile_minor_edit_post', 'uses' => 'ProfileController@postMinorEdit']);
-    Route::get('minors/{minor}/remove', ['as' => 'profile_minor_remove', 'uses' => 'ProfileController@minorRemove']);
-    Route::get('leagues', ['as' => 'profile_leagues', 'uses' => 'ProfileController@leagues']);
-    Route::get('teams', ['as' => 'profile_teams', 'uses' => 'ProfileController@teams']);
-    Route::get('contacts', ['as' => 'profile_contacts', 'uses' => 'ProfileController@contacts']);
-    Route::get('contacts/add', ['as' => 'profile_contact_add', 'uses' => 'ProfileController@contactAdd']);
-    Route::post('contacts/add', ['as' => 'profile_contact_add_post', 'uses' => 'ProfileController@postContactAdd']);
-    Route::get('contacts/{contact}/edit', ['as' => 'profile_contact_edit', 'uses' => 'ProfileController@contactEdit']);
-    Route::post('contacts/{contact}/edit', ['as' => 'profile_contact_edit_post', 'uses' => 'ProfileController@postContactEdit']);
-    Route::get('contacts/{contact}/remove', ['as' => 'profile_contact_remove', 'uses' => 'ProfileController@contactRemove']);
-    Route::get('volunteer', ['as' => 'profile_volunteer', 'uses' => 'ProfileController@volunteer']);
+    Route::get('/', ['as' => 'profile', 'uses' => 'ProfileController@profile', 'middleware' => 'auth']);
+    Route::post('/', ['as' => 'profile_post', 'uses' => 'ProfileController@postProfile', 'middleware' => 'auth']);
+    Route::get('password', ['as' => 'profile_password', 'uses' => 'ProfileController@password', 'middleware' => 'auth']);
+    Route::post('password', ['as' => 'profile_password_post', 'uses' => 'ProfileController@postPassword', 'middleware' => 'auth']);
+    Route::get('minors', ['as' => 'profile_minors', 'uses' => 'ProfileController@minors', 'middleware' => 'auth']);
+    Route::get('minors/add', ['as' => 'profile_minor_add', 'uses' => 'ProfileController@minorAdd', 'middleware' => 'auth']);
+    Route::post('minors/add', ['as' => 'profile_minor_add_post', 'uses' => 'ProfileController@postMinorAdd', 'middleware' => 'auth']);
+    Route::get('minors/{minor}/edit', ['as' => 'profile_minor_edit', 'uses' => 'ProfileController@minorEdit', 'middleware' => 'auth']);
+    Route::post('minors/{minor}/edit', ['as' => 'profile_minor_edit_post', 'uses' => 'ProfileController@postMinorEdit', 'middleware' => 'auth']);
+    Route::get('minors/{minor}/remove', ['as' => 'profile_minor_remove', 'uses' => 'ProfileController@minorRemove', 'middleware' => 'auth']);
+    Route::get('leagues', ['as' => 'profile_leagues', 'uses' => 'ProfileController@leagues', 'middleware' => 'auth']);
+    Route::get('teams', ['as' => 'profile_teams', 'uses' => 'ProfileController@teams', 'middleware' => 'auth']);
+    Route::get('contacts', ['as' => 'profile_contacts', 'uses' => 'ProfileController@contacts', 'middleware' => 'auth']);
+    Route::get('contacts/add', ['as' => 'profile_contact_add', 'uses' => 'ProfileController@contactAdd', 'middleware' => 'auth']);
+    Route::post('contacts/add', ['as' => 'profile_contact_add_post', 'uses' => 'ProfileController@postContactAdd', 'middleware' => 'auth']);
+    Route::get('contacts/{contact}/edit', ['as' => 'profile_contact_edit', 'uses' => 'ProfileController@contactEdit', 'middleware' => 'auth']);
+    Route::post('contacts/{contact}/edit', ['as' => 'profile_contact_edit_post', 'uses' => 'ProfileController@postContactEdit', 'middleware' => 'auth']);
+    Route::get('contacts/{contact}/remove', ['as' => 'profile_contact_remove', 'uses' => 'ProfileController@contactRemove', 'middleware' => 'auth']);
+    Route::get('volunteer', ['as' => 'profile_volunteer', 'uses' => 'ProfileController@volunteer', 'middleware' => 'auth']);
     Route::get('{slug}', ['as' => 'profile_public', 'uses' => 'ProfileController@publicProfile']);
 });
 

@@ -21,26 +21,17 @@ class ProfileController extends Controller
 {
     public function __construct()
     {
-        // redirect to home page if they are not logged in
-        if (Route::currentRouteName() != 'profile_public' && Auth::guest()) {
-            Session::flash('msg-error', 'Please login to view your profile');
+        $user = Auth::user();
+        View::share('user', $user);
+        View::share('leagues', $user->fetchAllLeagues());
+        View::share('minors', $user->children);
+        View::share('contacts', $user->contacts);
 
-            return redirect()->route('home')->send();
+        $signups = [];
+        if ($user->volunteer) {
+            $signups = $user->volunteer->signups;
         }
-
-        if (Auth::check()) {
-            $user = Auth::user();
-            View::share('user', $user);
-            View::share('leagues', $user->fetchAllLeagues());
-            View::share('minors', $user->children);
-            View::share('contacts', $user->contacts);
-
-            $signups = [];
-            if ($user->volunteer) {
-                $signups = $user->volunteer->signups;
-            }
-            View::share('signups', $signups);
-        }
+        View::share('signups', $signups);
     }
 
     public function profile(Request $request)
