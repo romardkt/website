@@ -28,6 +28,8 @@ class ManageController extends Controller
 
     public function users()
     {
+        $this->authorize('is-admin');
+
         return view('manage.users');
     }
 
@@ -40,6 +42,7 @@ class ManageController extends Controller
 
     public function impersonate(User $user)
     {
+        $this->authorize('is-admin');
         Session::put('admin_user', Auth::user());
         Auth::login($user);
 
@@ -56,6 +59,7 @@ class ManageController extends Controller
 
     public function leaguePlayers()
     {
+        $this->authorize('is-manager');
         $leagues = [0 => 'Select League'] + League::fetchAllForSelect();
 
         return view('manage.league_players', compact('leagues'));
@@ -77,6 +81,7 @@ class ManageController extends Controller
 
     public function loadLeagueTeams(LoadLeagueRequest $request)
     {
+        $this->authorize('is-manager');
         $leagueId = $request->get('league_id');
         $league = League::find($leagueId);
 
@@ -85,6 +90,7 @@ class ManageController extends Controller
 
     public function duplicates()
     {
+        $this->authorize('is-admin');
         $duplicates = User::fetchAllDuplicates();
 
         return view('manage.duplicates', compact('duplicates'));
@@ -105,6 +111,7 @@ class ManageController extends Controller
 
     public function forms()
     {
+        $this->authorize('is-manager');
         $forms = CupaForm::fetchAllForms();
 
         return view('manage.forms', compact('forms'));
@@ -112,6 +119,8 @@ class ManageController extends Controller
 
     public function formsAdd()
     {
+        $this->authorize('is-manager');
+
         return view('manage.forms_add');
     }
 
@@ -152,6 +161,7 @@ class ManageController extends Controller
 
     public function formsRemove($slug)
     {
+        $this->authorize('is-manager');
         $form = CupaForm::fetchBySlug($slug);
         if ($form) {
             if (file_exists(public_path().$form->location)) {
@@ -169,6 +179,7 @@ class ManageController extends Controller
 
     public function formsEdit($slug)
     {
+        $this->authorize('is-manager');
         $form = CupaForm::fetchBySlug($slug);
 
         return view('manage.forms_edit', compact('form'));
@@ -221,6 +232,7 @@ class ManageController extends Controller
 
     public function coaches()
     {
+        $this->authorize('is-manager');
         $coaches = LeagueMember::fetchAllCoaches();
 
         return view('manage.coaches', compact('coaches'));
@@ -228,6 +240,7 @@ class ManageController extends Controller
 
     public function coachesDownload()
     {
+        $this->authorize('is-manager');
         $coaches = LeagueMember::fetchAllCoaches();
         $file = storage_path().'/app/'.(new DateTime())->format('Y-m-d').'-CUPA-Coaches.csv';
 
@@ -253,6 +266,7 @@ class ManageController extends Controller
 
     public function files()
     {
+        $this->authorize('is-manager');
         $files = File::fetchAllFiles();
 
         return view('manage.files', compact('files'));
@@ -260,6 +274,8 @@ class ManageController extends Controller
 
     public function filesAdd()
     {
+        $this->authorize('is-manager');
+
         return view('manage.files_add');
     }
 
@@ -295,6 +311,7 @@ class ManageController extends Controller
 
     public function filesRemove(File $file)
     {
+        $this->authorize('is-manager');
         $filePath = public_path().$file->location;
         if (file_exists($filePath)) {
             unlink($filePath);
