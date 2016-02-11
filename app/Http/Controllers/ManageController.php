@@ -2,20 +2,22 @@
 
 namespace Cupa\Http\Controllers;
 
-use Cupa\CupaForm;
-use Cupa\Http\Requests\DuplicatesRequest;
-use Cupa\Http\Requests\FormAddEditRequest;
-use Cupa\Http\Requests\LeaguePlayersRequest;
-use Cupa\Http\Requests\LoadLeagueRequest;
-use Cupa\Http\Requests\ManageUserRequest;
-use Cupa\League;
-use Cupa\LeagueMember;
-use Cupa\User;
-use Cupa\UserBalance;
 use DateTime;
+use Cupa\File;
+use Cupa\User;
+use Cupa\League;
+use Cupa\CupaForm;
+use Cupa\UserBalance;
+use Cupa\LeagueMember;
+use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\MessageBag;
+use Cupa\Http\Requests\DuplicatesRequest;
+use Cupa\Http\Requests\LoadLeagueRequest;
+use Cupa\Http\Requests\ManageFileRequest;
+use Cupa\Http\Requests\ManageUserRequest;
+use Cupa\Http\Requests\FormAddEditRequest;
+use Cupa\Http\Requests\LeaguePlayersRequest;
 
 class ManageController extends Controller
 {
@@ -247,5 +249,61 @@ class ManageController extends Controller
         Session::flash('msg-error', 'Error downloading file');
 
         return redirect()->route('manage_coaches');
+    }
+
+    public function files()
+    {
+        $files = File::fetchAllFiles();
+
+        return view('manage.files', compact('files'));
+    }
+
+    public function filesAdd()
+    {
+        return view('manage.files_add');
+    }
+
+    public function postFilesAdd(ManageFileRequest $request)
+    {
+        $file = $request->file('file');
+        $safeName = str_slug(str_replace('.'.$file->getClientOriginalExtension(), '', $file->getClientOriginalName())).'.'.$file->getClientOriginalExtension();
+
+        $testFile = File::fetchBy('name', $safeName);
+
+        // check if file exists
+        $md5 = md5_file($request->file('file')->getRealPath());
+        if (!File::isUnique($md5) || $testFile) {
+            $errors = new MessageBag();
+            $errors->add('document', 'Uploaded file already exists');
+
+            return redirect()->route('manage_files_add')->withErrors($errors);
+        }
+
+        $file->move(public_path().'/upload', $safeName);
+        $newFile = File::create([
+            'name' => $safeName,
+            'location' => '/upload/'.$safeName,
+            'md5' => $md5,
+            'size' => $file->getClientSize(),
+            'mime' => $file->getClientMimeType(),
+        ]);
+
+        Session::flash('msg-success', 'File uploaded');
+
+        return redirect()->route('manage_files');
+    }
+
+    public function filesRemove(File $file)
+    {
+        $filePath = public_path().$file->location;
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+
+        $file->delete();
+
+        Session::flash('msg-success', 'File removed');
+
+        return redirect()->route('manage_files');
     }
 }
