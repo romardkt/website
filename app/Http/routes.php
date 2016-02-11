@@ -305,4 +305,8 @@ Route::group(['prefix' => 'manage'], function () {
     Route::get('forms/{slug}/remove', ['as' => 'manage_forms_remove', 'uses' => 'ManageController@formsRemove']);
     Route::get('coaches', ['as' => 'manage_coaches', 'uses' => 'ManageController@coaches']);
     Route::get('coaches/download', ['as' => 'manage_coaches_download', 'uses' => 'ManageController@coachesDownload']);
+    Route::get('files', ['as' => 'manage_files', 'uses' => 'ManageController@files']);
+    Route::get('files/add', ['as' => 'manage_files_add', 'uses' => 'ManageController@filesAdd']);
+    Route::post('files/add', ['as' => 'manage_files_add_post', 'uses' => 'ManageController@postFilesAdd']);
+    Route::get('files/{file}/remove', ['as' => 'manage_files_remove', 'uses' => 'ManageController@filesRemove']);
 });
