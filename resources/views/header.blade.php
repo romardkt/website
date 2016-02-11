@@ -24,7 +24,7 @@
             <div class="col-sm-6">
                 <div class="row text-right login">
                     <ul class="nav links pull-right">
-                        @can('is-admin')
+                        @can('is-manager')
                         <li><a href="{{ route('manage') }}" title="News Posts">Manage</a></li>
                         @endif
                         <li><a href="{{ route('posts') }}" title="News Posts">All News</a></li>
