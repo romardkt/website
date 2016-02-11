@@ -302,3 +302,13 @@ if (!function_exists('fetchBanner')) {
         return (file_exists(public_path().'/data/banners/'.$base.'.jpg')) ? asset('/data/banners/'.$base.'.jpg') : asset('img/1200x300.gif');
     }
 }
+
+if (!function_exists('displayFilesize')) {
+    function displayFilesize($bytes)
+    {
+        $units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+        $power = $bytes > 0 ? floor(log($bytes, 1024)) : 0;
+
+        return number_format($bytes / pow(1024, $power), 2, '.', ',').' '.$units[$power];
+    }
+}
