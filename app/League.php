@@ -396,7 +396,7 @@ class League extends Model
     public function getRegistrationData()
     {
         $registration = $this->registration;
-        $now = (new DateTime())->format('Y-m-d H:i:s');
+        $now = Carbon::now('America/New_York')->format('Y-m-d H:i:s');
         $data = [];
         $data['limits'] = $this->limits->toArray();
         $data['counts'] = $this->counts;
