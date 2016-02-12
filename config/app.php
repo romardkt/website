@@ -2,6 +2,8 @@
 
 return [
 
+    'version' => '3.2.0',
+
     'env' => env('APP_ENV', 'production'),
 
     /*

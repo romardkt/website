@@ -5,6 +5,7 @@ namespace Cupa\Exceptions;
 use Exception;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -32,7 +33,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        app('bugsnag')->setAppVersion(env('BUGSNAG_APP_VERSION', 'Unknown'));
+        app('bugsnag')->setAppVersion(Config::get('app.version'));
 
         return parent::report($e);
     }
