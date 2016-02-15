@@ -271,6 +271,9 @@ class EditController extends Controller
             return redirect()->route('youth_leagues');
         }
         $requirements = json_decode(UserRequirement::fetchOrCreateRequirements($member->user_id, $league->year)->requirements, true);
+        $hiddenReqs = Config::get('cupa.coachingRequirements');
+        unset($hiddenReqs['manual']);
+        unset($hiddenReqs['rules']);
 
         if (Gate::denies('edit', $league) && $member->user_id != Auth::id()) {
             Session::flash('msg-error', 'You may only edit your own coaching requirements');
@@ -278,7 +281,7 @@ class EditController extends Controller
             return redirect()->route('league_coaches', [$slug]);
         }
 
-        return view('leagues.edit.coaches_edit', compact('league', 'member', 'requirements'));
+        return view('leagues.edit.coaches_edit', compact('league', 'member', 'requirements', 'hiddenReqs'));
     }
 
     public function postCoachesEdit($slug, LeagueMember $member, LeagueCoachRequest $request)
@@ -306,8 +309,15 @@ class EditController extends Controller
             }
         }
 
+        $requirements = json_decode(UserRequirement::fetchOrCreateRequirements($member->user_id, $league->year)->requirements, true);
+        $hiddenReqs = Config::get('cupa.coachingRequirements');
+        unset($hiddenReqs['manual']);
+        unset($hiddenReqs['rules']);
+
         foreach (Config::get('cupa.coachingRequirements') as $req => $text) {
-            $requirements[$req] = (isset($input[$req])) ? 1 : 0;
+            if (Gate::allows('edit', $league, $member) || !in_array($req, array_keys($hiddenReqs))) {
+                $requirements[$req] = (isset($input[$req])) ? 1 : 0;
+            }
         }
 
         UserRequirement::updateRequirements($member->user_id, $league->year, $requirements);
