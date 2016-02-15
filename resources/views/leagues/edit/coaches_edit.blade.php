@@ -49,9 +49,25 @@
 
             @foreach(Config::get('cupa.coachingRequirements') as $req => $text)
             <div class="checkbox">
+                @if(!in_array($req, array_keys($hiddenReqs)))
                 {!! Form::checkbox($req, 1, (isset($requirements[$req])) ? $requirements[$req] : null) !!} {{ $text . '?' }}
+                @endif
             </div>
             @endforeach
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('League Director Approval:') !!}
+            <div class="checkbox">
+                @foreach($hiddenReqs as $req => $text)
+                    @can('edit', $league)
+                    {!! Form::checkbox($req, 1, (isset($requirements[$req])) ? $requirements[$req] : null) !!} {{ $text . '?' }}
+                    @else
+                    {!! Form::checkbox($req, 1, (isset($requirements[$req])) ? $requirements[$req] : null, ['disabled' => 'disabled']) !!} {{ $text . '?' }}
+                    @endif
+                    <br/>
+                @endforeach
+            </div>
         </div>
 
         <hr/>
