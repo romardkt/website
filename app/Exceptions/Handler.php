@@ -5,6 +5,7 @@ namespace Cupa\Exceptions;
 use Exception;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -20,7 +21,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        // HttpException::class,
+        HttpException::class,
         ModelNotFoundException::class,
     ];
 
@@ -33,7 +34,20 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
+        // set the app version
         app('bugsnag')->setAppVersion(Config::get('app.version'));
+
+        // set the user if authenticated
+        if (Auth::check()) {
+            app('bugsnag')->setUser(Auth::user()->toArray());
+        }
+
+        // send a notification if it is part of the ignored exceptions
+        foreach ($this->dontReport as $type) {
+            if ($e instanceof $type) {
+                app('bugsnag')->notifyException($e, null, 'info');
+            }
+        }
 
         return parent::report($e);
     }
