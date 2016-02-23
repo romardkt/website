@@ -6,8 +6,12 @@ use Exception;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Session\TokenMismatchException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -23,6 +27,8 @@ class Handler extends ExceptionHandler
     protected $dontReport = [
         HttpException::class,
         ModelNotFoundException::class,
+        HttpResponseException::class,
+        AuthorizationException::class,
     ];
 
     /**
@@ -44,7 +50,9 @@ class Handler extends ExceptionHandler
 
         // send a notification if it is part of the ignored exceptions
         foreach ($this->dontReport as $type) {
-            if ($e instanceof $type) {
+            if ($e instanceof HttpResponseException) {
+                app('bugsnag')->notifyException($e, ['errors' => Session::get('errors')->toArray()], 'info');
+            } elseif ($e instanceof $type) {
                 app('bugsnag')->notifyException($e, null, 'info');
             }
         }
