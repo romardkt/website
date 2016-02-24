@@ -182,7 +182,7 @@ class YouthController extends Controller
         return redirect()->route('youth_clinic', [$clinic->name]);
     }
 
-    public function coaching_requirements()
+    public function coachingRequirements()
     {
         return redirect()->route('youth_coaching');
     }
