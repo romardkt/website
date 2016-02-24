@@ -51,7 +51,11 @@ class Handler extends ExceptionHandler
         // send a notification if it is part of the ignored exceptions
         foreach ($this->dontReport as $type) {
             if ($e instanceof HttpResponseException) {
-                app('bugsnag')->notifyException($e, ['errors' => Session::get('errors')->toArray()], 'info');
+                $errors = Session::get('errors');
+                if ($errors) {
+                    $errors = $errors->toArray();
+                }
+                app('bugsnag')->notifyException($e, ['errors' => $errors], 'info');
             } elseif ($e instanceof $type) {
                 app('bugsnag')->notifyException($e, null, 'info');
             }
