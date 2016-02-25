@@ -2,6 +2,7 @@
 
 namespace Cupa\Http\Requests;
 
+use Cupa\Team;
 use Illuminate\Support\Facades\Gate;
 
 class TeamAddEditRequest extends Request
@@ -13,7 +14,9 @@ class TeamAddEditRequest extends Request
      */
     public function authorize()
     {
-        return Gate::allows('is-editor');
+        $team = Team::fetchByName($this->route('name'));
+
+        return Gate::allows('edit', $team);
     }
 
     /**
