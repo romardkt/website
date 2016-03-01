@@ -21,17 +21,19 @@ class ProfileController extends Controller
 {
     public function __construct()
     {
-        $user = Auth::user();
-        View::share('user', $user);
-        View::share('leagues', $user->fetchAllLeagues());
-        View::share('minors', $user->children);
-        View::share('contacts', $user->contacts);
+        if (Auth::check()) {
+            $user = Auth::user();
+            View::share('user', $user);
+            View::share('leagues', $user->fetchAllLeagues());
+            View::share('minors', $user->children);
+            View::share('contacts', $user->contacts);
 
-        $signups = [];
-        if ($user->volunteer) {
-            $signups = $user->volunteer->signups;
+            $signups = [];
+            if ($user->volunteer) {
+                $signups = $user->volunteer->signups;
+            }
+            View::share('signups', $signups);
         }
-        View::share('signups', $signups);
     }
 
     public function profile(Request $request)

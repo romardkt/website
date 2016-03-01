@@ -87,6 +87,10 @@ class PageController extends Controller
     public function teamPlayers(Request $request)
     {
         $input = $request->all();
+        if (empty($input['team_id'])) {
+            abort(404);
+        }
+
         $players = [];
         $team = LeagueTeam::find($input['team_id']);
 
@@ -118,6 +122,9 @@ class PageController extends Controller
     public function teamRecord(Request $request)
     {
         $input = $request->all();
+        if (empty($input['team_id'])) {
+            abort(404);
+        }
         $records = LeagueGame::fetchRecord($input['team_id']);
         $team = LeagueTeam::find($input['team_id']);
 
