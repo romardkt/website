@@ -31,7 +31,7 @@
             <tbody>
                 @foreach($players as $player)
                 <tr>
-                    <td class="col-xs-5">{!! secureEmail($player->user->email, $player->user->fullname()) !!}</td>
+                    <td class="col-xs-5">{!! secureEmail((empty($player->user->email)) ? $player->user->parentObj->email : $player->user->email, $player->user->fullname()) !!}</td>
                     <td class="col-xs-1 text-center">{{{ $player->user->gender }}}</td>
                     <td class="col-xs-1 text-center hidden-xs">{{{ displayAge($player->user->birthday) }}}</td>
                     <td class="col-xs-4 text-center">{{{ (new DateTime($player->created_at))->format('M j Y h:i A') }}}</td>
