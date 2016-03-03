@@ -763,6 +763,7 @@ class ManageController extends Controller
             'last_name',
             'gender',
             'age',
+            'email',
             'phone',
             'nickname',
             'height',
@@ -807,6 +808,8 @@ class ManageController extends Controller
                                 $line[] = $player->user->profile->$col;
                                 break;
                         }
+                    } elseif ($col == 'email') {
+                        $line[] = $player->user->parentObj->email;
                     } elseif ($col == 'age') {
                         $line[] = displayAge($player->user->birthday);
                     } elseif ($col == 'waiver') {
