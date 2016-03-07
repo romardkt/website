@@ -2,16 +2,17 @@
 
 namespace Cupa\Http\Controllers;
 
-use Cupa\Http\Requests\PageEditRequest;
-use Cupa\Http\Requests\TeamAddEditRequest;
 use Cupa\Page;
 use Cupa\Team;
 use Cupa\TeamMember;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Config;
+use Cupa\Http\Requests\PageEditRequest;
+use Illuminate\Support\Facades\Session;
+use Cupa\Http\Requests\TeamAddEditRequest;
 
 class TeamsController extends Controller
 {
@@ -80,7 +81,7 @@ class TeamsController extends Controller
 
         if ($request->hasFile('logo')) {
             $filePath = public_path().'/data/area_teams/'.time().'-'.$team->id.'.jpg';
-            $img = Image::cache(function ($image) use ($filePath) {
+            $img = Image::cache(function ($image) use ($filePath, $request) {
                     return $image->make($request->file('logo')->getRealPath())->resize(400, 400)->orientate()->save($filePath);
                 });
             $team->logo = str_replace(public_path(), '', $filePath);
@@ -146,7 +147,7 @@ class TeamsController extends Controller
             $team->logo = '/data/users/default.png';
         } elseif ($request->hasFile('logo')) {
             $filePath = public_path().'/data/area_teams/'.time().'-'.$team->id.'.jpg';
-            $img = Image::cache(function ($image) use ($filePath) {
+            $img = Image::cache(function ($image) use ($filePath, $request) {
                 return $image->make($request->file('logo')->getRealPath())->resize(400, 400)->orientate()->save($filePath);
             });
             $team->logo = str_replace(public_path(), '', $filePath);
