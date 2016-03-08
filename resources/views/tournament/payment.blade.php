@@ -34,7 +34,7 @@
         <p><strong>There are currently no teams to pay for.</strong></p>
                 @endif
             @else
-        <pre>{{ $tournament->paypal }}</pre>
+        <pre>{!! $tournament->paypal !!}</pre>
             @endif
         <hr/>
         @endif
