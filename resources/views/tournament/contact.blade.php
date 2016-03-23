@@ -26,7 +26,11 @@
             </div>
             @endif
             <dt>{{ ucwords(str_replace('_', ' ', $contact->position)) }}:</dt>
+            @if(empty($tournament->override_email))
             <dd>{!! secureEmail($contact->user->email, $contact->user->fullname()) !!}</dd>
+            @else
+            <dd>{!! secureEmail($tournament->override_email, $contact->user->fullname()) !!}</dd>
+            @endif
         @endforeach
         </dl>
     </div>
