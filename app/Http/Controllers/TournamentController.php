@@ -132,9 +132,14 @@ class TournamentController extends Controller
         // Send Mail to directors
         Mail::send('emails.tournament_bid_director', ['tournament' => $tournament, 'team' => $team], function ($m) use ($tournament) {
             if (App::environment() == 'prod') {
-                foreach ($tournament->contacts as $contact) {
-                    $m->to($contact->user->email, $contact->user->fullname());
+                if (empty($tournament->override_email)) {
+                    foreach ($tournament->contacts as $contact) {
+                        $m->to($contact->user->email, $contact->user->fullname());
+                    }
+                } else {
+                    $m->to($tournament->override_email, $tournament->display_name.' Directors');
                 }
+
                 $m->bcc('webmaster@cincyultimate.org', 'CUPA Webmaster');
             } else {
                 $m->to('kcin1018@gmail.com', 'Nick Felicelli');
