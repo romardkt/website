@@ -58,26 +58,26 @@ class TeamsController extends Controller
         return view('teams.teams_add', compact('page', 'teamTypes', 'initial'));
     }
 
-    public function postTeamsAdd(TeamAddEditRequest $requset)
+    public function postTeamsAdd(TeamAddEditRequest $request)
     {
         // get the posted data
         $input = $request->all();
         $input['captains'] = explode(',', $input['captains']);
 
         $team = Team::create([
-                'name' => str_slug($input['display_name']),
-                'type' => (is_array($input['type'])) ? implode(', ', $input['type']) : $input['type'],
-                'display_name' => $input['display_name'],
-                'menu' => $input['menu'],
-                'override_email' => (empty($input['override_email'])) ? null : $input['override_email'],
-                'facebook' => (empty($input['facebook'])) ? null : $input['facebook'],
-                'twitter' => (empty($input['twitter'])) ? null : $input['twitter'],
-                'website' => (empty($input['website'])) ? null : $input['website'],
-                'begin' => $input['begin'],
-                'end' => (empty($input['end'])) ? null : $input['end'],
-                'description' => $input['description'],
-                'updated_by' => Auth::user()->id,
-            ]);
+            'name' => str_slug($input['display_name']),
+            'type' => (is_array($input['type'])) ? implode(', ', $input['type']) : $input['type'],
+            'display_name' => $input['display_name'],
+            'menu' => $input['menu'],
+            'override_email' => (empty($input['override_email'])) ? null : $input['override_email'],
+            'facebook' => (empty($input['facebook'])) ? null : $input['facebook'],
+            'twitter' => (empty($input['twitter'])) ? null : $input['twitter'],
+            'website' => (empty($input['website'])) ? null : $input['website'],
+            'begin' => $input['begin'],
+            'end' => (empty($input['end'])) ? null : $input['end'],
+            'description' => $input['description'],
+            'updated_by' => Auth::user()->id,
+        ]);
 
         if ($request->hasFile('logo')) {
             $filePath = public_path().'/data/area_teams/'.time().'-'.$team->id.'.jpg';

@@ -14,9 +14,13 @@ class TeamAddEditRequest extends Request
      */
     public function authorize()
     {
-        $team = Team::fetchByName($this->route('name'));
+        if ($this->route('name') !== null) {
+            $team = Team::fetchByName($this->route('name'));
 
-        return Gate::allows('edit', $team);
+            return Gate::allows('edit', $team);
+        }
+
+        return Gate::allows('is-editor');
     }
 
     /**
