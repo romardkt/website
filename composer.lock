@@ -1023,18 +1023,6 @@
         },
         {
             "name": "laravel/framework",
-<<<<<<< Updated upstream
-            "version": "v5.2.26",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laravel/framework.git",
-                "reference": "b73ac62506c5c2bd49d87fcb1089f7759431e173"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/b73ac62506c5c2bd49d87fcb1089f7759431e173",
-                "reference": "b73ac62506c5c2bd49d87fcb1089f7759431e173",
-=======
             "version": "v5.2.27",
             "source": {
                 "type": "git",
@@ -1045,7 +1033,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/framework/zipball/ccda783ffa253ed27dd1d4b41dbbc95e76e48a2a",
                 "reference": "ccda783ffa253ed27dd1d4b41dbbc95e76e48a2a",
->>>>>>> Stashed changes
                 "shasum": ""
             },
             "require": {
@@ -1160,11 +1147,7 @@
                 "framework",
                 "laravel"
             ],
-<<<<<<< Updated upstream
-            "time": "2016-03-25 17:12:52"
-=======
             "time": "2016-03-29 13:32:58"
->>>>>>> Stashed changes
         },
         {
             "name": "laravelcollective/html",
@@ -1222,18 +1205,6 @@
         },
         {
             "name": "league/flysystem",
-<<<<<<< HEAD
-            "version": "1.0.18",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "b334d6c5f95364948e06d2f620ab93d084074c6e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/b334d6c5f95364948e06d2f620ab93d084074c6e",
-                "reference": "b334d6c5f95364948e06d2f620ab93d084074c6e",
-=======
             "version": "1.0.20",
             "source": {
                 "type": "git",
@@ -1244,7 +1215,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/e87a786e3ae12a25cf78a71bb07b4b384bfaa83a",
                 "reference": "e87a786e3ae12a25cf78a71bb07b4b384bfaa83a",
->>>>>>> hotfix/fix-team-creation
                 "shasum": ""
             },
             "require": {
@@ -1314,11 +1284,7 @@
                 "sftp",
                 "storage"
             ],
-<<<<<<< HEAD
-            "time": "2016-03-07 21:01:43"
-=======
             "time": "2016-03-14 21:54:11"
->>>>>>> hotfix/fix-team-creation
         },
         {
             "name": "monolog/monolog",
