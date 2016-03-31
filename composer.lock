@@ -1023,18 +1023,6 @@
         },
         {
             "name": "laravel/framework",
-<<<<<<< Updated upstream
-            "version": "v5.2.26",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laravel/framework.git",
-                "reference": "b73ac62506c5c2bd49d87fcb1089f7759431e173"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/b73ac62506c5c2bd49d87fcb1089f7759431e173",
-                "reference": "b73ac62506c5c2bd49d87fcb1089f7759431e173",
-=======
             "version": "v5.2.27",
             "source": {
                 "type": "git",
@@ -1045,7 +1033,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/framework/zipball/ccda783ffa253ed27dd1d4b41dbbc95e76e48a2a",
                 "reference": "ccda783ffa253ed27dd1d4b41dbbc95e76e48a2a",
->>>>>>> Stashed changes
                 "shasum": ""
             },
             "require": {
@@ -1160,11 +1147,7 @@
                 "framework",
                 "laravel"
             ],
-<<<<<<< Updated upstream
-            "time": "2016-03-25 17:12:52"
-=======
             "time": "2016-03-29 13:32:58"
->>>>>>> Stashed changes
         },
         {
             "name": "laravelcollective/html",
