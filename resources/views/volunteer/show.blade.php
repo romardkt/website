@@ -30,11 +30,12 @@
                         <div class="month">{{ date('M', strtotime($event->start)) }}</div>
                         <div class="day">{{ date('d', strtotime($event->start)) }}</div>
                         <div class="year">{{ date('Y', strtotime($event->start)) }}</div>
-                        @if(Auth::check() and $past == false)
+                        @if(Auth::check() && $past == false)
                         <div class="action"><a class="btn btn-success btn-xs" href="{{ route('volunteer_show_signup', array($event->id)) }}">Sign Up!</a></div>
-                        @elsif($past == false)
+                        @elseif($past == false)
                         <div class="action"><a class="btn btn-success btn-xs" data-toggle="modal" data-target="#login" title="Login">Login to<br/> Sign Up!</a></div>
                         @endif
+
                         @can('edit', $event)
                         <div class="action"><a class="btn btn-default btn-xs" href="{{ route('volunteer_show_members', array($event->id)) }}">Volunteers</a></div>
                         @endif
