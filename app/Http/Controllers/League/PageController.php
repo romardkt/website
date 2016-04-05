@@ -176,11 +176,13 @@ class PageController extends Controller
 
         $emails = [];
         foreach ($input['to'] as $to) {
-            foreach ($tos[$to] as $member) {
-                if (!empty($member->user->email)) {
-                    $emails[$member->user->email] = $member->user->email;
-                } elseif (isset($member->user->parent) && $member->user->parent !== null) {
-                    $emails[$member->user->parentObj->email] = $member->user->parentObj->email;
+            if (isset($tos[$to])) {
+                foreach ($tos[$to] as $member) {
+                    if (!empty($member->user->email)) {
+                        $emails[$member->user->email] = $member->user->email;
+                    } elseif (isset($member->user->parent) && $member->user->parent !== null) {
+                        $emails[$member->user->parentObj->email] = $member->user->parentObj->email;
+                    }
                 }
             }
         }
