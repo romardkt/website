@@ -141,8 +141,11 @@ class RegistrationController extends Controller
     private function registerFinish($league, $request)
     {
         $session = Session::get('league_registration');
-        $position = ($league->fetchRegistrationType($session) == 'registration') ? 'player' : 'waitlist';
-        $position = ($league->default_waitlist) ? 'waitlist' : 'player';
+        if ($league->fetchRegistrationType($session) == 'registration' && !$league->default_waitlist) {
+            $position = 'player';
+        } else {
+            $position = 'waitlist';
+        }
 
         Log::info('*******************Registrant:');
         Log::info(print_r($session->registrant->toArray(), true));
@@ -186,6 +189,7 @@ class RegistrationController extends Controller
             'leagueName' => $league->displayName(),
             'leagueSlug' => $league->slug,
             'leagueStatus' => ($position == 'player') ? 'Registration' : 'Waitlist',
+            'default_waitlist' => $league->default_waitlist,
         ];
 
         Mail::send('emails.league_register', $data, function ($m) use ($user, $league) {

@@ -11,6 +11,12 @@
         <p style="margin: 20px 0;">
             You have successfully registered for the {{ $leagueName }} league.  Please take the time to sign your waiver, on-line if you are 18 or older, or in paper form if you are younger.  You may find the links below for all the information.
         </p>
+        @if($default_waitlist)
+        <div style="padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px; color: #a47e3c; background-color: #fcf8e3; border-color: #fbeed5; color: #c09853;">
+            <h4 style="margin-top: 0; margin-bottom: 0; color: inherit;">You are currently on the waitlist</h4>
+            <p style="margin-bottom: 0; margin-top: 0;">To become a registered player you must pay the league fee.  If you do this online you will be automatically moved to a registered player.</p>
+        </div>
+        @endif
         <p style="margin: 20px 0;">
             <ul>
                 <li>You may see your league status <a href="{{ route('league_success', [$leagueSlug]) }}">here</a></li>
