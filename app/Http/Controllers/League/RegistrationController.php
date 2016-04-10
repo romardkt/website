@@ -133,6 +133,10 @@ class RegistrationController extends Controller
         unset($input['_token']);
         unset($input['_url']);
 
+        // set the new player question
+        $leagues = LeagueMember::fetchAllLeagues([$session->registrant->id], false);
+        $input['new_player'] = (count($leagues) > 0) ? 'No' : 'Yes';
+
         $session->league = json_encode($input);
 
         return redirect()->route('league_register', [$league->slug, 'finish']);
