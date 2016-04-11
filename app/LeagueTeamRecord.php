@@ -11,7 +11,7 @@ class LeagueTeamRecord extends Model
 
     public function record()
     {
-        return $this->wins.' - '.$this->losses;
+        return $this->wins.' - '.$this->losses.' - '.$this->ties;
     }
 
     public function points()
