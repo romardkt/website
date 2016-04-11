@@ -122,6 +122,7 @@
         <div class="col-xs-12">
             <ul class="nav">
                 <li><a href="{{ route('profile') }}"><i class="fa fa-fw fa-info-circle"></i>Personal Information</a></li>
+                <li><a href="{{ route('profile_coaching') }}"><i class="fa fa-fw fa-graduation-cap"></i> Coaching Requirements</a></li>
                 <li><a href="{{ route('profile_leagues') }}"><i class="fa fa-fw fa-group"></i> Leagues</a></li>
                 <li><a href="{{ route('profile_contacts') }}"><i class="fa fa-fw fa-exclamation-triangle"></i> Emergency Contacts</a></li>
                 <li><a href="{{ route('profile_password') }}"><i class="fa fa-fw fa-lock"></i> Change Password</a></li>

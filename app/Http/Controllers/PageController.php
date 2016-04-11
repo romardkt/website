@@ -426,8 +426,12 @@ class PageController extends Controller
         return view('page.waiver', compact('user', 'year'));
     }
 
-    public function postWaiver($year, $user, WaiverRequest $request)
+    public function postWaiver(WaiverRequest $request, $year, $user = null)
     {
+        if (empty($user)) {
+            $user = Auth::user();
+        }
+
         $redirect = (Session::has('waiver_redirect')) ?  Session::get('waiver_redirect') : route('home');
         $input = $request->all();
         $user->signWaiver($year);
