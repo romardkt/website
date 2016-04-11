@@ -61,6 +61,8 @@ Route::group(['prefix' => 'profile'], function () {
     Route::post('contacts/{contact}/edit', ['as' => 'profile_contact_edit_post', 'uses' => 'ProfileController@postContactEdit', 'middleware' => 'auth']);
     Route::get('contacts/{contact}/remove', ['as' => 'profile_contact_remove', 'uses' => 'ProfileController@contactRemove', 'middleware' => 'auth']);
     Route::get('volunteer', ['as' => 'profile_volunteer', 'uses' => 'ProfileController@volunteer', 'middleware' => 'auth']);
+    Route::get('coaching', ['as' => 'profile_coaching', 'uses' => 'ProfileController@coaching', 'middleware' => 'auth']);
+    Route::post('coaching', ['as' => 'profile_coaching_post', 'uses' => 'ProfileController@postCoaching', 'middleware' => 'auth']);
     Route::get('{slug}', ['as' => 'profile_public', 'uses' => 'ProfileController@publicProfile']);
 });
 

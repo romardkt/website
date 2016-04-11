@@ -5,6 +5,7 @@ namespace Cupa\Http\Controllers;
 use Cupa\User;
 use Cupa\UserContact;
 use Cupa\UserProfile;
+use Cupa\UserRequirement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,9 +13,11 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Intervention\Image\Facades\Image;
 use Cupa\Http\Requests\ProfileRequest;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Cupa\Http\Requests\ProfileMinorRequest;
 use Cupa\Http\Requests\ProfileContactRequest;
+use Cupa\Http\Requests\ProfileCoachingRequest;
 use Cupa\Http\Requests\ProfilePasswordRequest;
 
 class ProfileController extends Controller
@@ -27,6 +30,7 @@ class ProfileController extends Controller
             View::share('leagues', $user->fetchAllLeagues());
             View::share('minors', $user->children);
             View::share('contacts', $user->contacts);
+            View::share('coaching', $user->coachingRequirements(date('Y')));
 
             $signups = [];
             if ($user->volunteer) {
@@ -261,5 +265,36 @@ class ProfileController extends Controller
     public function volunteer(Request $request)
     {
         return view('profile.volunteer');
+    }
+
+    public function coaching(Request $request)
+    {
+        Session::set('waiver_redirect', route('profile_coaching'));
+        $requirements = json_decode(UserRequirement::fetchOrCreateRequirements(Auth::id(), date('Y'))->requirements, true);
+        $hiddenReqs = Config::get('cupa.coachingRequirements');
+        unset($hiddenReqs['manual']);
+        unset($hiddenReqs['rules']);
+
+        return view('profile.coaching', compact('requirements', 'hiddenReqs'));
+    }
+
+    public function postCoaching(ProfileCoachingRequest $request)
+    {
+        $input = $request->all();
+        $requirements = json_decode(UserRequirement::fetchOrCreateRequirements(Auth::id(), date('Y'))->requirements, true);
+        $hiddenReqs = Config::get('cupa.coachingRequirements');
+        unset($hiddenReqs['manual']);
+        unset($hiddenReqs['rules']);
+
+        foreach (Config::get('cupa.coachingRequirements') as $req => $text) {
+            if (!in_array($req, array_keys($hiddenReqs))) {
+                $requirements[$req] = (isset($input[$req])) ? 1 : 0;
+            }
+        }
+
+        UserRequirement::updateRequirements(Auth::id(), date('Y'), $requirements);
+        Session::flash('msg-success', 'Coaching requirements updated');
+
+        return redirect()->route('profile_coaching');
     }
 }

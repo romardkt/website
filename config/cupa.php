@@ -192,6 +192,7 @@ return [
     'profileMenu' => [
         'profile_public' => 'Public Profile',
         'profile' => 'Personal',
+        'profile_coaching' => 'Coaching Requirements',
         'profile_leagues' => 'My Leagues',
         'profile_minors' => 'My Minors',
         'profile_contacts' => 'My Contacts',

@@ -1412,6 +1412,12 @@ dd {
         width: 200px;
         @include box-shadow(0 0 5px, darken($white, 40%));
     }
+
+    .coaching-requirements {
+        .checkbox {
+            margin-left: 30px;
+        }
+    }
 }
 
 .label {
