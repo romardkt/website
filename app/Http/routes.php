@@ -183,6 +183,8 @@ Route::group(['prefix' => 'leagues'], function () {
     Route::post('{slug}/schedule/edit/{game}', ['as' => 'league_schedule_edit_post', 'uses' => 'League\ManageController@postScheduleEdit']);
     Route::get('{slug}/schedule/remove/{game}', ['as' => 'league_schedule_remove', 'uses' => 'League\ManageController@scheduleRemove']);
 
+    Route::get('{slug}/schedule/markall/{week}/{status}', ['as' => 'league_schedule_markall', 'uses' => 'League\ManageController@markAll']);
+
     //Route::any('{slug}/schedule/generate', ['as' => 'league_schedule_generate', 'uses' => 'LeagueController@schedule_generate']);
 
     Route::any('{slug}/edit/{type}', ['as' => 'league_edit', 'uses' => 'League\EditController@handle']);

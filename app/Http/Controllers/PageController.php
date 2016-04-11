@@ -2,30 +2,31 @@
 
 namespace Cupa\Http\Controllers;
 
-use Exception;
-use Cupa\CupaForm;
-use Cupa\Http\Requests\ContactRequest;
-use Cupa\Http\Requests\LocationAddRequest;
-use Cupa\Http\Requests\PageEditRequest;
-use Cupa\Http\Requests\WaiverRequest;
-use Cupa\League;
-use Cupa\LeagueMember;
-use Cupa\Location;
 use Cupa\Page;
-use Cupa\Paypal;
-use Cupa\PaypalPayment;
-use Cupa\Pickup;
 use Cupa\Post;
-use Cupa\Tournament;
-use Cupa\TournamentTeam;
 use Cupa\User;
+use Exception;
+use Cupa\League;
+use Cupa\Paypal;
+use Cupa\Pickup;
+use Cupa\CupaForm;
+use Cupa\Location;
+use Cupa\LeagueGame;
+use Cupa\Tournament;
+use Cupa\LeagueMember;
+use Cupa\PaypalPayment;
+use Cupa\TournamentTeam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Cupa\Http\Requests\WaiverRequest;
+use Cupa\Http\Requests\ContactRequest;
+use Illuminate\Support\Facades\Config;
+use Cupa\Http\Requests\PageEditRequest;
 use Illuminate\Support\Facades\Session;
+use Cupa\Http\Requests\LocationAddRequest;
 
 class PageController extends Controller
 {
@@ -36,8 +37,9 @@ class PageController extends Controller
         $leagues = League::fetchAllLeaguesForHomePage();
         $tournaments = Tournament::fetchAllCurrent();
         $pickups = Pickup::fetchAllPickups(true);
+        $leagueAlerts = LeagueGame::fetchAlerts();
 
-        return view('page.home', compact('posts', 'featured', 'leagues', 'tournaments', 'pickups'));
+        return view('page.home', compact('posts', 'featured', 'leagues', 'tournaments', 'pickups', 'leagueAlerts'));
     }
 
     public function contact()

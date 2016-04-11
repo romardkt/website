@@ -31,7 +31,18 @@
         @endif
         <?php $currentWeek = $game->week;?>
         <a name="week{{ $game->week }}"></a>
-        <h3 class="col-xs-12 text-center">Week {{{ $game->week }}}</h3>
+        <div class="col-sm-5 col-sm-offset-1">
+            <h3>Week {{ $game->week }}</h3>
+        </div>
+        <div class="col-sm-5 text-right">
+            @can('edit', $league)
+            <br/>
+            Set week {{ $game->week }} games to:
+            <a href="{{ route('league_schedule_markall', [$league->slug, $game->week, 'game_on']) }}">Game On</a> |
+            <a href="{{ route('league_schedule_markall', [$league->slug, $game->week, 'gametime_decision']) }}">Gametime Decision</a> |
+            <a href="{{ route('league_schedule_markall', [$league->slug, $game->week, 'cancelled']) }}">Cancelled</a>
+            @endif
+        </div>
         <div class="col-xs-12 col-sm-offset-1 col-sm-10 league-game-week">
             <div class="league-game list-group">
         @endif
@@ -59,14 +70,14 @@
                     @endif
                 </span>
                 <h4>
-                    @if($game->status == 'game_on' || $game->status == 'canceled')
+                    @if($game->status != 'playoff')
                     <?php
                         $awayTeams = [];
                         foreach ($away as $awayTeam) {
                             $awayTeams[] = $awayTeam->team->name;
                         }
                     ?>
-                    @if($game->status == 'canceled')
+                    @if($game->status == 'cancelled')
                     <del>
                     @endif
                     <span class="{{ $awayTeam->getClassText() }}">{{{ implode(' & ', $awayTeams) }}}</span>
@@ -78,8 +89,10 @@
                         }
                     ?>
                     <span class="{{ $homeTeam->getClassText() }}">{{{ implode(' & ', $homeTeams) }}}</span>
-                    @if($game->status == 'canceled')
-                    </del> &nbsp;<span class="text-danger">CANCELED</span>
+                    @if($game->status == 'cancelled')
+                    </del> &nbsp;<span class="text-danger">CANCELLED</span>
+                    @elseif($game->status == 'gametime_decision')
+                     &nbsp;<span class="text-warning">GAME TIME DECISION</span>
                     @endif
 
                     @elseif($game->status == 'playoff')
