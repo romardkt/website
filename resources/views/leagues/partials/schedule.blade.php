@@ -22,14 +22,15 @@
             {!! Form::label('Game Placeholder') !!}
             <div class="radio">
                 <p>{!! Form::radio('status', 'game_on', (!isset($game->status) || $game->status == 'game_on') ? true : false, ['class' => 'game-status']) !!} Game On!</p>
-                <p>{!! Form::radio('status', 'canceled', (isset($game->status) && $game->status == 'canceled') ? true : false, ['class' => 'game-status']) !!} Games Canceled</p>
+                <p>{!! Form::radio('status', 'gametime_decision', (!isset($game->status) || $game->status == 'gametime_decision') ? true : false, ['class' => 'game-status']) !!} Gametime Decision</p>
+                <p>{!! Form::radio('status', 'cancelled', (isset($game->status) && $game->status == 'cancelled') ? true : false, ['class' => 'game-status']) !!} Games Cancelled</p>
                 <p>{!! Form::radio('status', 'playoff', (isset($game->status) && $game->status == 'playoff') ? true : false, ['class' => 'game-status']) !!} Playoff Placeholder</p>
             </div>
         </div>
 
         @foreach(['away', 'home'] as $teamType)
         <?php
-            $options = $teamType . 'Teams';
+            $options = $teamType.'Teams';
             $values = [];
         ?>
 

@@ -2,6 +2,7 @@
 
 namespace Cupa;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class LeagueGame extends Model
@@ -14,6 +15,11 @@ class LeagueGame extends Model
         'field',
         'status',
     ];
+
+    public function league()
+    {
+        return $this->belongsTo('Cupa\League');
+    }
 
     public function teams()
     {
@@ -84,5 +90,45 @@ class LeagueGame extends Model
         }
 
         return $weeks;
+    }
+
+    public static function fetchAlerts()
+    {
+        $today = Carbon::now();
+        $games = static::where('played_at', 'LIKE', $today->format('Y-m-d').'%')
+            ->whereIn('status', ['gametime_decision', 'cancelled'])
+            ->get();
+
+        $alerts = [];
+        foreach ($games as $game) {
+            $awayTeams = [];
+            foreach ($game->team('away') as $away) {
+                $awayTeams[] = $away->team->name;
+            }
+            $awayTeams = implode(', ', $awayTeams);
+
+            $homeTeams = [];
+            foreach ($game->team('home') as $home) {
+                $homeTeams[] = $home->team->name;
+            }
+            $homeTeams = implode(', ', $homeTeams);
+
+            $alerts[] = [
+                'slug' => $game->league->slug,
+                'week' => $game->week,
+                'time' => (new Carbon($game->played_at))->format('h:i A'),
+                'teams' => $game->league->displayName().': '.$awayTeams.' vs. '.$homeTeams,
+                'status' => str_replace('_', ' ', strtoupper($game->status)),
+            ];
+        }
+
+        if (count($alerts) < 1) {
+            return [];
+        }
+
+        return [
+            'date' => $today->format('m/d/Y'),
+            'alerts' => $alerts,
+        ];
     }
 }
