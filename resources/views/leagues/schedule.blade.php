@@ -64,7 +64,7 @@
                 </div>
                 <span class="badge schedule">
                     @if($game->status == 'game_on')
-                    @if ($away[0]->score != 0 && $home[0]->score != 0) {{ $away[0]->score }} - {{ $home[0]->score }} @else N/A @endif
+                    @if (isset($away[0]) && isset($home[0]) && $away[0]->score != 0 && $home[0]->score != 0) {{ $away[0]->score }} - {{ $home[0]->score }} @else N/A @endif
                     @else
                     N/A
                     @endif

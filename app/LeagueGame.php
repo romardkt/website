@@ -94,8 +94,7 @@ class LeagueGame extends Model
 
     public static function fetchAlerts()
     {
-        // $today = Carbon::now();
-        $today = new Carbon('2016-04-04 12:23:12');
+        $today = Carbon::now();
         $games = static::where('played_at', 'LIKE', $today->format('Y-m-d').'%')
             ->whereIn('status', ['gametime_decision', 'cancelled'])
             ->get();
