@@ -312,6 +312,19 @@ class ManageController extends Controller
         return redirect()->route('league_schedule', [$league->slug]);
     }
 
+    public function markAll($slug, $week, $status)
+    {
+        $league = League::fetchBySlug($slug);
+        $this->authorize('edit', $league);
+
+        foreach (LeagueGame::where('week', '=', $week)->get() as $game) {
+            $game->status = $status;
+            $game->save();
+        }
+
+        return redirect()->to(route('league_schedule', [$league->slug]).'#week'.$week);
+    }
+
     public function shirts($slug)
     {
         $league = League::fetchBySlug($slug);

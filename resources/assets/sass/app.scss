@@ -519,6 +519,14 @@ body {
     border-left: 1px solid darken($white, 25%);
     min-height: 600px;
 
+    .alert-detail {
+        display: none;
+
+        a {
+            color: darken($yellow, 35%);
+        }
+    }
+
     .login-form {
         background-color: $white;
         border: 5px solid darken($white, 20%);

@@ -46,8 +46,8 @@ class Dump extends Command
 
         // rsync uploaded files to data dir
         $this->info('Copying uploaded files from production');
-        exec('rsync -rav kcin@cincyultimate.org:/www/cupa-recode/public/upload/* '.public_path().'/upload/.');
+        exec('rsync -rav kcin@cincyultimate.org:/www/cupa/public/upload/* '.public_path().'/upload/.');
         $this->info('Copying all data files from production');
-        exec('rsync -rav kcin@cincyultimate.org:/www/cupa-recode/public/data/* '.public_path().'/data/.');
+        exec('rsync -rav kcin@cincyultimate.org:/www/cupa/public/data/* '.public_path().'/data/.');
     }
 }

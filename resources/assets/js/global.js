@@ -8,6 +8,12 @@ $(document).mouseup(function (e){
 });
 
 $(document).ready(function(){
+    $('.alert-detail').hide();
+    $('.alert .close').on('click', function(e) {
+      e.preventDefault();
+      $('.alert-detail').toggle();
+    });
+
     $('#user-menu-btn').on('click touchend', function(e){
         e.preventDefault();
         $('#mobile-user-menu').toggle('fast');

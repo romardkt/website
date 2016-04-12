@@ -2,6 +2,22 @@
 
 @section('content')
     <div class="row home-page">
+        <?php if ($leagueAlerts): ?>
+        <div class="col-xs-12">
+            <div class="alert alert-warning">
+                <button type="button" class="close">See Alerts</button>
+                <h4>There are some alerts for league games for today</h4>
+                <div class="alert-detail">
+                    <hr/>
+                    <?php foreach ($leagueAlerts['alerts'] as $alert): ?>
+                        <p>
+                            <a href="{{route('league_schedule', $alert['slug'])}}#week{{$alert['week']}}">{{ $alert['time']}} - {{$alert['teams']}} <strong>{{$alert['status']}}</strong></a>
+                        </p>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
         <div class="col-xs-12 col-sm-8">
             @if(count($featured))
             <h3 class="heading youth">Featured News</h3>
