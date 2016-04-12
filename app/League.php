@@ -269,18 +269,16 @@ class League extends Model
         $oldLeague = self::find($oldLeagueId);
 
         // create slug
-        $name = (empty($oldLeague->name)) ? null : $oldLeague->name;
+        $now = md5(Carbon::now());
+        $name = substr($now, 0, 7);
         $slug = str_slug($year.' '.$oldLeague->season.' '.$name);
-        if ($name === null) {
-            $slug .= $oldLeague->day;
-        }
 
         $league = self::create([
             'type' => 'league',
             'year' => $year,
             'season' => $oldLeague->season,
             'day' => $oldLeague->day,
-            'name' => $oldLeague->name,
+            'name' => $name,
             'slug' => $slug,
             'override_email' => (empty($oldLeague->override_email)) ? null : $oldLeague->override_email,
             'user_teams' => $oldLeague->user_teams,
