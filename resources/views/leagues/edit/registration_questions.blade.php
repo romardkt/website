@@ -40,6 +40,9 @@
                     <div class="row title">
                         <div class="col-xs-12">
                             <div class="form-group">
+                                @if ($question->type == 'descriptive')
+                                {!!$question->title!!}
+                                @else
                                 {!! Form::label($question->title) !!}
                                 @if ($question->type == 'text')
                                 {!! Form::text($question->name, null, ['class' => 'form-control', 'disabled']) !!}
@@ -58,6 +61,7 @@
                                 {!! Form::textarea($question->name, null, ['class' => 'form-control', 'disabled']) !!}
                                 @endif
                                 <span class="help-block">{{ (isset($question->required) && $question->required != 1) ? 'Optional' : '' }}</span>
+                                @endif
                             </div>
                         </div>
                     </div>
