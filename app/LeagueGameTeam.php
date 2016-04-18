@@ -44,6 +44,10 @@ class LeagueGameTeam extends Model
             ->where('type', '<>', $this->type)
             ->first();
 
+        if ($other === null) {
+            return '';
+        }
+
         if ($this->score == $other->score) {
             return '';
         } elseif ($this->score > $other->score) {
