@@ -19,6 +19,10 @@
         <?php $question = Cupa\LeagueQuestion::find($questionId); ?>
         <?php $i = ($i + 1).'.) '; ?>
         <div class="form-group">
+            @if ($question->type == 'descriptive')
+            {!! Form::label($i) !!}
+            {!!$question->title!!}
+            @else
             {!! Form::label($i . $question->title) !!}
             @if ($question->type == 'text')
             {!! Form::text($question->name, null, ['class' => 'form-control', 'required']) !!}
@@ -38,6 +42,7 @@
             {!! Form::textarea($question->name, null, ['class' => 'form-control']) !!}
             @endif
             <span class="help-block">{{ ($required != 1) ? 'Optional' : '' }}</span>
+            @endif
         </div>
         @endforeach
         <hr>
