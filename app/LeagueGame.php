@@ -53,7 +53,10 @@ class LeagueGame extends Model
 
             $data = $team->game->toArray();
             unset($data['teams']);
-            if ($score[0] == $score[1]) {
+
+            if (!isset($score[0]) || !isset($score[1])) {
+                continue;
+            } elseif ($score[0] == $score[1]) {
                 $result = 't';
             } else {
                 $result = ($score[0] > $score[1]) ? 'w' : 'l';
