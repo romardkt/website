@@ -64,8 +64,18 @@ class TeamsController extends Controller
         $input = $request->all();
         $input['captains'] = explode(',', $input['captains']);
 
+        // validate the name
+        $name = str_slug($input['display_name']);
+        $team = Team::fetchByName($name);
+        if ($team) {
+            $errors = new MessageBag();
+            $errors->add('display_name', 'Team Name has already been used');
+
+            return redirect()->route('teams_add')->withInput()->withErrors($errors);
+        }
+
         $team = Team::create([
-            'name' => str_slug($input['display_name']),
+            'name' => $name,
             'type' => (is_array($input['type'])) ? implode(', ', $input['type']) : $input['type'],
             'display_name' => $input['display_name'],
             'menu' => $input['menu'],
