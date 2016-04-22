@@ -2,6 +2,7 @@
 
 namespace Cupa\Http\Requests;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class PickupAddEditRequest extends Request
