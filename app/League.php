@@ -92,6 +92,10 @@ class League extends Model
         $now = Carbon::now();
         $registration = $this->registration;
         $location = $this->locations()->first();
+        if (!$location) {
+            return 'Unknown';
+        }
+
         $begin = new Carbon($location->begin);
         $end = new Carbon($location->end);
         $registrationBegin = new Carbon($registration->begin);
