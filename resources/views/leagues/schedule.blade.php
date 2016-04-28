@@ -63,11 +63,7 @@
                     <div class="time">{{ date('h:i A', strtotime($game->played_at)) }}</div>
                 </div>
                 <span class="badge schedule">
-                    @if($game->status == 'game_on')
-                    @if (isset($away[0]) && isset($home[0]) && $away[0]->score != 0 && $home[0]->score != 0) {{ $away[0]->score }} - {{ $home[0]->score }} @else N/A @endif
-                    @else
-                    N/A
-                    @endif
+                    {{$game->score()}}
                 </span>
                 <h4>
                     @if($game->status != 'playoff')
