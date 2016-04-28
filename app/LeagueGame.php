@@ -38,6 +38,19 @@ class LeagueGame extends Model
         return $teams;
     }
 
+    public function score()
+    {
+        $homeTeam = (count($this->team('home'))) ? $this->team('home')[0]->score : 0;
+        $awayTeam = (count($this->team('away'))) ? $this->team('away')[0]->score : 0;
+
+        //dd($homeTeam->score, $awayTeam->score);
+        if (empty($homeTeam) && empty($awayTeam)) {
+            return 'N/A';
+        }
+
+        return $awayTeam.' - '.$homeTeam;
+    }
+
     public static function fetchRecord($teamId)
     {
         $records = [];
