@@ -13,7 +13,7 @@ use Cupa\Volunteer;
 use Cupa\VolunteerEvent;
 use Cupa\VolunteerEventCategory;
 use Cupa\VolunteerEventContact;
-use Cupa\VolunteerEventSignUp;
+use Cupa\VolunteerEventSignup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -254,7 +254,7 @@ class VolunteerController extends Controller
             $answers[$question->name] = (empty($input[$question->name])) ? null : $input[$question->name];
         }
 
-        VolunteerEventSignUp::create([
+        VolunteerEventSignup::create([
             'volunteer_event_id' => $event->id,
             'volunteer_id' => Auth::user()->volunteer()->first()->id,
             'answers' => json_encode($answers),
