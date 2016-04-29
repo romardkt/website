@@ -23,7 +23,7 @@
                 <li><strong>Start:</strong> {{ (new DateTime($event->start))->format('M d Y h:i A') }}</li>
                 <li><strong>End:</strong> {{ (new DateTime($event->end))->format('M d Y h:i A') }}</li>
                 <li><strong>Location:</strong><br/> {{ $event->location()->first()->address() }}</li>
-                <li><strong>Information:</strong><br/> {{ $event->information }}</li>
+                <li><strong>Information:</strong><br/> {!! $event->information !!}</li>
             </ul>
         </p>
         <p style="margin: 20px 0;">
