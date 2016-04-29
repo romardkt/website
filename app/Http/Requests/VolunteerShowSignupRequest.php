@@ -23,7 +23,7 @@ class VolunteerShowSignupRequest extends Request
      */
     public function rules()
     {
-        $event = $this->route('event_id');
+        $event = $this->route('event');
         $this->rules = [];
         foreach (json_decode($event->category->questions) as $question) {
             $rule = null;

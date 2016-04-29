@@ -2,7 +2,7 @@
 
 namespace Cupa\Http\Requests;
 
-use Config;
+use Illuminate\Support\Facades\Config;
 
 class VolunteerSignupRequest extends Request
 {
