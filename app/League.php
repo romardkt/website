@@ -622,14 +622,17 @@ class League extends Model
         $data = [];
         foreach ($results as $row) {
             if ($row['league_team_id'] === null && isset($row['answers']['user_teams'])) {
-                $data[$row['first_name'].' '.$row['last_name']] = [
-                    'member' => $row['id'],
-                    'requested' => [
-                        'id' => $row['answers']['user_teams'],
-                        'name' => LeagueTeam::find($row['answers']['user_teams'])->name,
-                    ],
-                    'registered_at' => $row['registered_at'],
-                ];
+                $leagueTeam = LeagueTeam::find($row['answers']['user_teams']);
+                if ($leagueTeam) {
+                    $data[$row['first_name'].' '.$row['last_name']] = [
+                        'member' => $row['id'],
+                        'requested' => [
+                            'id' => $row['answers']['user_teams'],
+                            'name' => $leagueTeam->name,
+                        ],
+                        'registered_at' => $row['registered_at'],
+                    ];
+                }
             }
         }
 
