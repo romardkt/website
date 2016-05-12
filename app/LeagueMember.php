@@ -198,7 +198,7 @@ class LeagueMember extends Model
 
     public static function fetchAllLeagueMembers($leagueId, $position = null, $order = 'name')
     {
-        $select = static::with(['user', 'user.profile', 'user.parentObj'])
+        $select = static::with(['user', 'user.profile', 'user.parentObj', 'team'])
             ->leftJoin('users', 'users.id', '=', 'league_members.user_id')
             ->leftJoin('league_teams', 'league_teams.id', '=', 'league_members.league_team_id')
             ->where('league_members.league_id', '=', $leagueId)
