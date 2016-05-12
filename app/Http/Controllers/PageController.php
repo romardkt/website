@@ -240,21 +240,23 @@ class PageController extends Controller
         if ($paypalPayment->get_express_checkout_details()) {
             $data = [];
             $data['confirm'] = json_encode($paypalPayment->Response);
-            $paypal->payer_id = $paypalPayment->Response['PAYERID'];
-            $paypal->save();
-
-            $paypalPayment->amount_total = $paypalPayment->Response['AMT'];
-            if ($paypalPayment->do_express_checkout_payment()) {
-                $data['complete'] = json_encode($paypalPayment->Response);
-                $paypal->payment_id = $paypalPayment->Response['TRANSACTIONID'];
-                $paypal->state = 'completed';
-                $paypal->success = 1;
+            if (isset($paypalPayment->Response['PAYERID'])) {
+                $paypal->payer_id = $paypalPayment->Response['PAYERID'];
                 $paypal->save();
 
-                Session::flash('msg-success', 'Paypal payment received and applied');
+                $paypalPayment->amount_total = $paypalPayment->Response['AMT'];
+                if ($paypalPayment->do_express_checkout_payment()) {
+                    $data['complete'] = json_encode($paypalPayment->Response);
+                    $paypal->payment_id = $paypalPayment->Response['TRANSACTIONID'];
+                    $paypal->state = 'completed';
+                    $paypal->success = 1;
+                    $paypal->save();
+
+                    Session::flash('msg-success', 'Paypal payment received and applied');
+                }
+                $paypal->data = implode('::', $data);
+                $paypal->save();
             }
-            $paypal->data = implode('::', $data);
-            $paypal->save();
         } else {
             $paypal->state = 'error';
             $paypal->data = print_r($paypalPayment->Error, true);
