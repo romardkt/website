@@ -2,7 +2,7 @@
 
 return [
 
-    'version' => '3.2.16',
+    'version' => '3.2.17',
 
     'env' => env('APP_ENV', 'production'),
 
