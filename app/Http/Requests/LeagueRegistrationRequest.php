@@ -38,7 +38,7 @@ class LeagueRegistrationRequest extends Request
                 break;
             case 'info':
                 $session = Session::get('league_registration');
-                $userId = ($session->registrant->parent !== null) ? $session->registrant->parentObj->id : $session->registrant->id;
+                $userId = ($session->registrant && $session->registrant->parent !== null) ? $session->registrant->parentObj->id : $session->registrant->id;
                 $rules['email'] = 'required|email|unique:users,email,'.$userId;
                 $rules['first_name'] = 'required';
                 $rules['last_name'] = 'required';
