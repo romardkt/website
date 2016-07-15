@@ -192,6 +192,8 @@ class PageController extends Controller
                 foreach ($emails as $email) {
                     $m->bcc($email);
                 }
+
+                $m->to('webmaster@cincyultimate.org', 'CUPA Web System');
             } else {
                 $m->to('kcin1018@gmail.com', 'Nick Felicelli');
             }

@@ -116,7 +116,8 @@ class AuthController extends Controller
         Mail::send('emails.activate', ['code' => $user->activation_code], function ($m) use ($registrationData) {
             // send email to the user
             $m->to($registrationData['email'], $registrationData['first_name'].' '.$registrationData['last_name'])
-                ->subject('[CUPA] User Activation');
+              ->replyTo('webmaster@cincyultimate.org')
+              ->subject('[CUPA] User Activation');
         });
 
         Session::flash('msg-success', 'User account created.  Please look for an email with the activation link to activate your account.');
@@ -150,6 +151,7 @@ class AuthController extends Controller
         Mail::send('emails.welcome', [], function ($m) use ($user) {
             // send email to the user
             $m->to($user->email, $user->fullname())
+                ->replyTo('webmaster@cincyultimate.org')
                 ->subject('[CUPA] Welcome!');
         });
 
@@ -181,6 +183,7 @@ class AuthController extends Controller
         Mail::send('emails.reset', ['code' => $user->fetchPasswordResetCode(), 'email' => $input['email']], function ($m) use ($input, $user) {
             // send email to the user
             $m->to($input['email'], $user->fullname())
+                ->replyTo('webmaster@cincyultimate.org')
                 ->subject('[CUPA] Password Reset');
         });
 
@@ -213,6 +216,7 @@ class AuthController extends Controller
         Mail::send('emails.reset_confirm', [], function ($m) use ($user) {
             // send email to the user
             $m->to($user->email, $user->fullname())
+                ->replyTo('webmaster@cincyultimate.org')
                 ->subject('[CUPA] Password Reset Confirmation');
         });
 
