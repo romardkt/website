@@ -140,7 +140,7 @@ class TournamentController extends Controller
                     $m->to($tournament->override_email, $tournament->display_name.' Directors');
                 }
 
-                // $m->bcc('webmaster@cincyultimate.org', 'CUPA Webmaster');
+                $m->bcc('webmaster@cincyultimate.org', 'CUPA Webmaster');
             } else {
                 $m->to('kcin1018@gmail.com', 'Nick Felicelli');
             }
