@@ -12,10 +12,12 @@ class TypeaheadController extends Controller
     public function users(Request $request)
     {
         $input = $request->all();
+        $withEmail = isset($input['with_email']);
+
         if (isset($input['term'])) {
-            $users = User::typeahead($input['term'], false);
+            $users = User::typeahead($input['term'], false, $withEmail);
         } elseif (isset($input['ids'])) {
-            $users = User::typeahead($input['ids'], true);
+            $users = User::typeahead($input['ids'], true, $withEmail);
         } else {
             $users = [];
         }

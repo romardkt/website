@@ -111,7 +111,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             ->where('year', '=', $year)->first();
     }
 
-    public static function typeahead($filter, $ids = false)
+    public static function typeahead($filter, $ids = false, $withEmail = false)
     {
         $filter = urldecode($filter);
 
@@ -127,13 +127,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             $results->whereIn('id', $filter);
         } else {
             $results->where(DB::raw("CONCAT_WS(' ', first_name, last_name)"), 'LIKE', '%'.$filter.'%');
+
+            if ($withEmail) {
+                $results->orWhere('email', 'LIKE', '%'.$filter.'%');
+            }
         }
 
         $data = [];
         foreach ($results->get() as $row) {
+            $email = empty($row['email']) ? 'is minor' : $row['email'];
             $data[] = [
                 'id' => $row['id'],
-                'text' => $row['first_name'].' '.$row['last_name'],
+                'text' => $row['first_name'].' '.$row['last_name'] . ' (' . $email . ')',
             ];
         }
 

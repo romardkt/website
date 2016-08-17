@@ -7,6 +7,7 @@ use Cupa\File;
 use Cupa\User;
 use Cupa\League;
 use Cupa\CupaForm;
+use Cupa\Volunteer;
 use Cupa\UserBalance;
 use Cupa\LeagueMember;
 use Illuminate\Support\MessageBag;
@@ -28,7 +29,7 @@ class ManageController extends Controller
 
     public function users()
     {
-        $this->authorize('is-admin');
+        $this->authorize('is-volunteer');
 
         return view('manage.users');
     }
@@ -322,5 +323,12 @@ class ManageController extends Controller
         Session::flash('msg-success', 'File removed');
 
         return redirect()->route('manage_files');
+    }
+
+    public function volunteerRemove(Volunteer $volunteer_id)
+    {
+        $volunteer_id->delete();
+
+        return response()->json([]);
     }
 }

@@ -24,7 +24,7 @@
 @section('page-scripts')
 <script>
 $('#data').hide();
-handleSelect2('#user-select', '{{ route('typeahead_users') }}', 1);
+handleSelect2('#user-select', '{{ route('typeahead_users') }}?with_email=true', 1);
 
 $('#user-select').on('click', function (e) {
     var userId = $(this).val();
