@@ -82,7 +82,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function fullname()
     {
-        return $this->first_name.' '.$this->last_name;
+        return trim($this->first_name).' '.trim($this->last_name);
     }
 
     public function slug()
@@ -384,6 +384,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function signWaiver($year)
     {
         return UserWaiver::signWaiver($this->id, $year);
+    }
+
+    public function fetchWaiver($year)
+    {
+        return UserWaiver::fetchWaiver($this->id, $year);
     }
 
     public static function fetchBy($column, $value)

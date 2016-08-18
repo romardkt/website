@@ -15,6 +15,16 @@ class UserWaiver extends Model
         'updated_by',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo('Cupa\User');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo('Cupa\User', 'updated_by');
+    }
+
     public static function hasWaiver($userId, $year = null)
     {
         if ($year === null) {
@@ -61,5 +71,12 @@ class UserWaiver extends Model
                 'updated_by' => Auth::id(),
             ]);
         }
+    }
+
+    public static function fetchWaiver($userId, $year)
+    {
+        return static::where('user_id', '=', $userId)
+            ->where('year', '=', $year)
+            ->first();
     }
 }

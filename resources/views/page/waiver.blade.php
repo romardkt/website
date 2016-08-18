@@ -76,9 +76,18 @@
 
         <div class="form-group">
             <div class="checkbox">
-                {!! Form::checkbox('read', 1, false) !!} I have read and agree to the above waiver
+                <label>
+                    {!! Form::checkbox('read', 1, false) !!} I have read and agree to the above waiver
+                </label>
             </div>
         </div>
+
+        <?php if($isYouth): ?>
+        <div class="alert alert-warning">
+            <h4>You are sigining this waiver for a minor</h4>
+            You are the parent/guardian and by submitting this you are signing the waiver for this player.
+        </div>
+        <?php endif; ?>
 
         <hr/>
 

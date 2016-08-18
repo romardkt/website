@@ -16,6 +16,7 @@ class AuthServiceProvider extends ServiceProvider
          \Cupa\Model::class => Cupa\Policies\ModelPolicy::class,
          \Cupa\Tournament::class => \Cupa\Policies\TournamentPolicy::class,
          \Cupa\League::class => \Cupa\Policies\LeaguePolicy::class,
+         \Cupa\LeagueTeam::class => \Cupa\Policies\LeagueTeamPolicy::class,
          \Cupa\Team::class => \Cupa\Policies\TeamPolicy::class,
          \Cupa\VolunteerEvent::class => \Cupa\Policies\VolunteerEventPolicy::class,
          \Cupa\Officer::class => \Cupa\Policies\OfficerPolicy::class,

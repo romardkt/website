@@ -24,8 +24,9 @@ class WaiverRequest extends Request
      */
     public function rules()
     {
+        $user = $this->route('user');
         return [
-            'fullname' => 'required|in:'.Auth::user()->fullname(),
+            'fullname' => 'required|in:'.$user->fullname(),
             'read' => 'required',
         ];
     }
@@ -33,8 +34,8 @@ class WaiverRequest extends Request
     public function messages()
     {
         return [
-            'fullname.in' => 'You must enter your name exactly as it appears in the wavier',
-            'fullname.required' => 'You must enter your name exactly as it appears in the wavier',
+            'fullname.in' => 'You must enter your name EXACTLY as it appears in the wavier (with capitals)',
+            'fullname.required' => 'You must enter your name EXACTLY as it appears in the wavier (with capitals)',
             'read.required' => 'Please check the box to verify you read the waiver',
         ];
     }

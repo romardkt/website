@@ -16,6 +16,11 @@ class LeagueTeam extends Model
         'text_code',
     ];
 
+    public function league()
+    {
+        return $this->belongsTo('Cupa\League');
+    }
+
     public function captains()
     {
         return LeagueMember::fetchAllMembers('captain', $this->id);

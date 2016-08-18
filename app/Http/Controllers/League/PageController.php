@@ -2,6 +2,7 @@
 
 namespace Cupa\Http\Controllers\League;
 
+use Gate;
 use Cupa\Http\Controllers\Controller;
 use Cupa\Http\Requests\LeagueEmailRequest;
 use Cupa\League;
@@ -105,6 +106,7 @@ class PageController extends Controller
 
             $players[] = [
                 'id' => $player->user->id,
+                'year' => $player->league->year,
                 'slug' => $player->user->slug(),
                 'name' => $player->user->fullname(),
                 'height' => displayHeight($player->user->profile->height),
@@ -112,10 +114,12 @@ class PageController extends Controller
             ];
         }
 
+        $isCoach = Gate::allows('coach', LeagueTeam::find($input['team_id']));
+
         return response()->json([
             'status' => 'success',
             'title' => $team->name.' players',
-            'body' => view('leagues.team_players', compact('players'))->render(),
+            'body' => view('leagues.team_players', compact('players', 'isCoach'))->render(),
         ]);
     }
 

@@ -17,6 +17,7 @@ use Cupa\LeagueMember;
 use Cupa\PaypalPayment;
 use Cupa\TournamentTeam;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -421,22 +422,30 @@ class PageController extends Controller
             return redirect()->to($redirect);
         }
 
-        if ($user->getAge() < 18) {
-            Session::flash('msg-error', 'Player is too young to sign a waiver.');
+        $isYouth = $user->getAge() < 18;
 
-            return redirect()->to($redirect);
-        }
-
-        return view('page.waiver', compact('user', 'year'));
+        return view('page.waiver', compact('user', 'year', 'isYouth'));
     }
 
     public function postWaiver(WaiverRequest $request, $year, $user = null)
     {
+        $redirect = (Session::has('waiver_redirect')) ?  Session::get('waiver_redirect') : route('home');
+
         if (empty($user)) {
             $user = Auth::user();
         }
 
-        $redirect = (Session::has('waiver_redirect')) ?  Session::get('waiver_redirect') : route('home');
+        if ($user->getAge() < 18) {
+            // check to see if the parent is logged in
+            if ($user->parent != Auth::id()) {
+
+                $errors = new MessageBag();
+                $errors->add('fullname', 'You are not able to sign a waiver for this player.');
+
+                return redirect()->route('waiver', [$year, $user->id])->withErrors($errors)->withInput();
+            }
+        }
+
         $input = $request->all();
         $user->signWaiver($year);
         Session::flash('msg-success', 'Waiver signed for the '.$year.' year');
@@ -455,5 +464,11 @@ class PageController extends Controller
         Session::flash('msg-error', 'Could not find form to download');
 
         return redirect()->to(Session::get('waiver_redirect'));
+    }
+
+    public function waiverExport($year, $user)
+    {
+        $waiver = $user->fetchWaiver($year);
+        return view('page.waiver_export', compact('waiver'));
     }
 }

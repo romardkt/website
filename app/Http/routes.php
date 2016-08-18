@@ -7,6 +7,7 @@ Route::post('contact', ['as' => 'contact_handle', 'uses' => 'PageController@post
 Route::get('waiver/{year}/download/{type?}', ['as' => 'waiver_download', 'uses' => 'PageController@waiverDownload']);
 Route::get('waiver/{year}/{user?}', ['as' => 'waiver', 'uses' => 'PageController@waiver']);
 Route::post('waiver/{year}/{user?}', ['as' => 'waiver_post', 'uses' => 'PageController@postWaiver']);
+Route::get('waiver/{year}/{user}/export', ['as' => 'waiver_export', 'uses' => 'PageController@waiverExport']);
 Route::get('paypal/success/{paypal}', ['as' => 'paypal_success', 'uses' => 'PageController@paypalSuccess']);
 Route::get('paypal/fail/{paypal}', ['as' => 'paypal_fail', 'uses' => 'PageController@paypalFail']);
 Route::get('paypal/{id}/{type}/{paypal_user?}/{team?}', ['as' => 'paypal', 'uses' => 'PageController@paypal']);
