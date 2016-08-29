@@ -281,4 +281,15 @@ class AboutController extends Controller
 
         return redirect()->route('about_links');
     }
+
+    public function boardPast()
+    {
+        $page = Page::fetchBy('route', 'about_board');
+        $actions = null;
+
+        $positions = OfficerPosition::fetchAll();
+        $members = Officer::fetchAllPast();
+
+        return view('about.board_past', compact('page', 'actions', 'positions', 'members'));
+    }
 }

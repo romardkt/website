@@ -37,4 +37,17 @@ class Officer extends Model
             ->whereNull('stopped')
             ->get();
     }
+
+    public static function fetchAllPast()
+    {
+        return static::with(array('position', 'user'))
+            ->join('officer_positions', 'officers.officer_position_id', '=', 'officer_positions.id')
+            ->join('users', 'officers.user_id', '=', 'users.id')
+            ->orderBy('officer_positions.weight', 'asc')
+            ->orderBy('users.last_name')
+            ->orderBy('users.first_name')
+            ->select('officers.*')
+            ->whereNotNull('stopped')
+            ->get();
+    }
 }

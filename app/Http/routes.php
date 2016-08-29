@@ -82,6 +82,7 @@ Route::group(['prefix' => 'about'], function () {
     Route::get('board/edit/{officer}', ['as' => 'about_board_edit', 'uses' => 'AboutController@boardEdit']);
     Route::post('board/edit/{officer}', ['as' => 'about_board_edit_post', 'uses' => 'AboutController@postBoardEdit']);
     Route::get('board/remove/{officer}', ['as' => 'about_board_remove', 'uses' => 'AboutController@boardRemove']);
+    Route::get('board/past', ['as' => 'about_board_past', 'uses' => 'AboutController@boardPast']);
     Route::get('minutes', ['as' => 'about_minutes', 'uses' => 'AboutController@minutes']);
     Route::get('minutes/add', ['as' => 'about_minutes_add', 'uses' => 'AboutController@minutesAdd']);
     Route::post('minutes/add', ['as' => 'about_minutes_add_post', 'uses' => 'AboutController@postMinutesAdd']);

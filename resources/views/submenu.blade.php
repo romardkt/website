@@ -31,7 +31,8 @@
                         @endif
                     @endforeach
                     @if($pageRoot == 'about')
-                            <li{!! $active !!}><a href="{{ route('scholarship_hoy') }}">Chris Hoy Memorial Scholarship</a></li>
+                        <?php $active = false; ?>
+                        <li{!! $active !!}><a href="{{ route('scholarship_hoy') }}">Chris Hoy Memorial Scholarship</a></li>
                     @endif
                     @endif
                 </ul>

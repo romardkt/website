@@ -4,29 +4,26 @@ namespace Cupa\Policies;
 
 use Cupa\User;
 use Cupa\Pickup;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PickupPolicy
+class PickupPolicy extends CachedPolicy
 {
-    protected $globalPerms = ['admin', 'manager', 'editor'];
+    use HandlesAuthorization;
 
-    /**
-     * Create a new policy instance.
-     */
-    public function __construct()
-    {
-        //
-    }
+    protected $globalPerms = ['admin', 'manager', 'editor'];
 
     private function isAuthorized(User $user, Pickup $pickup)
     {
-        $roles = $user->roles();
-        foreach ($roles->get() as $role) {
-            if (in_array($role->role->name, $this->globalPerms)) {
-                return true;
+        return $this->remember("pickup-auth-{$user->id}", function() use ($user, $pickup) {
+            $roles = $user->roles();
+            foreach ($roles->get() as $role) {
+                if (in_array($role->role->name, $this->globalPerms)) {
+                    return true;
+                }
             }
-        }
 
-        return $pickup->contacts->contains('user_id', $user->id);
+            return $pickup->contacts->contains('user_id', $user->id);
+        });
     }
 
     public function show(User $user, Pickup $pickup)

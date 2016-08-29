@@ -4,29 +4,26 @@ namespace Cupa\Policies;
 
 use Cupa\User;
 use Cupa\VolunteerEvent;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class VolunteerEventPolicy
+class VolunteerEventPolicy extends CachedPolicy
 {
-    protected $globalPerms = ['admin', 'manager', 'volunteer'];
+    use HandlesAuthorization;
 
-    /**
-     * Create a new policy instance.
-     */
-    public function __construct()
-    {
-        //
-    }
+    protected $globalPerms = ['admin', 'manager', 'volunteer'];
 
     private function isAuthorized(User $user, VolunteerEvent $volunteerEvent)
     {
-        $roles = $user->roles();
-        foreach ($roles->get() as $role) {
-            if (in_array($role->role->name, $this->globalPerms)) {
-                return true;
+        return $this->remember("volunteerEvent-auth-{$user->id}", function() use ($user, $volunteerEvent) {
+            $roles = $user->roles();
+            foreach ($roles->get() as $role) {
+                if (in_array($role->role->name, $this->globalPerms)) {
+                    return true;
+                }
             }
-        }
 
-        return $volunteerEvent->contacts->contains('user_id', $user->id);
+            return $volunteerEvent->contacts->contains('user_id', $user->id);
+        });
     }
 
     public function show(User $user, VolunteerEvent $volunteerEvent)
@@ -50,6 +47,8 @@ class VolunteerEventPolicy
 
     public function delete(User $user, VolunteerEvent $volunteerEvent)
     {
-        return $user->roles()->first()->name === 'admin';
+        return $this->remember("volunteerEvent-auth-{$user->id}", function() use ($user, $volunteerEvent) {
+            return $user->roles()->first()->name === 'admin';
+        });
     }
 }

@@ -2,31 +2,28 @@
 
 namespace Cupa\Policies;
 
-use Cupa\Officer;
 use Cupa\User;
+use Cupa\Officer;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class OfficerPolicy
+class OfficerPolicy extends CachedPolicy
 {
-    protected $globalPerms = ['admin', 'manager', 'editor'];
+    use HandlesAuthorization;
 
-    /**
-     * Create a new policy instance.
-     */
-    public function __construct()
-    {
-        //
-    }
+    protected $globalPerms = ['admin', 'manager', 'editor'];
 
     private function isAuthorized(User $user, Officer $officer)
     {
-        $roles = $user->roles();
-        foreach ($roles->get() as $role) {
-            if (in_array($role->role->name, $this->globalPerms)) {
-                return true;
+        return $this->remember("officer-auth-{$user->id}", function() use ($user, $officer) {
+            $roles = $user->roles();
+            foreach ($roles->get() as $role) {
+                if (in_array($role->role->name, $this->globalPerms)) {
+                    return true;
+                }
             }
-        }
 
-        return $officer->user_id == $user->id;
+            return $officer->user_id == $user->id;
+        });
     }
 
     public function show(User $user, Officer $officer)
@@ -46,10 +43,12 @@ class OfficerPolicy
 
     public function delete(User $user, Officer $officer)
     {
-        $roles = $user->roles();
+        return $this->remember("officer-delete-{$user->id}", function() use ($user, $officer) {
+            $roles = $user->roles();
 
-        if ($roles->count() > 0 && in_array($roles->first()->role->name, $this->globalPerms)) {
-            return true;
-        }
+            if ($roles->count() > 0 && in_array($roles->first()->role->name, $this->globalPerms)) {
+                return true;
+            }
+        });
     }
 }

@@ -8,10 +8,10 @@
         <div class="row">
             <div class="col-sm-3 text-center">
                 <br/>
-                <a class="btn btn-default" href="{{ route('about_board_past')}}">View Past Members</a>
+                <a class="btn btn-default" href="{{ route('about_board')}}">View Current Members</a>
             </div>
             <div class="col-sm-6 text-center">
-                <h2 class="page">Current Board Members</h2>
+                <h2 class="page">Past Board Members</h2>
                 <hr/>
                 <br/>
                 <br/>
@@ -36,7 +36,7 @@
             </div>
             <div class="col-sm-3 board-member-picture">
                 <img src="{{ asset($member->image) }}"/>
-                <p class="text-muted">Appointed {{(new DateTime($member->started))->format('M d Y')}}</p>
+                <p class="text-muted"><strong>{{(new DateTime($member->started))->format('M d Y')}}</strong> to <strong>{{(new DateTime($member->stopped))->format('M d Y')}}</strong></p>
                 <br/>
                 @can('edit', $member)
                 <div class="btn-group">
@@ -51,7 +51,7 @@
             @else
             <div class="col-sm-3 board-member-picture">
                 <img src="{{ asset($member->image) }}"/>
-                <p class="text-muted">Appointed {{(new DateTime($member->started))->format('M d Y')}}</p>
+                <p class="text-muted"><strong>{{(new DateTime($member->started))->format('M d Y')}}</strong> to <strong>{{(new DateTime($member->stopped))->format('M d Y')}}</strong></p>
                 <br/>
                 @can('edit', $member)
                 <div class="btn-group actions">

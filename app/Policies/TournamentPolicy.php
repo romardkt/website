@@ -4,28 +4,26 @@ namespace Cupa\Policies;
 
 use Cupa\User;
 use Cupa\Tournament;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TournamentPolicy
+class TournamentPolicy extends CachedPolicy
 {
-    protected $globalPerms = ['admin', 'manager'];
+    use HandlesAuthorization;
 
-    /**
-     * Create a new policy instance.
-     */
-    public function __construct()
-    {
-    }
+    protected $globalPerms = ['admin', 'manager'];
 
     private function isAuthorized(User $user, Tournament $tournament)
     {
-        $roles = $user->roles();
-        foreach ($roles->get() as $role) {
-            if (in_array($role->role->name, $this->globalPerms)) {
-                return true;
+        return $this->remember("tournament-auth-{$user->id}", function() use ($user, $tournament) {
+            $roles = $user->roles();
+            foreach ($roles->get() as $role) {
+                if (in_array($role->role->name, $this->globalPerms)) {
+                    return true;
+                }
             }
-        }
 
-        return $tournament->contacts->contains('user_id', $user->id);
+            return $tournament->contacts->contains('user_id', $user->id);
+        });
     }
 
     public function show(User $user, Tournament $tournament)
