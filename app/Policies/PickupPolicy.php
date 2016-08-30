@@ -14,7 +14,7 @@ class PickupPolicy extends CachedPolicy
 
     private function isAuthorized(User $user, Pickup $pickup)
     {
-        return $this->remember("pickup-auth-{$user->id}", function() use ($user, $pickup) {
+        return $this->remember("pickup-auth-{$user->id}-{$pickup->id}", function() use ($user, $pickup) {
             $roles = $user->roles();
             foreach ($roles->get() as $role) {
                 if (in_array($role->role->name, $this->globalPerms)) {
