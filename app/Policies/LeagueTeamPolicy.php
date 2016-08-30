@@ -15,7 +15,7 @@ class LeagueTeamPolicy extends CachedPolicy
 
     private function isAuthorized(User $user, LeagueTeam $leagueTeam)
     {
-        return $this->remember("leagueTeam-auth-{$user->id}", function() use ($user, $leagueTeam) {
+        return $this->remember("leagueTeam-auth-{$user->id}-{$leagueTeam->id}", function() use ($user, $leagueTeam) {
             $roles = $user->roles();
             foreach ($roles->get() as $role) {
                 if (in_array($role->role->name, $this->globalPerms)) {
@@ -29,7 +29,7 @@ class LeagueTeamPolicy extends CachedPolicy
 
     public function coach(User $user, LeagueTeam $leagueTeam)
     {
-        return $this->remember("leagueTeam-coach-{$user->id}", function() use ($user, $leagueTeam) {
+        return $this->remember("leagueTeam-coach-{$user->id}-{$leagueTeam->id}", function() use ($user, $leagueTeam) {
             if ($leagueTeam->league->is_youth) {
                 if ($leagueTeam->coaches()->contains('user_id', $user->id)) {
                     return true;

@@ -14,7 +14,7 @@ class TeamPolicy extends CachedPolicy
 
     private function isAuthorized(User $user, Team $team)
     {
-        return $this->remember("team-auth-{$user->id}", function() use ($user, $team) {
+        return $this->remember("team-auth-{$user->id}-{$team->id}", function() use ($user, $team) {
             $roles = $user->roles();
             foreach ($roles->get() as $role) {
                 if (in_array($role->role->name, $this->globalPerms)) {
@@ -47,7 +47,7 @@ class TeamPolicy extends CachedPolicy
 
     public function delete(User $user, Team $team)
     {
-        return $this->remember("team-delete-{$user->id}", function() use ($user) {
+        return $this->remember("team-delete-{$user->id}-{$team->id}", function() use ($user) {
             return $user->roles()->first()->name === 'admin';
         });
     }

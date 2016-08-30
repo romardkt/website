@@ -14,7 +14,7 @@ class VolunteerEventPolicy extends CachedPolicy
 
     private function isAuthorized(User $user, VolunteerEvent $volunteerEvent)
     {
-        return $this->remember("volunteerEvent-auth-{$user->id}", function() use ($user, $volunteerEvent) {
+        return $this->remember("volunteerEvent-auth-{$user->id}-{$volunteerEvent->id}", function() use ($user, $volunteerEvent) {
             $roles = $user->roles();
             foreach ($roles->get() as $role) {
                 if (in_array($role->role->name, $this->globalPerms)) {
@@ -47,7 +47,7 @@ class VolunteerEventPolicy extends CachedPolicy
 
     public function delete(User $user, VolunteerEvent $volunteerEvent)
     {
-        return $this->remember("volunteerEvent-auth-{$user->id}", function() use ($user, $volunteerEvent) {
+        return $this->remember("volunteerEvent-auth-{$user->id}-{$volunteerEvent->id}", function() use ($user, $volunteerEvent) {
             return $user->roles()->first()->name === 'admin';
         });
     }

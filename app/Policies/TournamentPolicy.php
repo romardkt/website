@@ -14,7 +14,7 @@ class TournamentPolicy extends CachedPolicy
 
     private function isAuthorized(User $user, Tournament $tournament)
     {
-        return $this->remember("tournament-auth-{$user->id}", function() use ($user, $tournament) {
+        return $this->remember("tournament-auth-{$user->id}-{$tournament->id}", function() use ($user, $tournament) {
             $roles = $user->roles();
             foreach ($roles->get() as $role) {
                 if (in_array($role->role->name, $this->globalPerms)) {

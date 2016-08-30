@@ -14,7 +14,7 @@ class OfficerPolicy extends CachedPolicy
 
     private function isAuthorized(User $user, Officer $officer)
     {
-        return $this->remember("officer-auth-{$user->id}", function() use ($user, $officer) {
+        return $this->remember("officer-auth-{$user->id}-{$officer->id}", function() use ($user, $officer) {
             $roles = $user->roles();
             foreach ($roles->get() as $role) {
                 if (in_array($role->role->name, $this->globalPerms)) {
@@ -43,7 +43,7 @@ class OfficerPolicy extends CachedPolicy
 
     public function delete(User $user, Officer $officer)
     {
-        return $this->remember("officer-delete-{$user->id}", function() use ($user, $officer) {
+        return $this->remember("officer-delete-{$user->id}-{$officer->id}", function() use ($user, $officer) {
             $roles = $user->roles();
 
             if ($roles->count() > 0 && in_array($roles->first()->role->name, $this->globalPerms)) {

@@ -14,7 +14,7 @@ class BoardAddEditRequest extends Request
      */
     public function authorize()
     {
-        return Gate::allows('is-editor') || $this->get('user_id') === Auth::id();
+        return Gate::allows('is-editor') || $this->get('user_id') == Auth::id();
     }
 
     /**
