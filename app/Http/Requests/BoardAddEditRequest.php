@@ -3,6 +3,7 @@
 namespace Cupa\Http\Requests;
 
 use Gate;
+use Auth;
 
 class BoardAddEditRequest extends Request
 {
