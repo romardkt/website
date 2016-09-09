@@ -620,6 +620,11 @@ body {
 
     .board-member {
         margin-bottom: 100px;
+        text-align: center;
+
+        @media(min-width: 768px) {
+          text-align: left;
+        }
 
         .info {
             a {
@@ -628,16 +633,37 @@ body {
         }
     }
 
+    .board-member-hr {
+      width: 50%;
+      text-align: center;
+      margin-bottom: 50px;
+
+      @media(min-width: 768px) {
+        width: 75%;
+      }
+    }
+
     .board-member-picture {
         margin-top: 15px;
         text-align: center;
 
+        @media(min-width: 768px) {
+          &.right {
+            float: right;
+          }
+        }
+
         img {
             border-radius: 50%;
             border: 1px solid darken($white, 10%);
-            width: 100%;
+            width: 60%;
             margin-bottom: 15px;
             box-shadow: 0 0 5px darken($white, 25%);
+
+            @media(min-width: 768px) {
+              width: 100%;
+            }
+
         }
 
         .actions {
