@@ -13,7 +13,6 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-         \Cupa\Model::class => Cupa\Policies\ModelPolicy::class,
          \Cupa\Tournament::class => \Cupa\Policies\TournamentPolicy::class,
          \Cupa\League::class => \Cupa\Policies\LeaguePolicy::class,
          \Cupa\LeagueTeam::class => \Cupa\Policies\LeagueTeamPolicy::class,
@@ -21,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
          \Cupa\VolunteerEvent::class => \Cupa\Policies\VolunteerEventPolicy::class,
          \Cupa\Officer::class => \Cupa\Policies\OfficerPolicy::class,
          \Cupa\Pickup::class => \Cupa\Policies\PickupPolicy::class,
+         \Cupa\User::class => \Cupa\Policies\UserPolicy::class,
     ];
 
     /**
@@ -53,5 +53,9 @@ class AuthServiceProvider extends ServiceProvider
                 return false;
             });
         }
+
+        $gate->define('is-user', function($user) {
+            return true;
+        });
     }
 }

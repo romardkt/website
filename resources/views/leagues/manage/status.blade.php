@@ -35,7 +35,12 @@
             <tbody>
                 @foreach($statuses as $status)
                 <tr id="status-{{{ $status['id'] }}}"{{ ($status['balance'] > 0) ? ' class="danger"' : '' }}>
-                    <td>{{{ $status['first_name'] . ' '  . $status['last_name'] }}} <a target="_new" href="{{route('waiver_export', [$league->year, $status['user_id']])}}"><i class="fa fa-fw fa-download" title="Download waiver"></i></a></td>
+                    <td>
+                      {{{ $status['first_name'] . ' '  . $status['last_name'] }}}
+                      @if($status['waiver'] !== null)
+                        <a target="_new" href="{{route('waiver_export', [$league->year, $status['user_id']])}}"><i class="fa fa-fw fa-download" title="Download waiver"></i></a>
+                      @endif
+                    </td>
                     <td class="text-center">
                         @if($status['paid'] == 1)
                         <button title="Mark as NOT paid" type="button" class="btn btn-success accept-btn" data-member="{{{ $status['id'] }}}"  data-type="paid"><i class="fa fa-fw fa-lg fa-check"></i></button>

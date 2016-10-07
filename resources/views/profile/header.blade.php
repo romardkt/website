@@ -33,8 +33,8 @@
                 <span class="label label-danger"><a href="{{ route('profile_leagues') }}">Profile Incomplete</a></span>
                 @endif
 
-                @if(isset(Auth::user()->balance->balance))
-                <span class="label label-danger"><a href="{{ route('profile_leagues') }}">Overdue ${{ Auth::user()->balance->balance }}</a></span>
+                @if(Auth::user()->balance())
+                <span class="label label-danger"><a href="{{ route('profile_leagues') }}">Overdue ${{ Auth::user()->balance() }}</a></span>
                 @else
                 <span class="label label-success">Overdue $0</span>
                 @endif

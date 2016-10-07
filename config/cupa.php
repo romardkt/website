@@ -9,7 +9,7 @@ return [
     ],
     'queryCache' => 5,
     'ages' => [
-        'min' => 13,
+        'min' => 18,
         'max' => 70,
     ],
     'facebook' => [

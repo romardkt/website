@@ -6,10 +6,13 @@ use DateTime;
 use Cupa\File;
 use Cupa\User;
 use Cupa\League;
+use Carbon\Carbon;
 use Cupa\CupaForm;
 use Cupa\Volunteer;
 use Cupa\UserBalance;
+use Cupa\LeagueTeam;
 use Cupa\LeagueMember;
+use Cupa\LeagueLocation;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -330,5 +333,96 @@ class ManageController extends Controller
         $volunteer_id->delete();
 
         return response()->json([]);
+    }
+
+    public function waivers()
+    {
+        $this->authorize('is-user');
+
+        $user = Auth::user();
+        $isManager = false;
+        foreach($user->roles->pluck('role.name') as $role) {
+            if (in_array($role, ['admin', 'manager'])) {
+                $isManager = true;
+                break;
+            }
+        }
+
+        // get all current leagues
+        $now = Carbon::now();
+        $leagues = LeagueLocation::join('leagues', 'leagues.id', '=', 'league_locations.league_id')
+            ->where('begin', '<=', $now)
+            ->where('end', '>', $now)
+            ->select('leagues.*')
+            ->get();
+
+        $waivers = [];
+        foreach($leagues as $league) {
+            $teamIds = [];
+            $position = 'Director';
+
+            if (!$isManager) {
+                // check if director
+                $director = LeagueMember::where('user_id', '=', $user->id)
+                    ->where('league_id', '=', $league->id)
+                    ->where('position', '=', 'director')
+                    ->first();
+
+                if (!$director) {
+                    // get all team based leaders
+                    $positionMembers = LeagueMember::where('user_id', '=', $user->id)
+                        ->where('league_id', '=', $league->id)
+                        ->whereNotIn('position', ['director', 'player', 'waitlist'])
+                        ->get();
+
+                    $position = 'Coach/Captain';
+
+                    // add the teams
+                    foreach($positionMembers as $positionMember) {
+                        $teamIds[] = $positionMember->league_team_id;
+                    }
+                } else {
+                    $teamIds = LeagueTeam::where('league_id', '=', $league->id)
+                        ->pluck('id');
+                }
+            } else {
+                $teamIds = LeagueTeam::where('league_id', '=', $league->id)
+                    ->pluck('id');
+            }
+
+
+            // get all the players
+            $leagueMembers = LeagueMember::join('leagues', 'leagues.id', '=', 'league_members.league_id')
+                ->join('users', 'users.id', '=', 'league_members.user_id')
+                ->join('league_teams', 'league_teams.id', '=', 'league_members.league_team_id')
+                ->whereIn('league_team_id', $teamIds)
+                ->where('position', '=', 'player')
+                ->select('league_members.*')
+                ->orderBy('leagues.year', 'desc')
+                ->orderBy('league_teams.name')
+                ->orderBy('users.last_name')
+                ->orderBy('users.first_name');
+
+            foreach($leagueMembers->get() as $leagueMember) {
+                $leagueUser = $leagueMember->user;
+
+                if (!isset($waivers[$leagueMember->league->id])) {
+                    $waivers[$leagueMember->league->id] = [];
+                }
+
+                // add data
+                $waivers[$leagueMember->league->id][] = [
+                    'position' => $position,
+                    'league' => $leagueMember->league,
+                    'team' => $leagueMember->team,
+                    'user' => $leagueUser,
+                    'waiver' => $leagueUser->fetchWaiver($league->year),
+                    'release' => $leagueUser->fetchRelease($league->year),
+                ];
+            }
+
+        }
+
+        return view('manage.waivers', compact('waivers'));
     }
 }

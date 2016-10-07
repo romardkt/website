@@ -111,8 +111,8 @@
         </div>
         <div class="col-xs-4 text-center">
             Overdue<br/>
-            @if(isset(Auth::user()->balance))
-            <span class="label label-danger"><a href="{{ route('profile_leagues') }}">${{ Auth::user()->balance->balance }}</a></span>
+            @if(Auth::user()->balance())
+            <span class="label label-danger"><a href="{{ route('profile_leagues') }}">${{ Auth::user()->balance() }}</a></span>
             @else
             <span class="label label-success">$0</span>
             @endif
@@ -123,6 +123,7 @@
             <ul class="nav">
                 <li><a href="{{ route('profile') }}"><i class="fa fa-fw fa-info-circle"></i>Personal Information</a></li>
                 <li><a href="{{ route('profile_coaching') }}"><i class="fa fa-fw fa-graduation-cap"></i> Coaching Requirements</a></li>
+                <li><a href="{{ route('manage_waivers') }}"><i class="fa fa-fw fa-graduation-cap"></i> Waivers/Releases</a></li>
                 <li><a href="{{ route('profile_leagues') }}"><i class="fa fa-fw fa-group"></i> Leagues</a></li>
                 <li><a href="{{ route('profile_contacts') }}"><i class="fa fa-fw fa-exclamation-triangle"></i> Emergency Contacts</a></li>
                 <li><a href="{{ route('profile_password') }}"><i class="fa fa-fw fa-lock"></i> Change Password</a></li>

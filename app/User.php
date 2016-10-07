@@ -4,6 +4,7 @@ namespace Cupa;
 
 use Carbon\Carbon;
 use Datetime;
+use Cupa\UserBalance;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -78,6 +79,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function children()
     {
         return $this->hasMany('Cupa\User', 'parent');
+    }
+
+    public function balance()
+    {
+        $ids = $this->fetchAllIds();
+
+        return (int)UserBalance::fetchOwed($ids);
     }
 
     public function fullname()
@@ -342,9 +350,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return LeagueMember::fetchAllLeagues($this->fetchAllIds(), true);
     }
 
-    public function isLeagueMember($leagueId)
+    public function isLeagueMember($leagueId, $position = null)
     {
-        return LeagueMember::isMember($leagueId, $this->id);
+        return LeagueMember::isMember($leagueId, $this->id, $position);
     }
 
     public static function fetchRegistrantsForRadio($name)
@@ -376,9 +384,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return LeagueMember::fetchAllMembersFromUser($leagueId, $userIds);
     }
 
-    public function getAge()
+    public function getAge($fromDate = null)
     {
-        return (new DateTime($this->birthday))->diff(new DateTime('now'))->y;
+        if ($fromDate == null) {
+            $fromDate = new DateTime('now');
+        }
+
+        return (new DateTime($this->birthday))->diff($fromDate)->y;
     }
 
     public function signWaiver($year)
@@ -389,6 +401,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function fetchWaiver($year)
     {
         return UserWaiver::fetchWaiver($this->id, $year);
+    }
+
+    public function fetchRelease($year)
+    {
+        return UserMedicalRelease::fetchRelease($this->id, $year);
     }
 
     public static function fetchBy($column, $value)

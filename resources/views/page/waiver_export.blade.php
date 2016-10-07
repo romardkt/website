@@ -1,13 +1,41 @@
-<div>
-    <h1 style="text-align: center;">Signed or checked by
-    <?php if($waiver->updated_by): ?>
-        {{ $waiver->updatedBy->fullname() }}
-    <?php else: ?>
-        {{ $waiver->user->fullname() }}
-    <?php endif; ?>
-        <br/><small>at {{$waiver->updated_at}}</small>
-    </h1>
+<html>
+<head>
+    <link href="{{ elixir('css/cupa.min.css') }}" rel="stylesheet">
+    <style>
+        body {
+            background: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+<div class="row">
+    <div class="col-xs-12">
+        <h3 class="text-center">CINCINNATI ULTIMATE PLAYERS ASSOCIATION WAIVER</h3>
+        <hr/>
+    </div>
+    <div class="col-xs-6 text-center">
+        <h4>
+            Signed on {{$waiver->updated_at->format('m/d/Y')}} by
+            <?php if($waiver->updated_by): ?>
+                {{ $waiver->updatedBy->fullname() }}
+            <?php else: ?>
+                {{ $waiver->user->fullname() }}
+            <?php endif; ?>
+        </h4>
+    </div>
+    <div class="col-xs-6 text-center">
+        <h4>Good until 01/01/{{$waiver->year + 1}}</h4>
+    </div>
+    <div class="col-xs-12">
+        <hr/>
+    </div>
 </div>
+@if($age < 18)
+    <div>
+        <h4 class="text-center">Contact the CUPA Treasurer for a paper copy</h4>
+    </div>
+@endif
 <div>
     <hr/>
     <p>In consideration of my participation in any way in the Cincinnati Ultimate
@@ -60,3 +88,6 @@
         TO THE FULLEST EXTENT PERMITTED BY LAW.
     </p>
 </div>
+</div>
+</body>
+</html>

@@ -618,6 +618,8 @@ class ManageController extends Controller
             }
         }
 
+        Session::set('waiver_redirect', route('home'));
+
         return view('leagues.manage.status', compact('league', 'statuses', 'all'));
     }
 

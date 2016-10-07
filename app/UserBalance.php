@@ -27,6 +27,19 @@ class UserBalance extends Model
 
     public static function owesMoney($userId)
     {
+        if (is_array($userId)) {
+            return static::whereIn('user_id', $userId)->count() > 0;
+        }
+
         return static::where('user_id', '=', $userId)->count() > 0;
+    }
+
+    public static function fetchOwed($userId)
+    {
+        if (is_array($userId)) {
+            return static::whereIn('user_id', $userId)->sum('balance');
+        }
+
+        return static::where('user_id', '=', $userId)->sum('balance');
     }
 }

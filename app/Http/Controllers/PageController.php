@@ -9,6 +9,7 @@ use Exception;
 use Cupa\League;
 use Cupa\Paypal;
 use Cupa\Pickup;
+use Carbon\Carbon;
 use Cupa\CupaForm;
 use Cupa\Location;
 use Cupa\LeagueGame;
@@ -16,6 +17,7 @@ use Cupa\Tournament;
 use Cupa\LeagueMember;
 use Cupa\PaypalPayment;
 use Cupa\TournamentTeam;
+use Cupa\UserMedicalRelease;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\App;
@@ -423,8 +425,11 @@ class PageController extends Controller
         }
 
         $isYouth = $user->getAge() < 18;
+        if ($isYouth) {
+            return view('page.waiver_youth', compact('user', 'year', 'isYouth'));
+        }
 
-        return view('page.waiver', compact('user', 'year', 'isYouth'));
+        return view('page.waiver', compact('user', 'year'));
     }
 
     public function postWaiver(WaiverRequest $request, $year, $user = null)
@@ -444,9 +449,15 @@ class PageController extends Controller
 
                 return redirect()->route('waiver', [$year, $user->id])->withErrors($errors)->withInput();
             }
+
+            // get the medical release data
+            $input = $request->all();
+            unset($input['_token']);
+            $data = json_encode($input);
+
+            UserMedicalRelease::updateOrCreateRelease($user, $year, Auth::id(), $data);
         }
 
-        $input = $request->all();
         $user->signWaiver($year);
         Session::flash('msg-success', 'Waiver signed for the '.$year.' year');
         Session::forget('waiver_redirect');
@@ -466,9 +477,38 @@ class PageController extends Controller
         return redirect()->to(Session::get('waiver_redirect'));
     }
 
-    public function waiverExport($year, $user)
+    public function waiverExport($year, User $user)
     {
+        if (!$user->hasWaiver($year)) {
+            Session::flash('msg-error', 'You have not signed a waiver for the '.$year.' year');
+            return redirect()->to(Session::get('waiver_redirect'));
+        }
+
+        // make sure the user can view the waiver
+        $this->authorize('waiver', [$user, $year]);
+
+        // calculate the age based on the date of waiver/medical release signed
+        $release = $user->fetchRelease($year);
         $waiver = $user->fetchWaiver($year);
-        return view('page.waiver_export', compact('waiver'));
+        if ($release) {
+            // go by medical release datetime
+            $signedDate = new \DateTime($release->updated_at->toDateTimeString());
+        } else {
+            // go by waiver datetime
+            $signedDate = new \DateTime($waiver->updated_at->toDateTimeString());
+        }
+
+        // calculate age based on signed date
+        $age = $user->getAge($signedDate);
+        if ($age < 18 && $release) {
+            // handle displaying youth waiver/medical release
+            $release = $user->fetchRelease($year);
+            $release->data = json_decode($release->data);
+            return view('page.waiver_youth_export', compact('release'));
+        }
+
+        // handle adult waiver
+        $waiver = $user->fetchWaiver($year);
+        return view('page.waiver_export', compact('waiver', 'age'));
     }
 }

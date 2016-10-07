@@ -95,6 +95,13 @@ class RegistrationController extends Controller
         }
 
         $user = User::with(['profile', 'parentObj', 'parentObj.profile'])->find($input['user']);
+
+        // check user age if youth league
+        if ($league->is_youth && $user->getAge() >= 20) {
+            Session::flash('msg-error', 'You must be younger than 20 years old to register for a youth league!');
+            return redirect()->route('league_register', [$league->slug, 'who']);
+        }
+
         $session->registrant = $user;
 
         return redirect()->route('league_register', [$league->slug, 'info']);

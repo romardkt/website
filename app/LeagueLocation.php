@@ -18,6 +18,11 @@ class LeagueLocation extends Model
         'link',
     ];
 
+    public function league()
+    {
+        return $this->belongsTo('Cupa\League');
+    }
+
     public function location()
     {
         return $this->belongsTo('Cupa\Location');

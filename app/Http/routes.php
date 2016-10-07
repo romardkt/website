@@ -316,4 +316,5 @@ Route::group(['prefix' => 'manage'], function () {
     Route::post('files/add', ['as' => 'manage_files_add_post', 'uses' => 'ManageController@postFilesAdd']);
     Route::get('files/{file}/remove', ['as' => 'manage_files_remove', 'uses' => 'ManageController@filesRemove']);
     Route::get('volunteer/{volunteer_id}/remove', ['as' => 'manage_volunteer_remove', 'uses' => 'ManageController@volunteerRemove']);
+    Route::get('waivers', ['as' => 'manage_waivers', 'uses' => 'ManageController@waivers']);
 });
