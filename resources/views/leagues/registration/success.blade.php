@@ -30,11 +30,7 @@
                 <tr>
                     <td class="col-xs-6">{{{ $player->user->fullname() }}}</td>
                     <td class="col-xs-2 text-center">{!! ($player->position == 'player') ? '<span class="label label-success active">Registered</span>' : '<span class="label label-info active">Waitlisted</span>' !!}</td>
-                    @if($player->user->getAge() >= 18)
                     <td class="col-xs-2 text-center">{!! ($player->user->hasWaiver($league->year)) ? '<span class="label label-success active">Signed</span>' : '<a href="' . route('waiver', [$league->year, $player->user->id]) . '" class="label label-danger">Sign Waiver</a>' !!}</td>
-                    @else
-                    <td class="col-xs-2 text-center">{!! ($player->user->hasWaiver($league->year)) ? '<span class="label label-success active">Signed</span>' : '<a href="' . route('waiver_download', [$league->year, (stristr($league->name, 'yuc') === false) ? null : 'yuc']) . '" class="label label-danger">Sign Waiver</a>' !!}</td>
-                    @endif
                     <td class="col-xs-2 text-center">{!! ($player->paid) ? '<span class="label label-success active">Yes</span>' : '<span class="label label-danger active">No</span>' !!}</td>
                 </tr>
                 @endforeach
@@ -80,16 +76,13 @@
 <div class="row">
     <div class="col-xs-12 col-sm-offset-1 col-sm-10">
         <h3>Liability Forms</h3>
-        <p>Waivers are only required for the first CUPA event you participate in for {{{ $league->year }}}. If you haven't participated yet this year, please fill out the form below and bring it with you on the first night.</p>
-        <p>If you are registering for a player <strong>18 or over</strong> please click the waiver button/link associated with the player above</p>
-
-        <p>If you are registering for a player <strong>younger than 18</strong> please click <a href="{{ route('waiver_download', [$league->year]) }}">here</a> to download the forms for your parent to sign.  There may be more than one form to sign for certain leagues so you may want to check the information of the league <a href="{{ route('league', [$league->slug]) }}">here</a>.</p>
-        <p>
-            If you have trouble downloading these forms you may need Adobe Acrobat Reader.  To get it free <a href="http://get.adobe.com/reader/">click here</a>.
-        </p>
+        <p>Waivers are only required for the first CUPA event you participate in for <strong>{{ $league->year }}</strong>. If you haven't participated yet this year, please click on the link above to sign a waiver.</p>
         <p>
             If you have other trouble please contact <a href="{{ route('contact') }}">CUPA</a> or the <a href="{{ route('league_email', [$league->slug]) }}">League Director(s)</a>
         </p>
+        <div class="alert alert-warning">
+            Please note: we have changed waivers for youth so you may now (as a parent) sign them online.
+        </div>
     </div>
 </div>
 @endsection

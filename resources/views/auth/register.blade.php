@@ -109,7 +109,7 @@ $('.datepicker').pickadate({
     selectYears: 70,
     selectMonths: true,
     min: -25567,
-    max: -4748
+    max: -6575
 });
 
 $('#reload-captcha').on('click touchstart', function (e) {

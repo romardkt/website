@@ -106,7 +106,7 @@
         selectYears: 70,
         selectMonths: true,
         min: -25567,
-        max: -4748
+        max: -6575
     });
 </script>
 @endif
