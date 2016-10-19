@@ -24,7 +24,7 @@
             <div class="text-center">
                 <div class="btn-group">
                     @foreach($tos as $display => $value)
-                    @if(Input::old('to') !== null && in_array($display, explode(',', Input::old('to'))))
+                    @if(Request::old('to') !== null && in_array($display, explode(',', Request::old('to'))))
                     <a class="btn btn-primary to-select active" data-value="{{ $display }}">{{ ucwords(str_replace('-', ' ', $display)) }}</a>
                     @else
                     <a class="btn btn-default to-select" data-value="{{ $display }}">{{ ucwords(str_replace('-', ' ', $display)) }}</a>
@@ -49,7 +49,7 @@
 
         <div class="form-group">
             {!! Form::label('Subject') !!}
-            {!! Form::text('subject', (Input::old('subject')) ? Input::old('subject') : '[' . $league->displayName() . '] Information', ['class' => 'form-control']) !!}
+            {!! Form::text('subject', (Request::old('subject')) ? Request::old('subject') : '[' . $league->displayName() . '] Information', ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">

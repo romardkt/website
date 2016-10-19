@@ -22,7 +22,7 @@
         <script>
         var BASE_URL = '{{ asset('') }}';
         </script>
-        <script src="{{ asset('js/cupa.min.js') }}"></script>
+        <script src="{{ asset('js/app.js') }}"></script>
         @yield('page-scripts')
         @if(App::environment() == 'prod')
         <script>

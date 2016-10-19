@@ -2,11 +2,11 @@
 
 namespace Cupa\Http\Middleware;
 
-use Cupa\Page;
-use Closure;
 use View;
 use Request;
 use Session;
+use Closure;
+use Cupa\Page;
 
 class Setup
 {

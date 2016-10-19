@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Session;
 
 class EditController extends Controller
 {
-    public function handle($slug, $type, LeagueEditRequest $request)
+    public function handle(LeagueEditRequest $request, $slug, $type)
     {
         $league = League::fetchBySlug($slug);
         $this->authorize('edit', $league);
@@ -238,7 +238,7 @@ class EditController extends Controller
         $input = $request->all();
         $input['slug'] = trim($league->year.' '.ucwords($league->season).' '.$input['name']);
         if (empty($input['name'])) {
-            $input['slug'] .=  ' '.$league->day;
+            $input['slug'] .= ' '.$league->day;
         }
         $input['slug'] = str_slug($input['slug']);
 

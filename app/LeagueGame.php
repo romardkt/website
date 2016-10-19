@@ -18,12 +18,12 @@ class LeagueGame extends Model
 
     public function league()
     {
-        return $this->belongsTo('Cupa\League');
+        return $this->belongsTo(League::class);
     }
 
     public function teams()
     {
-        return $this->hasMany('Cupa\LeagueGameTeam');
+        return $this->hasMany(LeagueGameTeam::class);
     }
 
     public function team($type)

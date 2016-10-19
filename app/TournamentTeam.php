@@ -22,7 +22,7 @@ class TournamentTeam extends Model
 
     public function tournament()
     {
-        return $this->belongsTo('Cupa\Tournament');
+        return $this->belongsTo(Tournament::class);
     }
 
     public static function fetchUnpaidTeamsByDivision($tournamentId)

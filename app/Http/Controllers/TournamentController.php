@@ -88,7 +88,7 @@ class TournamentController extends Controller
 
         Session::flash('msg-success', 'Tournament settings updated');
 
-        return redirect()->route('tournament', [$tournament->name, $tournament->year]);
+        return redirect()->route('tournament_admin', [$tournament->name, $tournament->year]);
     }
 
     public function bid($name, $year)

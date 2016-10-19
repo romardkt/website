@@ -4,21 +4,21 @@ namespace Cupa\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class Dump extends Command
+class CopyFiles extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'cupa:dump';
+    protected $signature = 'cupa:copy-files';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Dumps data and database to localhost.';
+    protected $description = 'Copies files from production.';
 
     /**
      * Create a new command instance.

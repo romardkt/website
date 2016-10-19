@@ -20,11 +20,11 @@ class LeagueLocation extends Model
 
     public function league()
     {
-        return $this->belongsTo('Cupa\League');
+        return $this->belongsTo(League::class);
     }
 
     public function location()
     {
-        return $this->belongsTo('Cupa\Location');
+        return $this->belongsTo(Location::class);
     }
 }

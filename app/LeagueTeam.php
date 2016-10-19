@@ -18,7 +18,7 @@ class LeagueTeam extends Model
 
     public function league()
     {
-        return $this->belongsTo('Cupa\League');
+        return $this->belongsTo(League::class);
     }
 
     public function captains()
@@ -48,7 +48,7 @@ class LeagueTeam extends Model
 
     public function record()
     {
-        return $this->hasOne('Cupa\LeagueTeamRecord');
+        return $this->hasOne(LeagueTeamRecord::class);
     }
 
     public function points()

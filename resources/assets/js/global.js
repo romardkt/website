@@ -179,7 +179,6 @@ function handleSelect2(id, route, max)
                 };
             },
             results: function(data, page) {
-                //console.log(data);
                 return { results: data };
             }
         },

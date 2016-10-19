@@ -17,12 +17,12 @@ class Officer extends Model
 
     public function user()
     {
-        return $this->belongsTo('Cupa\User');
+        return $this->belongsTo(User::class);
     }
 
     public function position()
     {
-        return $this->belongsTo('Cupa\OfficerPosition', 'officer_position_id');
+        return $this->belongsTo(OfficerPosition::class, 'officer_position_id');
     }
 
     public static function fetchAllCurrent()

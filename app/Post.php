@@ -25,7 +25,7 @@ class Post extends Model
 
     public function postedBy()
     {
-        return $this->belongsTo('Cupa\User', 'posted_by');
+        return $this->belongsTo(User::class, 'posted_by');
     }
 
     /**
@@ -45,7 +45,7 @@ class Post extends Model
             ->where(function ($query) use ($now) {
                 $query->whereNull('remove_at')
                     ->orWhere('remove_at', '>=', $now);
-             })
+            })
             ->where('is_visible', '=', 1)
             ->orderBy('post_at');
 

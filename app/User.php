@@ -2,25 +2,16 @@
 
 namespace Cupa;
 
-use Carbon\Carbon;
+use DB;
+use Auth;
 use Datetime;
-use Cupa\UserBalance;
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Monolog\Handler\StreamHandler;
+use Carbon\Carbon;
 use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
+class User extends Authenticatable
 {
-    use Authenticatable, Authorizable, CanResetPassword;
-
     /**
      * The database table used by the model.
      *
@@ -53,39 +44,39 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function parentObj()
     {
-        return $this->belongsTo('Cupa\User', 'parent');
+        return $this->belongsTo(self::class, 'parent');
     }
 
     public function roles()
     {
-        return $this->hasMany('Cupa\UserRole');
+        return $this->hasMany(UserRole::class);
     }
 
     public function profile()
     {
-        return $this->hasOne('Cupa\UserProfile');
+        return $this->hasOne(UserProfile::class);
     }
 
     public function contacts()
     {
-        return $this->hasMany('Cupa\UserContact');
+        return $this->hasMany(UserContact::class);
     }
 
     public function volunteer()
     {
-        return $this->hasOne('Cupa\Volunteer');
+        return $this->hasOne(Volunteer::class);
     }
 
     public function children()
     {
-        return $this->hasMany('Cupa\User', 'parent');
+        return $this->hasMany(self::class, 'parent');
     }
 
     public function balance()
     {
         $ids = $this->fetchAllIds();
 
-        return (int)UserBalance::fetchOwed($ids);
+        return (int) UserBalance::fetchOwed($ids);
     }
 
     public function fullname()
@@ -146,7 +137,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             $email = empty($row['email']) ? 'is minor' : $row['email'];
             $data[] = [
                 'id' => $row['id'],
-                'text' => $row['first_name'].' '.$row['last_name'] . ' (' . $email . ')',
+                'text' => $row['first_name'].' '.$row['last_name'].' ('.$email.')',
             ];
         }
 
@@ -204,7 +195,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
             // check for minor same as parent
             foreach ($duplicate as $i => $dup) {
-                if ($dup->parent !== null  && in_array($dup->parent, $parents)) {
+                if ($dup->parent !== null && in_array($dup->parent, $parents)) {
                     unset($duplicates[$key][$i]);
                 }
 
@@ -429,5 +420,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $user = static::where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'LIKE', $fullname)->first();
 
         return $user;
+    }
+
+    public function isDirector()
+    {
+        return LeagueMember::isDirector($this->id);
     }
 }

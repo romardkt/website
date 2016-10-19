@@ -31,37 +31,37 @@ class League extends Model
 
     public function registration()
     {
-        return $this->hasOne('Cupa\LeagueRegistration');
+        return $this->hasOne(LeagueRegistration::class);
     }
 
     public function locations()
     {
-        return $this->hasMany('Cupa\LeagueLocation', 'league_id')->orderBy('begin');
+        return $this->hasMany(LeagueLocation::class, 'league_id')->orderBy('begin');
     }
 
     public function counts()
     {
-        return $this->hasOne('Cupa\LeaguePlayerCount');
+        return $this->hasOne(LeaguePlayerCount::class);
     }
 
     public function limits()
     {
-        return $this->hasOne('Cupa\LeagueLimit');
+        return $this->hasOne(LeagueLimit::class);
     }
 
     public function games()
     {
-        return $this->hasMany('Cupa\LeagueGame');
+        return $this->hasMany(LeagueGame::class);
     }
 
     public function members()
     {
-        return $this->hasMany('Cupa\LeagueMember');
+        return $this->hasMany(LeagueMember::class);
     }
 
     public function teams()
     {
-        return $this->hasMany('Cupa\LeagueTeam')->orderBy('name');
+        return $this->hasMany(LeagueTeam::class)->orderBy('name');
     }
 
     public function directors()
@@ -183,7 +183,7 @@ class League extends Model
             ->orderBy('is_archived', 'asc')
             ->orderBy('lr.begin', 'desc')
             ->orderBy('ll.begin', 'desc')
-            ->groupBy('l.id')
+            ->groupBy('l.id', 'is_archived', 'lr.begin', 'll.begin')
             ->select('l.*', DB::raw('GROUP_CONCAT(lm.user_id) AS directors'));
 
         switch ($type) {

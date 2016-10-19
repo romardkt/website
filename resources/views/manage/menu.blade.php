@@ -1,7 +1,9 @@
         <div class="row visible-xs">
             <select id="profile-page" onchange="if($(this).val() != '#') {window.location = $(this).val();}">
                 <option value="#">Select page</option>
+                @can('is-director')
                 <option value="{{ route('manage_unpaid') }}"{{ (Route::currentRouteName() == 'manage_unpaid') ? ' selected' : '' }}>Unpaid List</option>
+                @endif
                 <option value="{{ route('manage_waivers') }}"{{ (Route::currentRouteName() == 'manage_waivers') ? ' selected' : '' }}>Waivers/Medical Release</option>
 
                 @can('is-manager')
@@ -24,7 +26,9 @@
         <div class="row hidden-xs text-left">
             <h4>Menu</h4>
             <div class="list-group">
+                @can('is-director')
                 <a class="list-group-item{{ (Route::currentRouteName() == 'manage_unpaid') ? ' active' : '' }}" href="{{ route('manage_unpaid') }}">Unpaid List</a>
+                @endif
                 <a class="list-group-item{{ (Route::currentRouteName() == 'manage_waivers') ? ' active' : '' }}" href="{{ route('manage_waivers') }}">Waivers/Medical Release</a>
 
                 @can('is-manager')

@@ -2,7 +2,6 @@
 
 namespace Cupa\Console;
 
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -14,9 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \Cupa\Console\Commands\Dump::class,
+        \Cupa\Console\Commands\CopyFiles::class,
         \Cupa\Console\Commands\SendEmails::class,
-        \Cupa\Console\Commands\ImportUploads::class,
     ];
 
     /**
@@ -29,5 +27,13 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             Artisan::call('cupa:emails');
         })->weekly()->mondays()->at('9:00');
+    }
+
+    /**
+     * Register the Closure based commands for the application.
+     */
+    protected function commands()
+    {
+        require base_path('routes/console.php');
     }
 }

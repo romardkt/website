@@ -13,7 +13,7 @@ class LeaguePolicy extends CachedPolicy
     protected $globalPerms = ['admin', 'manager'];
     private function isAuthorized(User $user, League $league)
     {
-        return $this->remember("league-auth-{$user->id}-{$league->id}", function() use ($user, $league) {
+        return $this->remember("league-auth-{$user->id}-{$league->id}", function () use ($user, $league) {
             $roles = $user->roles();
             foreach ($roles->get() as $role) {
                 if (in_array($role->role->name, $this->globalPerms)) {
@@ -36,7 +36,7 @@ class LeaguePolicy extends CachedPolicy
 
     public function coach(User $user, League $league)
     {
-        return $this->remember("league-coach-{$user->id}-{$league->id}", function() use ($user, $league) {
+        return $this->remember("league-coach-{$user->id}-{$league->id}", function () use ($user, $league) {
             if ($league->is_youth) {
                 if ($league->coaches()->contains('user_id', $user->id)) {
                     return true;

@@ -1,5 +1,0 @@
-suites:
-    main:
-        namespace: Cupa
-        psr4_prefix: Cupa
-        src_path: app

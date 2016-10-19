@@ -11,7 +11,7 @@ class UserBalance extends Model
 
     public function user()
     {
-        return $this->belongsTo('Cupa\User');
+        return $this->belongsTo(User::class);
     }
 
     public static function fetchAllUnpaid()

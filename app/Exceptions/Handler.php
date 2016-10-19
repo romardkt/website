@@ -3,19 +3,8 @@
 namespace Cupa\Exceptions;
 
 use Exception;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Session\TokenMismatchException;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\Exception\HttpResponseException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Bugsnag\BugsnagLaravel\BugsnagExceptionHandler as ExceptionHandler;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -25,11 +14,12 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        HttpException::class,
-        ModelNotFoundException::class,
-        HttpResponseException::class,
-        AuthorizationException::class,
-        TokenMismatchException::class,
+        \Illuminate\Auth\AuthenticationException::class,
+        \Illuminate\Auth\Access\AuthorizationException::class,
+        \Symfony\Component\HttpKernel\Exception\HttpException::class,
+        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
+        \Illuminate\Session\TokenMismatchException::class,
+        \Illuminate\Validation\ValidationException::class,
     ];
 
     /**
@@ -37,53 +27,40 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param \Exception $e
+     * @param \Exception $exception
      */
-    public function report(Exception $e)
+    public function report(Exception $exception)
     {
-        // set the app version
-        app('bugsnag')->setAppVersion(Config::get('app.version'));
-
-        // set the user if authenticated
-        if (Auth::check()) {
-            app('bugsnag')->setUser(Auth::user()->toArray());
-        }
-
-        // send a notification if it is part of the ignored exceptions
-        foreach ($this->dontReport as $type) {
-            if ($e instanceof HttpResponseException) {
-                $errors = Session::get('errors');
-                if ($errors) {
-                    $errors = $errors->toArray();
-                }
-                app('bugsnag')->notifyException($e, ['errors' => $errors], 'info');
-            } elseif ($e instanceof $type) {
-                app('bugsnag')->notifyException($e, null, 'info');
-            }
-        }
-
-        return parent::report($e);
+        parent::report($exception);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Exception               $e
+     * @param \Exception               $exception
      *
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $e)
+    public function render($request, Exception $exception)
     {
-        if ($e instanceof ModelNotFoundException) {
-            $e = new NotFoundHttpException($e->getMessage(), $e);
+        return parent::render($request, $exception);
+    }
+
+    /**
+     * Convert an authentication exception into an unauthenticated response.
+     *
+     * @param \Illuminate\Http\Request                 $request
+     * @param \Illuminate\Auth\AuthenticationException $exception
+     *
+     * @return \Illuminate\Http\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
-        // catch the Token Missmatch
-        if ($e instanceof TokenMismatchException) {
-            return response(view('errors.token'), 401);
-        }
-
-        return parent::render($request, $e);
+        return redirect()->guest('/');
     }
 }

@@ -17,12 +17,12 @@ class TournamentMember extends Model
 
     public function tournament()
     {
-        return $this->belongsTo('Cupa\Tournament');
+        return $this->belongsTo(Tournament::class);
     }
 
     public function user()
     {
-        return $this->belongsTo('Cupa\User');
+        return $this->belongsTo(User::class);
     }
 
     public static function updateMembers($tournamentId, $members, $position)

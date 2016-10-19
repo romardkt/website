@@ -16,12 +16,12 @@ class Volunteer extends Model
 
     public function user()
     {
-        return $this->belongsTo('Cupa\User');
+        return $this->belongsTo(User::class);
     }
 
     public function signups()
     {
-        return $this->hasMany('Cupa\VolunteerEventSignup')
+        return $this->hasMany(VolunteerEventSignup::class)
             ->with('event');
     }
 

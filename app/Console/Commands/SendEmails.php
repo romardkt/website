@@ -2,9 +2,7 @@
 
 namespace Cupa\Console\Commands;
 
-use Cupa\EmailList;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Mail;
 
 class SendEmails extends Command
 {
@@ -53,7 +51,7 @@ class SendEmails extends Command
         Mail::send('emails.groups_invite', ['users' => $users], function ($m) {
             // send email to the webmaster
             $m->to('webmaster@cincyultimate.org', 'CUPA Webmaster')
-              ->subject('[CUPA] Google group additions '.date('Y-m-d'));
+                ->subject('[CUPA] Google group additions '.date('Y-m-d'));
         });
 
         // mark all as emailed

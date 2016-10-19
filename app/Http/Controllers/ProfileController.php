@@ -2,19 +2,19 @@
 
 namespace Cupa\Http\Controllers;
 
+use Auth;
+use Hash;
+use View;
+use Route;
+use Config;
+use Session;
 use Cupa\User;
 use Cupa\UserContact;
 use Cupa\UserProfile;
 use Cupa\UserRequirement;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Route;
 use Intervention\Image\Facades\Image;
 use Cupa\Http\Requests\ProfileRequest;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Session;
 use Cupa\Http\Requests\ProfileMinorRequest;
 use Cupa\Http\Requests\ProfileContactRequest;
 use Cupa\Http\Requests\ProfileCoachingRequest;
@@ -22,7 +22,7 @@ use Cupa\Http\Requests\ProfilePasswordRequest;
 
 class ProfileController extends Controller
 {
-    public function __construct()
+    private function setupData()
     {
         if (Auth::check()) {
             $user = Auth::user();
@@ -42,6 +42,8 @@ class ProfileController extends Controller
 
     public function profile(Request $request)
     {
+        $this->setupData();
+
         $user = Auth::user();
         $data = $user->toArray() + $user->profile->toArray();
         $data['birthday'] = convertDate($data['birthday'], 'm/d/Y');
@@ -107,6 +109,8 @@ class ProfileController extends Controller
 
     public function password()
     {
+        $this->setupData();
+
         return view('profile.password');
     }
 
@@ -125,16 +129,22 @@ class ProfileController extends Controller
 
     public function leagues()
     {
+        $this->setupData();
+
         return view('profile.leagues');
     }
 
     public function minors()
     {
+        $this->setupData();
+
         return view('profile.minors');
     }
 
     public function minorAdd()
     {
+        $this->setupData();
+
         return view('profile.minor_add');
     }
 
@@ -167,6 +177,8 @@ class ProfileController extends Controller
 
     public function minorEdit(User $minor)
     {
+        $this->setupData();
+
         $data = $minor->toArray() + $minor->profile->toArray();
         $data['birthday'] = convertDate($data['birthday'], 'm/d/Y');
 
@@ -206,11 +218,15 @@ class ProfileController extends Controller
 
     public function contacts()
     {
+        $this->setupData();
+
         return view('profile.contacts');
     }
 
     public function contactAdd()
     {
+        $this->setupData();
+
         return view('profile.contact_add');
     }
 
@@ -235,6 +251,8 @@ class ProfileController extends Controller
 
     public function contactEdit(UserContact $contact)
     {
+        $this->setupData();
+
         return view('profile.contact_edit', compact('contact'));
     }
 
@@ -264,11 +282,15 @@ class ProfileController extends Controller
 
     public function volunteer(Request $request)
     {
+        $this->setupData();
+
         return view('profile.volunteer');
     }
 
     public function coaching(Request $request)
     {
+        $this->setupData();
+
         Session::set('waiver_redirect', route('profile_coaching'));
         $requirements = json_decode(UserRequirement::fetchOrCreateRequirements(Auth::id(), date('Y'))->requirements, true);
         $hiddenReqs = Config::get('cupa.coachingRequirements');

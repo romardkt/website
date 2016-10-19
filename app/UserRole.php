@@ -14,6 +14,6 @@ class UserRole extends Model
 
     public function role()
     {
-        return $this->belongsTo('Cupa\Role');
+        return $this->belongsTo(Role::class);
     }
 }

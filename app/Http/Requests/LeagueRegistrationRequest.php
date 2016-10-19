@@ -27,7 +27,7 @@ class LeagueRegistrationRequest extends Request
     public function rules()
     {
         $rules = [];
-        if ($this->method == 'GET') {
+        if ($this->method() == 'GET') {
             return $rules;
         }
 

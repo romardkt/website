@@ -2,8 +2,8 @@
 
 namespace Cupa\Http\Requests;
 
+use Gate;
 use Cupa\League;
-use Illuminate\Support\Facades\Gate;
 
 class LeagueEditRequest extends Request
 {
@@ -27,7 +27,7 @@ class LeagueEditRequest extends Request
     public function rules()
     {
         $rules = [];
-        if ($this->method == 'GET') {
+        if ($this->method() == 'GET') {
             return $rules;
         }
 

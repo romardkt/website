@@ -16,7 +16,7 @@ class Minute extends Model
 
     public function location()
     {
-        return $this->belongsTo('Cupa\Location');
+        return $this->belongsTo(Location::class);
     }
 
     public static function fetchMinutes()

@@ -5,11 +5,9 @@ namespace Cupa\Http\Controllers;
 use Cupa\Page;
 use Cupa\Post;
 use Cupa\User;
-use Exception;
 use Cupa\League;
 use Cupa\Paypal;
 use Cupa\Pickup;
-use Carbon\Carbon;
 use Cupa\CupaForm;
 use Cupa\Location;
 use Cupa\LeagueGame;
@@ -148,74 +146,6 @@ class PageController extends Controller
         Session::flash('msg-error', 'Could not pay with paypal');
 
         return redirect()->to($redirect);
-
-        /*
-        $payer = new Payer();
-        $payer->setPaymentMethod('paypal');
-
-        $item = new Item();
-        $item->setName($title . ' - $' . $cost)
-             ->setCurrency('USD')
-             ->setQuantity(1)
-             ->setPrice($cost);
-
-        $itemList = new ItemList();
-        $itemList->setItems(array($item));
-
-        $amount = new Amount();
-        $amount->setCurrency('USD')
-               ->setTotal($cost);
-
-        $transaction = new Transaction();
-        $transaction->setAmount($amount)
-                    ->setItemList($itemList)
-                    ->setDescription(ucfirst($type) . ' payment for ' . $title);
-
-        $redirectUrls = new RedirectUrls();
-        $redirectUrls->setReturnUrl(route('paypal_status', [$paypal->id]))
-                     ->setCancelUrl(route('paypal_status', [$paypal->id]));
-
-        $payment = new Payment();
-        $payment->setIntent('sale')
-                ->setPayer($payer)
-                ->setRedirectUrls($redirectUrls)
-                ->setTransactions(array($transaction));
-
-        try {
-            $apiContext = paypalApiContext();
-            $payment->create($apiContext);
-        } catch (PayPal\Exception\PPConnectionException $ex) {
-            Session::flash('msg-error', 'Could not pay with paypal');
-            Log::error("Paypal Exception: " . $ex->getMessage());
-            Log::error(print_r($ex->getData(), true));
-            $paypal->delete();
-
-            return redirect()->to($redirect);
-        } catch (Exception $ex) {
-            Session::flash('msg-error', 'System error trying to pay with paypal');
-            Log::error("Paypal Exception: " . $ex->getMessage());
-            $paypal->delete();
-
-            return redirect()->to($redirect);
-        }
-
-        foreach ($payment->getLinks() as $link) {
-            if ($link->getRel() == 'approval_url') {
-                $redirectUrl = $link->getHref();
-                break;
-            }
-        }
-
-        $paypal->payment_id = $payment->getId();
-        $paypal->state = $payment->getState();
-        $paypal->save();
-
-        Session::put('paymentId', $paypal->payment_id);
-
-        if (isset($redirectUrl)) {
-            return redirect()->to($redirectUrl);
-        }
-        */
     }
 
     private function _paypalPayment($paypalId)
@@ -313,65 +243,6 @@ class PageController extends Controller
         }
     }
 
-/*
-    public function paypal_status($paypalId)
-    {
-        $paypal = Paypal::find($paypalId);
-
-        $payerId = $request->get('PayerID');
-        $paypal->token = $request->get('token');
-        $paypal->payer_id = $payerId;
-
-        if (isset($payerId)) {
-            $apiContext = paypalApiContext();
-            $result = paypalExecutePayment(Session::get('paymentId'), $payerId);
-            $paypal->data = json_encode($result);
-            if (!isset($result->state)) {
-                Session::flash('msg-error', 'Paypal payment was canceled or not completed');
-            } else {
-                $paypal->state = $result->state;
-                if ($paypal->state == 'approved') {
-                    $paypal->success = 1;
-                    if ($paypal->tournament_id !== null) {
-                        $team = TournamentTeam::find($paypal->tournament_team_id);
-                        $team->paid = 1;
-                        $team->save();
-                    } else {
-                        $member = LeagueMember::find($paypal->league_member_id);
-                        $member->paid = 1;
-                        $member->save();
-                    }
-                }
-            }
-        } else {
-            Session::flash('msg-error', 'Paypal payment was canceled or not completed');
-
-            if ($paypal->league_id === null) {
-                $tournament = Tournament::find($paypal->tournament_id);
-
-                return redirect()->route('tournament_payment', [$tournament->name, $tournament->year]);
-            } else {
-                $league = League::find($paypal->league_id);
-
-                return redirect()->route('league_success', [$league->slug]);
-            }
-        }
-
-        $paypal->save();
-
-        if ($paypal->league_id === null) {
-            Session::flash('msg-success', 'Your tournament payment has been received');
-            $tournament = Tournament::find($paypal->tournament_id);
-
-            return redirect()->route('tournament_payment', [$tournament->name, $tournament->year]);
-        } else {
-            Session::flash('msg-success', 'Your league payment has been received');
-            $league = League::find($paypal->league_id);
-
-            return redirect()->route('league_success', [$league->slug]);
-        }
-    }
-    */
     public function dayton()
     {
         $page = Page::fetchBy('route', 'leagues_dayton');
@@ -401,9 +272,9 @@ class PageController extends Controller
         return redirect()->route('leagues_dayton');
     }
 
-    public function waiver($year, $user = null)
+    public function waiver($year, User $user = null)
     {
-        $redirect = (Session::has('waiver_redirect')) ?  Session::get('waiver_redirect') : route('home');
+        $redirect = (Session::has('waiver_redirect')) ? Session::get('waiver_redirect') : route('home');
         if (empty($user)) {
             $user = Auth::user();
         }
@@ -412,10 +283,6 @@ class PageController extends Controller
             Session::flash('msg-error', 'Please login to sign a waiver');
 
             return redirect()->to($redirect);
-        }
-
-        if (is_numeric($user)) {
-            $user = User::find($user);
         }
 
         if ($user->hasWaiver($year)) {
@@ -432,9 +299,9 @@ class PageController extends Controller
         return view('page.waiver', compact('user', 'year'));
     }
 
-    public function postWaiver(WaiverRequest $request, $year, $user = null)
+    public function postWaiver(WaiverRequest $request, $year, User $user = null)
     {
-        $redirect = (Session::has('waiver_redirect')) ?  Session::get('waiver_redirect') : route('home');
+        $redirect = (Session::has('waiver_redirect')) ? Session::get('waiver_redirect') : route('home');
 
         if (empty($user)) {
             $user = Auth::user();
@@ -443,7 +310,6 @@ class PageController extends Controller
         if ($user->getAge() < 18) {
             // check to see if the parent is logged in
             if ($user->parent != Auth::id()) {
-
                 $errors = new MessageBag();
                 $errors->add('fullname', 'You are not able to sign a waiver for this player.');
 
@@ -481,6 +347,7 @@ class PageController extends Controller
     {
         if (!$user->hasWaiver($year)) {
             Session::flash('msg-error', 'You have not signed a waiver for the '.$year.' year');
+
             return redirect()->to(Session::get('waiver_redirect'));
         }
 
@@ -504,11 +371,13 @@ class PageController extends Controller
             // handle displaying youth waiver/medical release
             $release = $user->fetchRelease($year);
             $release->data = json_decode($release->data);
+
             return view('page.waiver_youth_export', compact('release'));
         }
 
         // handle adult waiver
         $waiver = $user->fetchWaiver($year);
+
         return view('page.waiver_export', compact('waiver', 'age'));
     }
 }

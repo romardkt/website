@@ -24,17 +24,17 @@ class LeagueMember extends Model
 
     public function user()
     {
-        return $this->belongsTo('Cupa\User');
+        return $this->belongsTo(User::class);
     }
 
     public function league()
     {
-        return $this->belongsTo('Cupa\League');
+        return $this->belongsTo(League::class);
     }
 
     public function team()
     {
-        return $this->belongsTo('Cupa\LeagueTeam', 'league_team_id');
+        return $this->belongsTo(LeagueTeam::class, 'league_team_id');
     }
 
     public static function typeahead($leagueId, $filter, $ids = false)
@@ -302,7 +302,7 @@ class LeagueMember extends Model
     public static function clearCoaches($leagueTeamId)
     {
         $coaches = static::where(function ($query) {
-                $query->where('position', '=', 'assistant_coach')
+            $query->where('position', '=', 'assistant_coach')
                     ->orWhere('position', '=', 'coach');
         })
             ->where('league_team_id', '=', $leagueTeamId)
@@ -363,5 +363,14 @@ class LeagueMember extends Model
             ->orderBy('users.last_name')
             ->orderBy('users.first_name')
             ->get();
+    }
+
+    public static function isDirector($userId)
+    {
+        $league = self::where('position', '=', 'director')
+          ->where('user_id', '=', $userId)
+          ->first();
+
+        return isset($league);
     }
 }

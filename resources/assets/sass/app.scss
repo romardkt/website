@@ -1,6 +1,8 @@
-@import "bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
-@import "bower_components/font-awesome/scss/font-awesome";
+// Variables
 @import "variables";
+
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
 @mixin border-radius($size) {
     -webkit-border-radius: $size;

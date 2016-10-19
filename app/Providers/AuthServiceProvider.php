@@ -2,7 +2,7 @@
 
 namespace Cupa\Providers;
 
-use Illuminate\Contracts\Auth\Access\Gate as GateContract;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -13,24 +13,22 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-         \Cupa\Tournament::class => \Cupa\Policies\TournamentPolicy::class,
-         \Cupa\League::class => \Cupa\Policies\LeaguePolicy::class,
-         \Cupa\LeagueTeam::class => \Cupa\Policies\LeagueTeamPolicy::class,
-         \Cupa\Team::class => \Cupa\Policies\TeamPolicy::class,
-         \Cupa\VolunteerEvent::class => \Cupa\Policies\VolunteerEventPolicy::class,
-         \Cupa\Officer::class => \Cupa\Policies\OfficerPolicy::class,
-         \Cupa\Pickup::class => \Cupa\Policies\PickupPolicy::class,
-         \Cupa\User::class => \Cupa\Policies\UserPolicy::class,
+        \Cupa\Tournament::class => \Cupa\Policies\TournamentPolicy::class,
+        \Cupa\League::class => \Cupa\Policies\LeaguePolicy::class,
+        \Cupa\LeagueTeam::class => \Cupa\Policies\LeagueTeamPolicy::class,
+        \Cupa\Team::class => \Cupa\Policies\TeamPolicy::class,
+        \Cupa\VolunteerEvent::class => \Cupa\Policies\VolunteerEventPolicy::class,
+        \Cupa\Officer::class => \Cupa\Policies\OfficerPolicy::class,
+        \Cupa\Pickup::class => \Cupa\Policies\PickupPolicy::class,
+        \Cupa\User::class => \Cupa\Policies\UserPolicy::class,
     ];
 
     /**
-     * Register any application authentication / authorization services.
-     *
-     * @param \Illuminate\Contracts\Auth\Access\Gate $gate
+     * Register any authentication / authorization services.
      */
-    public function boot(GateContract $gate)
+    public function boot()
     {
-        parent::registerPolicies($gate);
+        $this->registerPolicies();
 
         $roles = [
             'admin' => ['admin'],
@@ -42,7 +40,7 @@ class AuthServiceProvider extends ServiceProvider
         ];
 
         foreach ($roles as $name => $perms) {
-            $gate->define('is-'.$name, function ($user) use ($perms) {
+            Gate::define('is-'.$name, function ($user) use ($perms, $name) {
                 $roles = $user->roles();
                 foreach ($roles->get() as $role) {
                     if (in_array($role->role->name, $perms)) {
@@ -50,11 +48,16 @@ class AuthServiceProvider extends ServiceProvider
                     }
                 }
 
+                // check to see if the user is a director
+                if ($name == 'director') {
+                    return $user->isDirector();
+                }
+
                 return false;
             });
         }
 
-        $gate->define('is-user', function($user) {
+        Gate::define('is-user', function ($user) {
             return true;
         });
     }

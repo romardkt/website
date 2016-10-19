@@ -31,22 +31,22 @@ class Tournament extends Model
 
     public function feed()
     {
-        return $this->hasMany('Cupa\TournamentFeed')->orderBy('created_at', 'desc');
+        return $this->hasMany(TournamentFeed::class)->orderBy('created_at', 'desc');
     }
 
     public function contacts()
     {
-        return $this->hasMany('Cupa\TournamentMember')->with('user')->orderBy('weight', 'asc');
+        return $this->hasMany(TournamentMember::class)->with('user')->orderBy('weight', 'asc');
     }
 
     public function location()
     {
-        return $this->belongsTo('Cupa\Location');
+        return $this->belongsTo(Location::class);
     }
 
     public function locations()
     {
-        return $this->hasMany('Cupa\TournamentLocation');
+        return $this->hasMany(TournamentLocation::class);
     }
 
     /**
@@ -55,7 +55,7 @@ class Tournament extends Model
      *
      * @param  string   The division to filter on or null
      *
-     * @return array The array of tournaments.
+     * @return array The array of tournaments
      */
     public static function fetchAllCurrent($division = null)
     {

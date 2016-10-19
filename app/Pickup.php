@@ -19,12 +19,12 @@ class Pickup extends Model
 
     public function location()
     {
-        return $this->belongsTo('Cupa\Location');
+        return $this->belongsTo(Location::class);
     }
 
     public function contacts()
     {
-        return $this->hasMany('Cupa\PickupContact');
+        return $this->hasMany(PickupContact::class);
     }
 
     public static function fetchAllPickups()

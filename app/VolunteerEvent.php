@@ -22,22 +22,22 @@ class VolunteerEvent extends Model
 
     public function category()
     {
-        return $this->belongsTo('Cupa\VolunteerEventCategory', 'volunteer_event_category_id');
+        return $this->belongsTo(VolunteerEventCategory::class, 'volunteer_event_category_id');
     }
 
     public function members()
     {
-        return $this->hasMany('Cupa\VolunteerEventSignup');
+        return $this->hasMany(VolunteerEventSignup::class);
     }
 
     public function contacts()
     {
-        return $this->hasMany('Cupa\VolunteerEventContact');
+        return $this->hasMany(VolunteerEventContact::class);
     }
 
     public function location()
     {
-        return $this->belongsTo('Cupa\Location');
+        return $this->belongsTo(Location::class);
     }
 
     public function needed()

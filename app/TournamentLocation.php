@@ -21,7 +21,7 @@ class TournamentLocation extends Model
 
     public function tournament()
     {
-        return $this->belongsTo('Cupa\Tournament');
+        return $this->belongsTo(Tournament::class);
     }
 
     public function address()

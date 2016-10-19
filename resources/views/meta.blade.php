@@ -30,4 +30,4 @@
         <meta name="msapplication-TileColor" content="#ffffff">
 
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
-        <link href="{{ elixir('css/cupa.min.css') }}" rel="stylesheet">
+        <link href="{{ elixir('css/app.css') }}" rel="stylesheet">

@@ -1,4 +1,6 @@
-var elixir = require('laravel-elixir');
+const elixir = require('laravel-elixir');
+
+require('laravel-elixir-vue-2');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,35 +13,29 @@ var elixir = require('laravel-elixir');
  |
  */
 
-elixir(function(mix) {
-    mix.sass([
-            'app.scss',
-            '../../../bower_components/select2/select2.css',
-            //'../../../bower_components/select2/select2-bootstrap.css',
-            '../../../bower_components/select2-bootstrap-css/select2-bootstrap.min.css',
-            '../../../bower_components/pickadate/lib/themes/default.css',
-            '../../../bower_components/pickadate/lib/themes/default.date.css',
-            '../../../bower_components/clockpicker/dist/bootstrap-clockpicker.min.css',
-        ], 'public/css/cupa.min.css')
-        .scripts([
-            '../../../bower_components/jquery/dist/jquery.min.js',
-            '../../../bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js',
-            '../../../bower_components/select2/select2.js',
-            '../../../bower_components/pickadate/lib/compressed/picker.js',
-            '../../../bower_components/pickadate/lib/compressed/picker.date.js',
-            '../../../bower_components/select2/select2.js',
-            '../../../bower_components/clockpicker/dist/bootstrap-clockpicker.min.js',
-            '../../../bower_components/list.js/dist/list.js',
-            'global.js'
-        ], 'public/js/cupa.min.js')
-        .copy('bower_components/font-awesome/fonts', 'public/build/fonts')
-        .copy('bower_components/select2/select2x2.png', 'public/build/css')
-        .copy('bower_components/select2/select2.png', 'public/build/css')
-        .copy('bower_components/select2/select2-spinner.gif', 'public/build/css')
-        .copy('bower_components/ckeditor', 'public/ckeditor')
-        .version([
-            'css/cupa.min.css',
-            'js/cupa.min.js'
-        ]);
-        // .phpUnit();
+elixir(mix => {
+  mix.sass([
+      'app.scss',
+      '../../../node_modules/font-awesome/css/font-awesome.css',
+      '../../../node_modules/select2/select2.css',
+      '../../../node_modules/select2-bootstrap-css/select2-bootstrap.css',
+      '../../../node_modules/pickadate/lib/themes/default.css',
+      '../../../node_modules/pickadate/lib/themes/default.date.css',
+      '../../../node_modules/clockpicker/dist/bootstrap-clockpicker.css',
+    ])
+    .scripts([
+      '../../../node_modules/jquery/dist/jquery.js',
+      '../../../node_modules/bootstrap-sass/assets/javascripts/bootstrap.js',
+      '../../../node_modules/select2/select2.js',
+      '../../../node_modules/pickadate/lib/picker.js',
+      '../../../node_modules/pickadate/lib/picker.date.js',
+      '../../../node_modules/clockpicker/dist/bootstrap-clockpicker.min.js',
+      '../../../node_modules/list.js/dist/list.js',
+      'global.js',
+    ], 'public/js/app.js')
+    .copy('node_modules/ckeditor', 'public/ckeditor')
+    .copy('node_modules/font-awesome/fonts', 'public/build/fonts')
+    .copy('node_modules/select2/select2.png', 'public/build/css')
+    .copy('node_modules/select2/select2-spinner.gif', 'public/build/css')
+    .version(['css/app.css', 'js/app.js']);
 });

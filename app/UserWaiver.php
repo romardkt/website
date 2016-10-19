@@ -17,12 +17,12 @@ class UserWaiver extends Model
 
     public function user()
     {
-        return $this->belongsTo('Cupa\User');
+        return $this->belongsTo(User::class);
     }
 
     public function updatedBy()
     {
-        return $this->belongsTo('Cupa\User', 'updated_by');
+        return $this->belongsTo(User::class, 'updated_by');
     }
 
     public static function hasWaiver($userId, $year = null)

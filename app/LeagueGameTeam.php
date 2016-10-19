@@ -17,12 +17,12 @@ class LeagueGameTeam extends Model
 
     public function game()
     {
-        return $this->belongsTo('Cupa\LeagueGame', 'league_game_id');
+        return $this->belongsTo(LeagueGame::class, 'league_game_id');
     }
 
     public function team()
     {
-        return $this->belongsTo('Cupa\LeagueTeam', 'league_team_id');
+        return $this->belongsTo(LeagueTeam::class, 'league_team_id');
     }
 
     public static function fetchGames($teamId)

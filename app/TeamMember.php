@@ -17,7 +17,7 @@ class TeamMember extends Model
 
     public function user()
     {
-        return $this->belongsTo('Cupa\User');
+        return $this->belongsTo(User::class);
     }
 
     public static function updateMembers($teamId, $members, $position, $year = null)

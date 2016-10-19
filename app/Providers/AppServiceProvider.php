@@ -8,16 +8,22 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
+     *
+     * @return void
      */
     public function boot()
     {
+        include __DIR__.'/../functions.php';
     }
 
     /**
      * Register any application services.
+     *
+     * @return void
      */
     public function register()
     {
-        include app_path().'/functions.php';
+      $this->app->alias('bugsnag.logger', \Illuminate\Contracts\Logging\Log::class);
+      $this->app->alias('bugsnag.logger', \Psr\Log\LoggerInterface::class);
     }
 }

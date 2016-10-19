@@ -55,6 +55,7 @@ class ManageController extends Controller
 
     public function unpaid()
     {
+        $this->authorize('is-director');
         $unpaid = UserBalance::fetchAllUnpaid();
         $leagues = League::fetchAllHash();
 
@@ -341,7 +342,7 @@ class ManageController extends Controller
 
         $user = Auth::user();
         $isManager = false;
-        foreach($user->roles->pluck('role.name') as $role) {
+        foreach ($user->roles->pluck('role.name') as $role) {
             if (in_array($role, ['admin', 'manager'])) {
                 $isManager = true;
                 break;
@@ -357,7 +358,7 @@ class ManageController extends Controller
             ->get();
 
         $waivers = [];
-        foreach($leagues as $league) {
+        foreach ($leagues as $league) {
             $teamIds = [];
             $position = 'Director';
 
@@ -378,7 +379,7 @@ class ManageController extends Controller
                     $position = 'Coach/Captain';
 
                     // add the teams
-                    foreach($positionMembers as $positionMember) {
+                    foreach ($positionMembers as $positionMember) {
                         $teamIds[] = $positionMember->league_team_id;
                     }
                 } else {
@@ -389,7 +390,6 @@ class ManageController extends Controller
                 $teamIds = LeagueTeam::where('league_id', '=', $league->id)
                     ->pluck('id');
             }
-
 
             // get all the players
             $leagueMembers = LeagueMember::join('leagues', 'leagues.id', '=', 'league_members.league_id')
@@ -403,7 +403,7 @@ class ManageController extends Controller
                 ->orderBy('users.last_name')
                 ->orderBy('users.first_name');
 
-            foreach($leagueMembers->get() as $leagueMember) {
+            foreach ($leagueMembers->get() as $leagueMember) {
                 $leagueUser = $leagueMember->user;
 
                 if (!isset($waivers[$leagueMember->league->id])) {
@@ -420,7 +420,6 @@ class ManageController extends Controller
                     'release' => $leagueUser->fetchRelease($league->year),
                 ];
             }
-
         }
 
         return view('manage.waivers', compact('waivers'));
