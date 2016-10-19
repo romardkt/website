@@ -68,6 +68,9 @@
 <div id="mobile-main-menu" class="row mobile-main-menu" role="navigation">
     <div class="col-xs-12">
         <ul class="nav">
+            @can('is-manager')
+            <li><a href="{{ route('manage') }}" title="News Posts">Manage</a></li>
+            @endif
             <li><a class="about" href="{{ route('about') }}">About Us</a></li>
             <li><a class="volunteer" href="{{ route('volunteer') }}">Volunteer</a></li>
             <li><a class="youth" href="{{ route('youth') }}">Youth Ultimate</a></li>

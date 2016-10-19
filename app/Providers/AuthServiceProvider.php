@@ -37,6 +37,7 @@ class AuthServiceProvider extends ServiceProvider
             'editor' => ['admin', 'manager', 'editor'],
             'volunteer' => ['admin', 'manager', 'volunteer'],
             'hoy-scholarship' => ['admin', 'manager', 'hoy'],
+            'director' => ['admin', 'manager'],
         ];
 
         foreach ($roles as $name => $perms) {
