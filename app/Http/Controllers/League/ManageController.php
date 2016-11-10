@@ -317,7 +317,7 @@ class ManageController extends Controller
         $league = League::fetchBySlug($slug);
         $this->authorize('edit', $league);
 
-        foreach (LeagueGame::where('week', '=', $week)->get() as $game) {
+        foreach (LeagueGame::where('week', '=', $week)->where('league_id', '=', $league->id)->get() as $game) {
             $game->status = $status;
             $game->save();
         }
