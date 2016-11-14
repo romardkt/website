@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \Cupa\Console\Commands\CopyFiles::class,
         \Cupa\Console\Commands\SendEmails::class,
+        \Cupa\Console\Commands\RemoveInactive::class,
     ];
 
     /**
@@ -27,6 +28,10 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             Artisan::call('cupa:emails');
         })->weekly()->mondays()->at('9:00');
+
+        $schedule->call(function () {
+            Artisan::call('cupa:remove-inactives');
+        })->daily()->at('1:00');
     }
 
     /**
