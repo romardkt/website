@@ -29,9 +29,11 @@ class Kernel extends ConsoleKernel
             Artisan::call('cupa:emails');
         })->weekly()->mondays()->at('9:00');
 
+        // this is scheduled to run 15min after the database backup
+        // to minimize errors if something happens
         $schedule->call(function () {
             Artisan::call('cupa:remove-inactives');
-        })->daily()->at('1:00');
+        })->daily()->at('8:15');
     }
 
     /**
