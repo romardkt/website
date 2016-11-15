@@ -7,10 +7,11 @@
         <h1>Convert account to normal account</h1>
 
         <p>
-            To complete this you must enter the email address to use for this new
-            account.  It will then send an password reset to that email for the
-            new account holder to enter in a password for this new account.  All
-            of the leagues and information will be moved with the new account.
+            To convert a minor account you must enter the email address to use
+            for the regular account.  We will then send an password reset link
+            to that email.  This will allow the new account to specify a password
+            for logging in.  All of the leagues and information will be moved
+            with the new account.
         </p>
 
         <hr/>
