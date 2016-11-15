@@ -426,4 +426,9 @@ class User extends Authenticatable
     {
         return LeagueMember::isDirector($this->id);
     }
+
+    public function fetchLatestWaiver()
+    {
+        return UserWaiver::fetchLatestWaiver($this->id);
+    }
 }

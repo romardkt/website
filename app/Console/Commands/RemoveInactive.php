@@ -3,7 +3,10 @@
 namespace Cupa\Console\Commands;
 
 use DB;
+use Log;
+use Mail;
 use Cupa\User;
+use Cupa\Mail\InactiveReport;
 use Illuminate\Console\Command;
 
 class RemoveInactive extends Command
@@ -40,6 +43,8 @@ class RemoveInactive extends Command
         $this->removeNonActivatedAccounts();
 
         $this->removeOldAccounts();
+
+        $this->emailReport();
     }
 
     private function removeNonActivatedAccounts()
@@ -71,19 +76,40 @@ class RemoveInactive extends Command
         $users = DB::table('users')
           ->select('users.id', 'users.first_name', 'users.last_name', DB::raw('MAX(user_waivers.year) AS year'))
           ->join('user_waivers', 'user_waivers.user_id', '=', 'users.id')
+          ->whereNull('parent')
           ->groupBy('user_id')
           ->get();
 
         // define the log path
         $logLocation = storage_path().'/logs/'.date('Y-m-d-').'inactives.log';
         foreach ($users as $user) {
-            // if the last siged year is more than 12 years delete them
-            if ($user->year < $twelveYear) {
+            $userObject = User::find($user->id);
+            $hasChildWaiver = false;
+
+            if ($userObject->children->count()) {
+                // check all chilren
+                foreach ($userObject->children as $child) {
+                    $latestWaiver = $child->fetchLatestWaiver();
+                    if ($latestWaiver && $latestWaiver->year > $twelveYear) {
+                        $hasChildWaiver = true;
+                        break;
+                    }
+                }
+            }
+
+            if ($user->year < $twelveYear && !$hasChildWaiver) {
                 // log the removal
                 file_put_contents($logLocation, $user->first_name.' '.$user->last_name." removed for not being active for 12 years.\n", FILE_APPEND | LOCK_EX);
                 $userObject = User::find($user->id);
                 $userObject->delete();
             }
         }
+    }
+
+    private function emailReport()
+    {
+        $logLocation = storage_path().'/logs/'.date('Y-m-d-').'inactives.log';
+        Mail::to('webmaster@cincyultimate.org')
+            ->send(new InactiveReport($logLocation));
     }
 }
