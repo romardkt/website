@@ -79,4 +79,11 @@ class UserWaiver extends Model
             ->where('year', '=', $year)
             ->first();
     }
+
+    public static function fetchLatestWaiver($userId)
+    {
+        return static::where('user_id', '=', $userId)
+            ->orderBy('year', 'desc')
+            ->first();
+    }
 }
