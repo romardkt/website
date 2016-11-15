@@ -65,6 +65,8 @@ Route::group(['prefix' => 'profile'], function () {
     Route::get('coaching', ['as' => 'profile_coaching', 'uses' => 'ProfileController@coaching', 'middleware' => 'auth']);
     Route::post('coaching', ['as' => 'profile_coaching_post', 'uses' => 'ProfileController@postCoaching', 'middleware' => 'auth']);
     Route::get('{slug}', ['as' => 'profile_public', 'uses' => 'ProfileController@publicProfile']);
+    Route::get('minors/{minor}/convert', ['as' => 'profile_minors_convert', 'uses' => 'ProfileController@minorsConvert']);
+    Route::post('minors/{minor}/convert', ['as' => 'profile_minors_convert_post', 'uses' => 'ProfileController@postMinorsConvert']);
 });
 
 Route::group(['prefix' => 'form'], function () {

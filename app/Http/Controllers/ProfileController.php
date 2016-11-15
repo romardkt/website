@@ -5,6 +5,7 @@ namespace Cupa\Http\Controllers;
 use Auth;
 use Hash;
 use View;
+use Mail;
 use Route;
 use Config;
 use Session;
@@ -17,6 +18,7 @@ use Intervention\Image\Facades\Image;
 use Cupa\Http\Requests\ProfileRequest;
 use Cupa\Http\Requests\ProfileMinorRequest;
 use Cupa\Http\Requests\ProfileContactRequest;
+use Cupa\Http\Requests\ProfileConvertRequest;
 use Cupa\Http\Requests\ProfileCoachingRequest;
 use Cupa\Http\Requests\ProfilePasswordRequest;
 
@@ -318,5 +320,48 @@ class ProfileController extends Controller
         Session::flash('msg-success', 'Coaching requirements updated');
 
         return redirect()->route('profile_coaching');
+    }
+
+    public function minorsConvert(User $minor)
+    {
+        $this->setupData();
+
+        if ($minor->getAge() < 18) {
+            Session::flash('msg-error', 'Minor must be 18 years or older to convert');
+
+            return redirect()->route('profile_minors');
+        }
+
+        return view('profile.minors_convert', compact('minor'));
+    }
+
+    public function postMinorsConvert(ProfileConvertRequest $request, User $minor)
+    {
+        if ($minor->getAge() < 18) {
+            Session::flash('msg-error', 'Cannot convert a minor that is younger than 18 years old');
+
+            return redirect()->route('profile_minors');
+        }
+
+        // update the required fields
+        $minor->parent = null;
+        $minor->email = $request->input('email');
+        $minor->password = Hash::make(md5($request->input('email')));
+        $minor->activated_at = new \DateTime();
+        $minor->last_login_at = null;
+        $minor->reason = 'was converted from a minor account';
+        $minor->save();
+
+        // send the email
+        Mail::send('emails.reset', ['code' => $minor->fetchPasswordResetCode(), 'email' => $minor->email], function ($m) use ($minor) {
+            // send email to the user
+            $m->to($minor->email, $minor->fullname())
+                ->replyTo('webmaster@cincyultimate.org')
+                ->subject('[CUPA] Password Reset');
+        });
+
+        Session::flash('msg-success', 'Minor account converted to regular account, Password reset link sent');
+
+        return redirect()->route('profile_minors');
     }
 }

@@ -195,8 +195,14 @@ class AuthController extends Controller
     public function doReset($code)
     {
         $user = User::fetchBy('reset_password_code', $code);
-        if (!$user || $user->is_active == 0) {
+        if (!$user) {
             Session::flash('msg-error', 'Password reset code is not valid.  Please try requesting a new reset code');
+
+            return redirect()->route('reset');
+        }
+
+        if (!$user->is_active) {
+            Session::flash('msg-error', 'Your account is not active.');
 
             return redirect()->route('reset');
         }
@@ -210,6 +216,7 @@ class AuthController extends Controller
         $user->password = Hash::make($input['password']);
         $user->reset_password_code = null;
         $user->last_reset_password_at = Carbon::now()->format('Y-m-d H:i:s');
+        $user->reason = null;
         $user->save();
 
         // send the email
