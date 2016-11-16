@@ -15,6 +15,13 @@ $('.datepicker').pickadate({
 <div class="row">
     <div class="col-xs-12">
         @include('partials.errors')
+        @if($minor->getAge() >= 18)
+        <div class="alert alert-info">
+            <a href="{{route('profile_minors_convert', $minor->id)}}">
+                This minor is 18 or older and can be moved to their own account if desired.  Just click this message to start.
+            </a>
+        </div>
+        @endif
 
         {!! Form::model($minor, ['class' => 'form form-vertical', 'role' => 'form']) !!}
             @include('profile.partials.minor', ['type' => 'Update'])
