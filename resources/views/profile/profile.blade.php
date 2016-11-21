@@ -12,6 +12,7 @@ $('.datepicker').pickadate({
 @endsection
 
 @section('profile_content')
+@include('partials.errors')
 {!! Form::model($data, ['class' => 'form form-vertical', 'role' => 'form', 'files' => true]) !!}
 
 <legend>Personal Information</legend>

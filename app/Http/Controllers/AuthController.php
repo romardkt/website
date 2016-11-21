@@ -108,6 +108,9 @@ class AuthController extends Controller
         // add to volunteer list
         if (isset($registrationData['volunteer_list']) && $registrationData['volunteer_list'] == true) {
             Volunteer::create([
+                'involvement' => 'Unknown',
+                'primary_interest' => 'Unknown',
+                'experience' => 'Unknown',
                 'user_id' => $user->id,
             ]);
         }

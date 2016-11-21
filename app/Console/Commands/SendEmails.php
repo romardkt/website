@@ -2,6 +2,7 @@
 
 namespace Cupa\Console\Commands;
 
+use Cupa\EmailList;
 use Illuminate\Console\Command;
 
 class SendEmails extends Command

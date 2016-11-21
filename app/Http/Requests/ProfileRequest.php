@@ -34,6 +34,8 @@ class ProfileRequest extends Request
             'gender' => 'required|in:Male,Female',
             'phone' => 'required|regex:/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/',
             'avatar' => 'mimes:jpg,png,gif,jpeg',
+            'height' => 'integer',
+            'experience' => 'integer',
         ];
     }
 }
