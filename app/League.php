@@ -25,6 +25,7 @@ class League extends Model
         'has_pods',
         'is_youth',
         'description',
+        'default_waillist',
         'date_visible',
         'is_archived',
     ];

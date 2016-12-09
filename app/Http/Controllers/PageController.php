@@ -198,9 +198,9 @@ class PageController extends Controller
 
         if ($paypal->tournament_team_id !== null) {
             // redirect to tournament
-            $tournament = Tournament::find($paypal->tournament_id);
+            $tournament = Tournament::findOrFail($paypal->tournament_id);
 
-            $tournamentTeam = TournamentTeam::find($paypal->tournament_team_id);
+            $tournamentTeam = TournamentTeam::findOrFail($paypal->tournament_team_id);
             $tournamentTeam->paid = 1;
             $tournamentTeam->save();
 
@@ -209,9 +209,9 @@ class PageController extends Controller
             return redirect()->route('tournament_payment', [$tournament->name, $tournament->year]);
         } else {
             // redirect to league
-            $league = League::find($paypal->league_id);
+            $league = League::findOrFail($paypal->league_id);
 
-            $leagueMember = LeagueMember::find($paypal->league_member_id);
+            $leagueMember = LeagueMember::findOrFail($paypal->league_member_id);
             if ($league->default_waitlist) {
                 $leagueMember->position = 'player';
             }
