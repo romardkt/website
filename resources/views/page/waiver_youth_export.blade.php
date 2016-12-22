@@ -1,6 +1,6 @@
 <html>
 <head>
-    <link href="{{ elixir('css/cupa.min.css') }}" rel="stylesheet">
+    <link href="{{ elixir('css/app.css') }}" rel="stylesheet">
     <style>
         body {
             background: white;
