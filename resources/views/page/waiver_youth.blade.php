@@ -70,7 +70,7 @@
     </div>
 </div>
 
-{!! Form::open(['class' => 'form form-vertical', 'role' => 'form']) !!}
+{!! Form::open(['class' => 'form form-vertical form-waiver', 'role' => 'form']) !!}
 <div class="row">
     <div class="col-sm-10 col-sm-offset-1">
         <legend>Participant Information</legend>
@@ -208,7 +208,7 @@
           understand its terms, and understand that I have given up substantial righty
           by signing it and freely and voluntarily without any inducement.
         </div>
-        <button class="btn btn-primary" type="button" onclick="confirmAndSubmit();">Submit</button>
+        <button class="btn btn-primary" type="submit" onclick="confirmAndSubmit();">Submit</button>
     </div>
 </div>
 {!! Form::close() !!}
@@ -218,7 +218,7 @@
 <script>
 function confirmAndSubmit() {
   if (confirm('Click ok to verify that you are signing the waiver for {{$user->fullname()}} as their guardian')) {
-    $('.form').submit();
+    $('.form-waiver').submit();
   };
 }
 </script>
