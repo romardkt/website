@@ -27,7 +27,7 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('Email Address') !!}
+            {!! Form::label('Phone number') !!}
             {!! Form::text('phone', $session->info['phone'], ['class' => 'form-control', 'disabled']) !!}
         </div>
 

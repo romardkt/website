@@ -2,6 +2,7 @@
 
 namespace Cupa\Console\Commands;
 
+use Mail;
 use Cupa\EmailList;
 use Illuminate\Console\Command;
 

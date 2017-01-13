@@ -64,6 +64,11 @@
                 {!! Form::email('override_email', null, ['class' => 'form-control']) !!}
                 <span class="help-block">Enter a SINGLE contact email for league (Optional)</span>
             </div>
+
+            <p class="alert alert-info">
+                These are only the most basic of questions, you will have to create/update the information after the creation of the league.
+            </p>
+
         </div>
 
         <div id="copy-league">
@@ -73,10 +78,6 @@
                 <span class="help-block">Select the type of league to copy from</span>
             </div>
         </div>
-
-        <p class="alert alert-info">
-            These are only the most basic of questions, you will have to create/update the information after the creation of the league.
-        </p>
 
         <hr/>
 
@@ -106,12 +107,12 @@ $('input[type=radio]').on('click touchstart', function (e) {
     }
 });
 
-if ($('#league_type').is(':checked')) {
+if ($('#new-league-radio').is(':checked')) {
     $('#copy-league').hide();
     $('#new-league').fadeIn('fast');
 }
 
-if ($('#league_type2').is(':checked')) {
+if ($('#copy-league-radio').is(':checked')) {
     $('#new-league').hide();
     $('#copy-league').fadeIn('fast');
 }

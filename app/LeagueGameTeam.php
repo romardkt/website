@@ -59,6 +59,10 @@ class LeagueGameTeam extends Model
 
     public static function updateTeams($leagueGameId, $data)
     {
+        // setup the team scores
+        $data['home_score'] = (is_numeric($data['home_score'])) ? (int) abs($data['home_score']) : 0;
+        $data['away_score'] = (is_numeric($data['away_score'])) ? (int) abs($data['away_score']) : 0;
+
         foreach (['away_team', 'home_team'] as $type) {
             $t = ($type == 'away_team') ? 'away' : 'home';
             // get all teams in db
