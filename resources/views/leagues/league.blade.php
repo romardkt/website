@@ -143,7 +143,7 @@
             </dd>
             <dt>Waiver:</dt>
             <dd>
-                <p>All players must have a waiver on file with CUPA from a previous {{ $league->year }} league or present a printed and signed copy before play begins.</p>
+                <p>All players must have a waiver/release on file with CUPA from a previous {{ $league->year }} league.</p>
                 @if(Auth::check())
                 <p>You may check your status <a href="{{ route('league_success', [$league->slug]) }}">here</a>.</p>
                 @endif

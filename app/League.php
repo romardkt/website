@@ -602,15 +602,27 @@ class League extends Model
             ->where('position', '=', 'player')
             ->orderBy('u.last_name')
             ->orderBy('u.first_name')
-            ->select('u.first_name', 'u.last_name', 'uc.name', 'uc.phone')
+            ->select('u.id', 'u.first_name', 'u.last_name', 'uc.name', 'uc.phone')
             ->get();
 
         $contacts = [];
         foreach ($result as $row) {
-            $contacts[$row['first_name'].' '.$row['last_name']][] = [
-                'name' => $row['name'],
-                'phone' => $row['phone'],
-            ];
+            if (empty($row['name']) || empty($row['phone'])) {
+                $parent = User::find($row['id'])->parentObj;
+                $tmp = [];
+                foreach($parent->contacts as $contact) {
+                    $tmp[] = [
+                        'name' => $contact->name,
+                        'phone' => $contact->phone,
+                    ];
+                }
+                $contacts[$row['first_name'].' '.$row['last_name']] = $tmp;
+            } else {
+                $contacts[$row['first_name'].' '.$row['last_name']][] = [
+                    'name' => $row['name'],
+                    'phone' => $row['phone'],
+                ];
+            }
         }
 
         return $contacts;
