@@ -38,6 +38,12 @@
                 {!! Form::radio($question->name, $value, false) !!} {{ $answer }}
             </div>
                 @endforeach
+            @elseif ($question->type == 'multiple-check')
+                @foreach(json_decode($question->answers, true) as $value => $answer)
+            <div class="checkbox multiple">
+                {!! Form::checkbox($question->name.'[]', $value, false) !!} {{ $answer }}
+            </div>
+                @endforeach
             @elseif ($question->type == 'textarea')
             {!! Form::textarea($question->name, null, ['class' => 'form-control']) !!}
             @endif

@@ -57,6 +57,12 @@
                                     {!! Form::radio($question->name, $value, null, ['disabled']) !!} {{ $answer }}
                                 </div>
                                 @endforeach
+                                @elseif ($question->type == 'multiple-check')
+                                @foreach(json_decode($question->answers, true) as $value => $answer)
+                                <div class="checkbox multiple disabled">
+                                    {!! Form::checkbox($question->name.'[]', $value, null, ['disabled']) !!} {{ $answer }}
+                                </div>
+                                @endforeach
                                 @elseif ($question->type == 'textarea')
                                 {!! Form::textarea($question->name, null, ['class' => 'form-control', 'disabled']) !!}
                                 @endif
@@ -117,6 +123,12 @@
                             @foreach(json_decode($question->answers, true) as $value => $answer)
                             <div class="checkbox">
                                 {!! Form::radio($question->name, $value, null) !!} {{ $answer }}
+                            </div>
+                            @endforeach
+                            @elseif ($question->type == 'multiple-check')
+                            @foreach(json_decode($question->answers, true) as $value => $answer)
+                            <div class="checkbox multiple">
+                                {!! Form::checkbox($question->name.'[]', $value, null, ['disabled']) !!} {{ $answer }}
                             </div>
                             @endforeach
                             @elseif ($question->type == 'textarea')
