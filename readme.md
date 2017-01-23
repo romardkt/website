@@ -1,4 +1,5 @@
 # CUPA Website
+![Travis Status](https://travis-ci.org/cincyultimate/website.svg?branch=master)
 
 The code behind the website.
 
