@@ -38,4 +38,6 @@ elixir(mix => {
     .copy('node_modules/select2/select2.png', 'public/build/css')
     .copy('node_modules/select2/select2-spinner.gif', 'public/build/css')
     .version(['css/app.css', 'js/app.js']);
+
+  mix.phpUnit();
 });

@@ -1,6 +1,9 @@
 <?php
+namespace CupaTest;
 
-abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
+use Config;
+
+abstract class TestCase extends \Illuminate\Foundation\Testing\TestCase
 {
     /**
      * The base URL to use while testing the application.
@@ -18,7 +21,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     {
         $app = require __DIR__.'/../bootstrap/app.php';
 
-        $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+        $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
         return $app;
     }

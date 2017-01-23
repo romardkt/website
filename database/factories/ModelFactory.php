@@ -23,7 +23,6 @@ $factory->define(Cupa\User::class, function (Faker\Generator $faker) {
         'last_name' => $faker->lastName,
         'gender' => $faker->randomElement($array = ['Male', 'Female']),
         'birthday' => $faker->dateTimeBetween($startDate = '-60 years', $endDate = '-13 years'),
-        'avatar' => null,
         'activation_code' => str_random(25),
         'activated_at' => $faker->date,
         'reset_password_code' => null,
@@ -43,6 +42,10 @@ $factory->define(Cupa\UserProfile::class, function (Faker\Generator $faker) {
         'level' => $faker->randomElement($array = Config::get('cupa.levels')),
         'experience' => date('Y') - $faker->numberBetween($min = 0, $max = 20),
     ];
+});
+
+$factory->define(Cupa\UserBalance::class, function (Faker\Generator $faker) {
+    return [];
 });
 
 $factory->define(Cupa\UserRequirement::class, function (Faker\Generator $faker) {

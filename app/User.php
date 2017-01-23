@@ -86,7 +86,7 @@ class User extends Authenticatable
 
     public function slug()
     {
-        return str_replace(' ', '-', strtolower($this->fullname()));
+        return str_slug($this->fullname());
     }
 
     public function isVolunteer()
@@ -101,12 +101,20 @@ class User extends Authenticatable
 
     public function profileComplete()
     {
-        return $this->profile->isComplete();
+        if ($this->profile()->first()) {
+            return $this->profile->isComplete();
+        }
+
+        return false;
     }
 
-    public function coachingRequirements($year)
+    public function coachingRequirements($year = null)
     {
-        return $this->hasOne('Cupa\UserRequirement', 'user_id')
+        if ($year === null) {
+            $year = date('Y');
+        }
+
+        return $this->hasOne(UserRequirement::class, 'user_id')
             ->where('year', '=', $year)->first();
     }
 

@@ -6,3 +6,6 @@
 Homestead.json
 Homestead.yaml
 .env
+tests/coverage
+tests/clover.xml
+.vscode

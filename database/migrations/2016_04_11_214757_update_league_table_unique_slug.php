@@ -20,7 +20,7 @@ class UpdateLeagueTableUniqueSlug extends Migration
     public function down()
     {
         Schema::table('leagues', function ($table) {
-            $table->string('status')->change();
+            $table->string('slug')->change();
         });
     }
 }
