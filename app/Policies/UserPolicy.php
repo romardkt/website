@@ -34,7 +34,7 @@ class UserPolicy
             return true;
         }
 
-        // // check for user roles
+        // check for user roles
         foreach ($authUser->roles as $role) {
             if (in_array($role->role->name, $this->globalPerms)) {
                 return true;
@@ -42,10 +42,12 @@ class UserPolicy
         }
 
         // check to see if the auth user is a director, captain, coach, or assistant_coach
-        $leagueMembers = LeagueMember::join('leagues', 'leagues.id', '=', 'league_members.league_id')
+        $leaguesUserIsIn = LeagueMember::join('leagues', 'leagues.id', '=', 'league_members.league_id')
             ->where('league_members.user_id', '=', $user->id)
             ->where('leagues.year', '=', $year)
-            ->select('league_members.*');
+            ->select('leagues.id','league_members.league_team_id')
+            ->get()
+            ->toArray();
 
         $positions = [
             'director',
@@ -54,10 +56,17 @@ class UserPolicy
             'assistant_coach',
         ];
 
-        // check all the leagues for the given year to see if the auth user is
-        // one of the accepted positions
-        foreach($leagueMembers as $leagueMember) {
-            if ($authUser->isLeagueMember($leagueMember->league_id, $positions)) {
+        foreach($leaguesUserIsIn as $leagueData) {
+            $member = LeagueMember::join('leagues', 'leagues.id', '=', 'league_members.league_id')
+                ->where('leagues.id', '=', $leagueData['id'])
+                ->where('league_members.user_id', '=', $authUser->id)
+                ->whereIn('league_members.position', $positions);
+
+            if (!empty($leagueData['league_team_id'])) {
+                $member->where('league_team_id', '=', $leagueData['league_team_id']);
+            }
+
+            if ($member->count() > 0) {
                 return true;
             }
         }

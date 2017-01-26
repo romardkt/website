@@ -32,8 +32,10 @@
                     <td>
                         @if($waiver['release'])
                         <a class="btn btn-default" href="{{ route('waiver_export', [$waiver['release']['year'], $waiver['release']['user_id']]) }}">Show Release</a>
-                        @else
+                        @elseif($waiver['waiver'])
                         <a class="btn btn-default" href="{{ route('waiver_export', [$waiver['waiver']['year'], $waiver['waiver']['user_id']]) }}">Show Waiver</a>
+                        @else
+                        <a class="btn btn-danger disabled">Not Signed</a>
                         @endif
                     </td>
                 </tr>

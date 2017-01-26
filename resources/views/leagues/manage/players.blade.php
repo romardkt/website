@@ -40,7 +40,11 @@
             <tbody>
                 @foreach($players as $player)
                 <tr>
+                    @if(empty($player['email']))
+                    <td class="col-xs-5 col-sm-3">{!! secureEmail($player['parent_email'], $player['first_name'] . ' ' . $player['last_name']) !!}</td>
+                    @else
                     <td class="col-xs-5 col-sm-3">{!! secureEmail($player['email'], $player['first_name'] . ' ' . $player['last_name']) !!}</td>
+                    @endif
                     <td class="col-xs-6 col-sm-3">{{ (empty($player['team_name'])) ? 'Not Assigned' : $player['team_name'] }}</td>
                     <td class="col-xs-1 text-center hidden-xs">{{ $player['gender'] }}</td>
                     <td class="col-xs-1 text-center hidden-xs">{{ displayAge($player['birthday']) }}</td>
