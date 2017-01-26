@@ -54,6 +54,7 @@ class RemoveInactive extends Command
 
         // find all of the inactive old accounts
         $users = User::where('is_active', '=', false)
+          ->whereNull('parent')
           ->whereNull('activated_at')
           ->where('created_at', '<=', $oneYear)
           ->get();
