@@ -61,7 +61,7 @@
 @endsection
 
 @section('page-scripts')
-<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.2/ckeditor.js"></script>
 @if($select)
 <script>
 $('.select2').select2({placeholder: 'Click to select an answer.'});

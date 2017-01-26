@@ -15,7 +15,6 @@
 
         <meta name="apple-mobile-web-app-title" content="CUPA">
 
-
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('/img/apple/apple-touch-icon-57x57.png') }}" />
         <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('/img/apple/apple-touch-icon-72x72.png') }}" />
@@ -30,4 +29,4 @@
         <meta name="msapplication-TileColor" content="#ffffff">
 
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
-        <link href="{{ elixir('css/app.css') }}" rel="stylesheet">
+        @include('styles')

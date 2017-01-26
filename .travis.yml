@@ -4,11 +4,13 @@ php:
   - 7.0
   - 7.1
 
+services:
+  - mysql
+
 before_script:
-  - cp .env.testing .env
   - mysql -e 'create database cupa_test;'
+  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('secret') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
   - composer install --no-interaction
-  - php artisan key:generate
 
 script:
   - sh testme.sh

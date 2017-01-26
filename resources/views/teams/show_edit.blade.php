@@ -19,7 +19,7 @@
 @endsection
 
 @section('page-scripts')
-<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.2/ckeditor.js"></script>
 <script>
 handleSelect2('#captains', '{{ route('typeahead_users') }}', 15);
 $('.select2').select2({

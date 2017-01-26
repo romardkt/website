@@ -19,10 +19,7 @@
             @include('footer')
         </div>
         <div id="goto-top"><i class="fa fa-lg fa-fw fa-arrow-up"></i></div>
-        <script src="{{ elixir('js/app.js') }}"></script>
-        <script>
-            var BASE_URL = '{{ route('home') }}/';
-        </script>
+        @include('scripts')
         @yield('page-scripts')
         @if(App::environment() == 'prod')
         <script>

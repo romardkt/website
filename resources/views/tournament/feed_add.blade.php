@@ -19,5 +19,5 @@
 @endsection
 
 @section('page-scripts')
-<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.2/ckeditor.js"></script>
 @endsection
