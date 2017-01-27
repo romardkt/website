@@ -30,14 +30,18 @@
                         <div class="month">{{ date('M', strtotime($event->start)) }}</div>
                         <div class="day">{{ date('d', strtotime($event->start)) }}</div>
                         <div class="year">{{ date('Y', strtotime($event->start)) }}</div>
-                        @if(Auth::check() && $past == false)
-                        <div class="action"><a class="btn btn-success btn-xs" href="{{ route('volunteer_show_signup', array($event->id)) }}">Sign Up!</a></div>
-                        @elseif($past == false)
-                        <div class="action"><a class="btn btn-success btn-xs" data-toggle="modal" data-target="#login" title="Login">Login to<br/> Sign Up!</a></div>
-                        @endif
+                        @if($event->num_volunteers)
+                            @if(Auth::check() && $past == false)
+                                @if($event->needed())
+                                <div class="action"><a class="btn btn-success btn-xs" href="{{ route('volunteer_show_signup', array($event->id)) }}">Sign Up!</a></div>
+                                @endif
+                            @elseif($past == false)
+                            <div class="action"><a class="btn btn-success btn-xs" data-toggle="modal" data-target="#login" title="Login">Login to<br/> Sign Up!</a></div>
+                            @endif
 
-                        @can('edit', $event)
-                        <div class="action"><a class="btn btn-default btn-xs" href="{{ route('volunteer_show_members', array($event->id)) }}">Volunteers</a></div>
+                            @can('edit', $event)
+                            <div class="action"><a class="btn btn-default btn-xs" href="{{ route('volunteer_show_members', array($event->id)) }}">Volunteers</a></div>
+                            @endif
                         @endif
                     </span>
                     <h4 class="list-group-item-heading text-primary">
@@ -52,7 +56,9 @@
                     </h4>
                     <p class="list-group-item-text">
                         <p>
-                            <strong>{{ $event->needed() }}</strong> more volunteers are needed<br/>
+                            @if($event->num_volunteers)
+                                <strong>{{ $event->needed() }}</strong> more volunteers are needed<br/>
+                            @endif
                             @if(substr($event->start, 0, 10) == substr($event->end, 0, 10))
                                 At <strong>{{ date('h:i A', strtotime($event->start)) }}</strong> - <strong>{{ date('h:i A', strtotime($event->end)) }}</strong> on <strong>{{ date('F d Y', strtotime($event->end)) }}</strong>
                             @else

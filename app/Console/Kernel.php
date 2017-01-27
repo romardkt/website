@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         \Cupa\Console\Commands\CopyFiles::class,
         \Cupa\Console\Commands\SendEmails::class,
         \Cupa\Console\Commands\RemoveInactive::class,
+        \Cupa\Console\Commands\NotifyParentsOfMinorAccount::class,
     ];
 
     /**
@@ -34,6 +35,7 @@ class Kernel extends ConsoleKernel
         // to minimize errors if something happens
         $schedule->call(function () {
             Artisan::call('cupa:remove-inactives');
+            Artisan::call('cupa:notify-parents');
         })->daily()->at('8:15');
     }
 

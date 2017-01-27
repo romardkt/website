@@ -155,7 +155,7 @@ class VolunteerController extends Controller
             'email_override' => (empty($input['email_override'])) ? null : $input['email_override'],
             'start' => convertDate($input['start_date'].' '.$input['start_time']),
             'end' => convertDate($input['end_date'].' '.$input['end_time']),
-            'num_volunteers' => $input['num_volunteers'],
+            'num_volunteers' => (empty($input['num_volunteers'])) ? 0 : $input['num_volunteers'],
             'information' => $input['information'],
             'location_id' => $input['location_id'],
         ]);
@@ -202,7 +202,7 @@ class VolunteerController extends Controller
         $event->email_override = (empty($input['email_override'])) ? null : $input['email_override'];
         $event->start = convertDate($input['start_date'].' '.$input['start_time']);
         $event->end = convertDate($input['end_date'].' '.$input['end_time']);
-        $event->num_volunteers = $input['num_volunteers'];
+        $event->num_volunteers = (empty($input['num_volunteers'])) ? 0 : $input['num_volunteers'];
         $event->information = $input['information'];
         $event->location_id = $input['location_id'];
         $event->save();

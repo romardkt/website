@@ -6,6 +6,9 @@
             <a href="{{ route('profile_minor_add') }}" class="list-group-item active">Add a minor...</a>
             @forelse($minors as $minor)
             <a href="{{ route('profile_minor_edit', [$minor->id]) }}" class="list-group-item">
+                @if($minor->getAge() > 17)
+                <div class="badge btn btn-default" onClick="window.location = '{{ route('profile_minors_convert', [$minor->id]) }}'; return false;">Convert Account</div>
+                @endif
                 <h4 class="list-group-item-heading">
                     {{ $minor->fullname() }}
                     @if($minor->profile->nickname !== null)

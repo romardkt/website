@@ -32,7 +32,7 @@ class VolunteerShowRequest extends Request
             'start_time' => 'required|regex:/1?[0-9]:[0-9][0-9]/',
             'end_date' => 'required|date',
             'end_time' => 'required|regex:/1?[0-9]:[0-9][0-9]/',
-            'num_volunteers' => 'required|integer|min:1',
+            'num_volunteers' => 'integer',
             'information' => 'required',
             'volunteer_id' => 'min:1',
             'location_id' => 'required||numeric|not_in:0',

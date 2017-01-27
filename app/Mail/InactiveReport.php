@@ -10,6 +10,8 @@ class InactiveReport extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $logFile;
+
     /**
      * Create a new message instance.
      */
