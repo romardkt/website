@@ -6,7 +6,7 @@
         <h2 class="text-center">User Account Registration</h2>
         <p>
             To register for an account with the online CUPA system you will need to supply <strong>all of the information below</strong>.
-            You will also have to be <strong>at least 13 years of age</strong>.  If you are younger than 13 years old and you are wanting
+            You will also have to be <strong>at least 18 years of age</strong>.  If you are younger than 13 years old and you are wanting
             to play in a youth league, please have your parents sign up and add you as a minor to their account.  They may
             then register as you for the league.
         </p>
