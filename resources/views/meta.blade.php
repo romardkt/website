@@ -29,4 +29,3 @@
         <meta name="msapplication-TileColor" content="#ffffff">
 
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
-        @include('styles')

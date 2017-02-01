@@ -21,6 +21,4 @@ elixir(mix => {
       'global.js',
     ], 'public/js/app.js')
     .version(['css/app.css', 'js/app.js']);
-
-  mix.phpUnit();
 });

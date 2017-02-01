@@ -2,9 +2,8 @@
 <html>
     <head>
         @include('meta')
-
+        @include('styles')
         @yield('page-styles')
-        <!--<script src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>-->
     </head>
     <body>
         @include('message')
