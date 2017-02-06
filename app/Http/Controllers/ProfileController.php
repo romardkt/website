@@ -293,7 +293,7 @@ class ProfileController extends Controller
     {
         $this->setupData();
 
-        Session::set('waiver_redirect', route('profile_coaching'));
+        Session::put('waiver_redirect', route('profile_coaching'));
         $requirements = json_decode(UserRequirement::fetchOrCreateRequirements(Auth::id(), date('Y'))->requirements, true);
         $hiddenReqs = Config::get('cupa.coachingRequirements');
         unset($hiddenReqs['manual']);

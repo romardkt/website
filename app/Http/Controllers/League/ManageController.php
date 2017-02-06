@@ -580,6 +580,13 @@ class ManageController extends Controller
                                 $line[] = $player['answers'][$questionObject->name];
                             }
                             break;
+                        case 'multiple-check':
+                            if (isset($player['answers'][$questionObject->name])) {
+                                $line[] = implode(', ', $player['answers'][$questionObject->name]);
+                            } else {
+                                $line[] = 'Unknown';
+                            }
+                            break;
                         default:
                             if (isset($player['answers'][$questionObject->name])) {
                                 $line[] = $player['answers'][$questionObject->name];
@@ -618,7 +625,7 @@ class ManageController extends Controller
             }
         }
 
-        Session::set('waiver_redirect', route('home'));
+        Session::put('waiver_redirect', route('home'));
 
         return view('leagues.manage.status', compact('league', 'statuses', 'all'));
     }

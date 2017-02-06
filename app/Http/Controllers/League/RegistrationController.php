@@ -21,7 +21,7 @@ class RegistrationController extends Controller
     public function register(LeagueRegistrationRequest $request, $slug, $state = 'who')
     {
         if ($state == 'who') {
-            Session::set('league_registration', new stdClass());
+            Session::put('league_registration', new stdClass());
         }
         $session = Session::get('league_registration');
 
@@ -220,7 +220,7 @@ class RegistrationController extends Controller
         if (!$user->hasWaiver($league->year)) {
             if ($user->getAge() >= 18) {
                 Session::flash('msg-success', 'Registration finished, please fill out a waiver and pay for the league.');
-                Session::set('waiver_redirect', route('league_success', [$league->slug]));
+                Session::put('waiver_redirect', route('league_success', [$league->slug]));
 
                 return redirect()->route('waiver', [$league->year, $user->id]);
             } else {
@@ -250,7 +250,7 @@ class RegistrationController extends Controller
             return redirect()->route('leagues');
         }
 
-        Session::set('waiver_redirect', route('league_success', [$league->slug]));
+        Session::put('waiver_redirect', route('league_success', [$league->slug]));
 
         $players = User::fetchAllPlayers($league->id, Auth::id());
         if (count($players) < 1) {

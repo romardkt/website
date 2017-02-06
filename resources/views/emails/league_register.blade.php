@@ -9,7 +9,7 @@
             Hello {{ $userName }},
         </p>
         <p style="margin: 20px 0;">
-            You have successfully registered for the {{ $leagueName }} league.  Please take the time to sign your waiver, on-line if you are 18 or older, or in paper form if you are younger.  You may find the links below for all the information.
+            You have successfully registered for the {{ $leagueName }} league.  Please take the time to sign your waiver, on-line if you are 18 or older, or have your parents complete the online waiver if the player is less than 18 years of age.  You may find the links below for all the information.
         </p>
         @if($default_waitlist)
         <div style="padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px; color: #a47e3c; background-color: #fcf8e3; border-color: #fbeed5; color: #c09853;">

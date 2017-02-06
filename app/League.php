@@ -220,6 +220,11 @@ class League extends Model
     {
         $data = [];
         foreach (static::with('registration')->orderBy('id', 'asc')->get() as $league) {
+            // if for some reason the league does not have a registration, continue
+            if (!$league->registration) {
+                continue;
+            }
+
             $data[$league->id] = [
                 'name' => $league->displayName(),
                 'cost' => $league->registration->cost,
