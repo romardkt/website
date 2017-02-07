@@ -2,9 +2,8 @@
 <html>
     <head>
         @include('meta')
-
+        @include('styles')
         @yield('page-styles')
-        <!--<script src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>-->
     </head>
     <body>
         @include('message')
@@ -19,10 +18,7 @@
             @include('tournament.footer')
         </div>
         <div id="goto-top"><i class="fa fa-lg fa-fw fa-arrow-up"></i></div>
-        <script>
-        var BASE_URL = '{{ asset('') }}';
-        </script>
-        <script src="{{ asset('js/app.js') }}"></script>
+        @include('scripts')
         @yield('page-scripts')
         @if(App::environment() == 'prod')
         <script>
