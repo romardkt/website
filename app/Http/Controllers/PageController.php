@@ -275,7 +275,7 @@ class PageController extends Controller
     public function waiver($year, User $user = null)
     {
         $redirect = (Session::has('waiver_redirect')) ? Session::get('waiver_redirect') : route('home');
-        if (empty($user)) {
+        if (empty($user->id)) {
             $user = Auth::user();
         }
 
