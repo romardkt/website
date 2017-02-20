@@ -190,29 +190,31 @@ class User extends Authenticatable
     {
         $duplicates = [];
         foreach (static::orderBy('created_at')->get() as $user) {
-            $duplicates[$user->fullname()][] = $user;
+            if (isset($duplicates[$user->fullname()])) {
+                $duplicates[$user->fullname()][] = $user;
+            } else {
+               $duplicates[$user->fullname()] = [$user];
+            }
         }
 
-        foreach ($duplicates as $key => $duplicate) {
+        foreach ($duplicates as $fullName => $duplicateList) {
             $parents = [];
-            foreach ($duplicate as $i => $dup) {
+            foreach ($duplicateList as $i => $dup) {
                 if ($dup->parent === null) {
                     $parents[] = $dup->id;
                 }
             }
 
             // check for minor same as parent
-            foreach ($duplicate as $i => $dup) {
+            foreach ($duplicateList as $i => $dup) {
                 if ($dup->parent !== null && in_array($dup->parent, $parents)) {
-                    unset($duplicates[$key][$i]);
+                    unset($duplicates[$fullName][$i]);
                 }
-
-                $userIds[] = $dup->id;
             }
 
             // remove non duplicates
-            if (count($duplicates[$key]) < 2) {
-                unset($duplicates[$key]);
+            if (count($duplicates[$fullName]) < 2) {
+                unset($duplicates[$fullName]);
             }
         }
 
@@ -328,7 +330,11 @@ class User extends Authenticatable
 
     public function hasSignedUpForVolunteerEvent($eventId)
     {
-        return VolunteerEvent::isMember($eventId, $this->volunteer()->first()->id);
+        if ($this->volunteer()->first()) {
+            return VolunteerEvent::isMember($eventId, $this->volunteer->id);
+        }
+
+        return false;
     }
 
     public function fetchAllIds()

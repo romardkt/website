@@ -10,7 +10,11 @@ use Cupa\Volunteer;
 use Cupa\UserWaiver;
 use Cupa\UserProfile;
 use Cupa\UserContact;
+use Cupa\LeagueMember;
+use Cupa\VolunteerEvent;
 use Cupa\UserRequirement;
+use Cupa\LeagueRegistration;
+use Cupa\VolunteerEventSignup;
 use CupaTest\TestCase as BaseTest;
 use \Illuminate\Foundation\Testing\WithoutMiddleware;
 // use \Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -318,11 +322,68 @@ class UserModelTest extends BaseTest
             'last_name' => $users[0]->last_name,
         ]);
 
+        // create duplicate minor
+        factory(User::class)->create([
+            'parent' => $users[0]->id,
+            'first_name' => $users[0]->first_name,
+            'last_name' => $users[0]->last_name,
+        ]);
+
         $allDuplicateUsers = User::fetchAllDuplicates();
         $keys = array_keys($allDuplicateUsers);
 
         $this->assertEquals(1, count($allDuplicateUsers), 'there is only one duplicate user');
         $this->assertEquals(2, count($allDuplicateUsers[$keys[0]]), 'there is user data for both duplicates');
         $this->assertEquals($allDuplicateUsers[$keys[0]][0]->fullname(), $allDuplicateUsers[$keys[0]][1]->fullname(), 'make sure that the names are the same between the two');
+    }
+
+    public function testHasSignedUpForVolunteerEvent()
+    {
+        // create user and event
+        $user = factory(User::class)->create();
+        $volunteerEvent = factory(VolunteerEvent::class)->create();
+        $this->assertFalse($user->hasSignedUpForVolunteerEvent($volunteerEvent->id), 'the user is not signed up');
+
+        // sign user up
+        $user->volunteer()->save(factory(Volunteer::class)->make(['user_id' => $user->id]));
+        factory(VolunteerEventSignup::class)->create([
+            'volunteer_event_id' => $volunteerEvent->id,
+            'volunteer_id' => $user->volunteer()->first()->id,
+        ]);
+        $this->assertTrue($user->hasSignedUpForVolunteerEvent($volunteerEvent->id), 'the user is now signed up');
+    }
+
+    public function testFetchAllLeagues()
+    {
+        $user = factory(User::class)->create();
+
+
+        // make user a member of a league
+        $leagueMember = factory(LeagueMember::class)->create([
+            'user_id' => $user->id,
+            'position' => 'player',
+        ]);
+
+        // make league registrations as it is needed
+        factory(LeagueRegistration::class)->create([
+            'league_id' => $leagueMember->league->id,
+        ]);
+
+        // should have one league now
+        $this->assertEquals(1, $user->fetchAllLeagues()->count(), 'it returns one league');
+    }
+
+    public function testIsLeagueMember()
+    {
+        $user = factory(User::class)->create();
+
+        // make user a member of a league
+        $leagueMember = factory(LeagueMember::class)->create([
+            'user_id' => $user->id,
+            'position' => 'player',
+        ]);
+
+        $this->assertTrue($user->isLeagueMember($leagueMember->league->id, 'player'), 'user is a player in the league');
+        $this->assertFalse($user->isLeagueMember($leagueMember->league->id, 'director'), 'user is not a director in the league');
     }
 }

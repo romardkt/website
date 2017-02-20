@@ -15,7 +15,7 @@ echo "Done."
 php artisan key:generate
 php artisan env
 php artisan migrate:refresh
-php vendor/bin/phpunit && php coverage-checker.php tests/clover.xml 15
+php vendor/bin/phpunit && php coverage-checker.php tests/clover.xml 4.39
 
 if [ -f ".env.bak" ];then
   printf "Restoring original environment..."
