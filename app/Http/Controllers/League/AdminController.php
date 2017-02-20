@@ -4,7 +4,7 @@ namespace Cupa\Http\Controllers\League;
 
 use Cupa\Http\Controllers\Controller;
 use Cupa\Http\Requests\LeagueAddRequest;
-use Cupa\League;
+use Cupa\Models\League;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;

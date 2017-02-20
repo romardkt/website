@@ -5,7 +5,7 @@ namespace Cupa\Console\Commands;
 use DB;
 use Log;
 use Mail;
-use Cupa\User;
+use Cupa\Models\User;
 use Cupa\Mail\InactiveReport;
 use Illuminate\Console\Command;
 

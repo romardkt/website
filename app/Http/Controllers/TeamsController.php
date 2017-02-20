@@ -2,9 +2,9 @@
 
 namespace Cupa\Http\Controllers;
 
-use Cupa\Page;
-use Cupa\Team;
-use Cupa\TeamMember;
+use Cupa\Models\Page;
+use Cupa\Models\Team;
+use Cupa\Models\TeamMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Auth;

@@ -3,8 +3,8 @@ namespace CupaTest\Models;
 
 use App;
 use Config;
-use Cupa\User;
-use Cupa\UserMedicalRelease;
+use Cupa\Models\User;
+use Cupa\Models\UserMedicalRelease;
 use CupaTest\TestCase as BaseTest;
 use \Illuminate\Foundation\Testing\WithoutMiddleware;
 // use \Illuminate\Foundation\Testing\DatabaseMigrations;

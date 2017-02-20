@@ -2,7 +2,7 @@
 
 namespace Cupa\Http\Controllers;
 
-use Cupa\CupaForm;
+use Cupa\Models\CupaForm;
 use Illuminate\Support\Facades\Session;
 
 class FormController extends Controller

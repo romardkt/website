@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Config;
 |
 */
 
-$factory->define(Cupa\User::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
@@ -36,10 +36,10 @@ $factory->define(Cupa\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Cupa\UserProfile::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\UserProfile::class, function (Faker\Generator $faker) {
     return [
         'user_id' => function() {
-            return factory(Cupa\User::class)->create()->id;
+            return factory(Cupa\Models\User::class)->create()->id;
         },
         'phone' => $faker->regexify('[0-9]{3}-[0-9]{3}-[0-9]{4}'),
         'nickname' => $faker->name,
@@ -49,12 +49,12 @@ $factory->define(Cupa\UserProfile::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Cupa\UserBalance::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\UserBalance::class, function (Faker\Generator $faker) {
     return [
     ];
 });
 
-$factory->define(Cupa\UserRequirement::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\UserRequirement::class, function (Faker\Generator $faker) {
     $requirements = Config::get('cupa.coachingRequirements');
     $reqs = [];
 
@@ -65,56 +65,56 @@ $factory->define(Cupa\UserRequirement::class, function (Faker\Generator $faker) 
     return [
         'year' => date('Y') - $faker->numberBetween($min = 0, $max = 5),
         'user_id' => function() {
-            return factory(Cupa\User::class)->create()->id;
+            return factory(Cupa\Models\User::class)->create()->id;
         },
         'requirements' => json_encode($reqs),
     ];
 });
 
-$factory->define(Cupa\Role::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\Role::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->randomElement(['admin', 'manager', 'editor', 'reporter', 'background', 'volunteer']),
     ];
 });
 
-$factory->define(Cupa\UserRole::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\UserRole::class, function (Faker\Generator $faker) {
     return [
         'user_id' => function() {
-            return factory(Cupa\User::class)->create()->id;
+            return factory(Cupa\Models\User::class)->create()->id;
         },
         'role_id' => function() {
-            return factory(Cupa\Role::class)->create()->id;
+            return factory(Cupa\Models\Role::class)->create()->id;
         },
     ];
 });
 
-$factory->define(Cupa\UserWaiver::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\UserWaiver::class, function (Faker\Generator $faker) {
     return [
         'year' => date('Y') - $faker->numberBetween($min = 0, $max = 5),
     ];
 });
 
-$factory->define(Cupa\UserContact::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\UserContact::class, function (Faker\Generator $faker) {
     return [
         'user_id' => function() {
-            return factory(Cupa\User::class)->create()->id;
+            return factory(Cupa\Models\User::class)->create()->id;
         },
         'name' => $faker->name,
         'phone' => $faker->regexify('[0-9]{3}-[0-9]{3}-[0-9]{4}'),
     ];
 });
 
-$factory->define(Cupa\VolunteerEventCategory::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\VolunteerEventCategory::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->unique()->randomElement(['Tournaments', 'Clinics/Camps', 'Leagues', 'Youth Ultimate of Cincinnati', 'US Open']),
         'questions' => '[{"type":"checkboxes","name":"area","title":"In what area would you like to help?","answers":{"boy_scouts":"Boy Scouts","girl_scouts":"Girl Scouts","schools":"Elementary\/Middle Schools","other":"Other"},"required":true},{"type":"textarea","name":"other","title":"Please explain other","required":false},{"type":"checkboxes","name":"available","title":"What time of day are you available?","answers":{"morning":"Morning (Before 12:00pm)","afternoon":"Afternoon (Post 12:00pm)","evening":"Evening (Post 5:00pm)"},"required":true},{"type":"checkboxes","name":"area_town","title":"What area of town would you be willing to help out in?","answers":{"north":"North","east":"East","south":"South","west":"West"},"required":true}]',
     ];
 });
 
-$factory->define(Cupa\Volunteer::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\Volunteer::class, function (Faker\Generator $faker) {
     return [
         'user_id' => function() {
-            return factory(Cupa\User::class)->create()->id;
+            return factory(Cupa\Models\User::class)->create()->id;
         },
         'involvement' => $faker->randomElement(Config::get('cupa.volunteer.involvement')),
         'primary_interest' => $faker->randomElement(Config::get('cupa.volunteer.primary_interest')),
@@ -123,12 +123,12 @@ $factory->define(Cupa\Volunteer::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Cupa\VolunteerEvent::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\VolunteerEvent::class, function (Faker\Generator $faker) {
     $title = $faker->catchPhrase();
 
     return [
         'volunteer_event_category_id' => function() {
-            return factory(Cupa\VolunteerEventCategory::class)->create()->id;
+            return factory(Cupa\Models\VolunteerEventCategory::class)->create()->id;
         },
         'title' => $title,
         'slug' => str_slug($title),
@@ -138,36 +138,36 @@ $factory->define(Cupa\VolunteerEvent::class, function (Faker\Generator $faker) {
         'num_volunteers' => $faker->numberBetween($min = 4, $max = 20),
         'information' => $faker->paragraph(),
         'location_id' => function() {
-            return factory(Cupa\Location::class)->create()->id;
+            return factory(Cupa\Models\Location::class)->create()->id;
         },
     ];
 });
 
-$factory->define(Cupa\VolunteerEventSignup::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\VolunteerEventSignup::class, function (Faker\Generator $faker) {
     return [
         'volunteer_event_id' => function() {
-            return factory(Cupa\VolunteerEvent::class)->create()->id;
+            return factory(Cupa\Models\VolunteerEvent::class)->create()->id;
         },
         'volunteer_id' => function() {
-            return factory(Cupa\Volunteer::class)->create()->id;
+            return factory(Cupa\Models\Volunteer::class)->create()->id;
         },
         'answers' => '{}',
         'notes' => null,
     ];
 });
 
-$factory->define(Cupa\VolunteerEventContact::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\VolunteerEventContact::class, function (Faker\Generator $faker) {
     return [
         'volunteer_event_id' => function() {
-            return factory(Cupa\VolunteerEvent::class)->create()->id;
+            return factory(Cupa\Models\VolunteerEvent::class)->create()->id;
         },
         'user_id' => function() {
-            return factory(Cupa\User::class)->create()->id;
+            return factory(Cupa\Models\User::class)->create()->id;
         },
     ];
 });
 
-$factory->define(Cupa\Clinic::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\Clinic::class, function (Faker\Generator $faker) {
     return [
         'type' => 'youth',
         'name' => str_replace(' ', '_', $faker->words($nb = 3, $asText = true)),
@@ -176,7 +176,7 @@ $factory->define(Cupa\Clinic::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Cupa\Form::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\Form::class, function (Faker\Generator $faker) {
     $name = str_replace(' ', '_', $faker->words($nb = 3, $asText = true));
     $extension = $faker->randomElement(['pdf', 'docx', 'doc', 'xls', 'xlsx']);
     $year = date('Y') - $faker->numberBetween($min = 0, $max = 5);
@@ -200,7 +200,7 @@ $factory->define(Cupa\Form::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Cupa\Location::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\Location::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->company,
         'street' => $faker->streetAddress,
@@ -211,7 +211,7 @@ $factory->define(Cupa\Location::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Cupa\Tournament::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\Tournament::class, function (Faker\Generator $faker) {
     $year = date('Y') - $faker->numberBetween($min = 0, $max = 3);
     $startDay = $faker->numberBetween($min = 1, $max = 20);
     $startMonth = $faker->numberBetween($min = 1, $max = 12);
@@ -225,7 +225,7 @@ $factory->define(Cupa\Tournament::class, function (Faker\Generator $faker) {
         'image' => '/data/tournaments/default.jpg',
         'divisions' => json_encode($faker->randomElements($array = ['open', 'womens', 'mixed', 'youth_open', 'youth_womens'], $count = $faker->numberBetween($min = 1, $max = 3))),
         'location_id' => function() {
-            return factory(Cupa\Location::class)->create()->id;
+            return factory(Cupa\Models\Location::class)->create()->id;
         },
         'start' => date('Y-m-d', strtotime($year.'-'.$startMonth.'-'.$startDay)),
         'end' => date('Y-m-d', strtotime($year.'-'.$startMonth.'-'.$startDay + 2)),
@@ -243,7 +243,7 @@ $factory->define(Cupa\Tournament::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Cupa\Page::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\Page::class, function (Faker\Generator $faker) {
     $slug = str_slug($faker->words($nb = 2, $asText = true));
 
     return [
@@ -253,15 +253,15 @@ $factory->define(Cupa\Page::class, function (Faker\Generator $faker) {
         'is_visible' => 1,
         'weight' => $faker->randomDigitNotNull,
         'created_by' => function() {
-            return factory(Cupa\User::class)->create()->id;
+            return factory(Cupa\Models\User::class)->create()->id;
         },
         'updated_by' => function() {
-            return factory(Cupa\User::class)->create()->id;
+            return factory(Cupa\Models\User::class)->create()->id;
         },
     ];
 });
 
-$factory->define(Cupa\File::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\File::class, function (Faker\Generator $faker) {
     $file = str_replace('-', '_', str_slug($faker->words($nb = 2, $asText = true)));
     $data = public_path().'/upload/'.$file.'.'.$faker->fileExtension;
 
@@ -274,20 +274,20 @@ $factory->define(Cupa\File::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Cupa\UserMedicalRelease::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\UserMedicalRelease::class, function (Faker\Generator $faker) {
     return [
         'user_id' => function() {
-            return factory(Cupa\User::class)->create()->id;
+            return factory(Cupa\Models\User::class)->create()->id;
         },
         'year' => $faker->numberBetween($min=date('Y'), $max=date('Y') - 2),
         'data' => '{"ice2_name":"Family Member 1","ice2_email":"fm1@example.com","ice2_phone":"513-555-5555","ice3_name":"Family Member 2","ice3_phone":"513-555-5555","physician_name":"My Physician","physician_phone":"513-555-5555","medical_history":"None"}',
         'updated_by' => function() {
-            return factory(Cupa\User::class)->create()->id;
+            return factory(Cupa\Models\User::class)->create()->id;
         },
     ];
 });
 
-$factory->define(Cupa\League::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\League::class, function (Faker\Generator $faker) {
     return [
         'type' => 'league',
         'year' => $faker->year,
@@ -308,10 +308,10 @@ $factory->define(Cupa\League::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Cupa\LeagueTeam::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\LeagueTeam::class, function (Faker\Generator $faker) {
     return [
         'league_id' => function() {
-            return factory(Cupa\League::class)->create()->id;
+            return factory(Cupa\Models\League::class)->create()->id;
         },
         'name' => $faker->company,
         'logo' => $faker->imageUrl(),
@@ -320,31 +320,31 @@ $factory->define(Cupa\LeagueTeam::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Cupa\LeagueMember::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\LeagueMember::class, function (Faker\Generator $faker) {
     return [
         'league_id' => function() {
-            return factory(Cupa\League::class)->create()->id;
+            return factory(Cupa\Models\League::class)->create()->id;
         },
         'user_id' => function() {
-            return factory(Cupa\User::class)->create()->id;
+            return factory(Cupa\Models\User::class)->create()->id;
         },
         'requirements' => null,
         'position' => $faker->randomElement(['directory', 'captain', 'coach', 'assistant_coach', 'player']),
         'league_team_id' => function() {
-            return factory(Cupa\LeagueTeam::class)->create()->id;
+            return factory(Cupa\Models\LeagueTeam::class)->create()->id;
         },
         'paid' => $faker->boolean,
         'answers' => '{}',
         'updated_by' => function() {
-            return factory(Cupa\User::class)->create()->id;
+            return factory(Cupa\Models\User::class)->create()->id;
         },
     ];
 });
 
-$factory->define(Cupa\LeagueRegistration::class, function (Faker\Generator $faker) {
+$factory->define(Cupa\Models\LeagueRegistration::class, function (Faker\Generator $faker) {
     return [
         'league_id' => function() {
-            return factory(Cupa\League::class)->create()->id;
+            return factory(Cupa\Models\League::class)->create()->id;
         },
         'begin' => $faker->dateTimeBetween($startDate = '-5 months', $endDate = '-2 days'),
         'end' => $faker->dateTimeBetween($startDate = '+2 days', $endDate = '+5 months'),

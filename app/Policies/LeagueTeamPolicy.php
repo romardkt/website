@@ -3,8 +3,8 @@
 namespace Cupa\Policies;
 
 
-use Cupa\User;
-use Cupa\LeagueTeam;
+use Cupa\Models\User;
+use Cupa\Models\LeagueTeam;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class LeagueTeamPolicy extends CachedPolicy

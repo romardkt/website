@@ -2,8 +2,9 @@
 
 namespace Cupa\Console\Commands;
 
+use App;
 use Mail;
-use Cupa\User;
+use Cupa\Models\User;
 use Cupa\Mail\ConvertMinor;
 use Illuminate\Console\Command;
 
@@ -40,13 +41,27 @@ class NotifyParentsOfMinorAccount extends Command
      */
     public function handle()
     {
+        $persistFile = storage_path().'/app/minor-notifications.txt';
+
+        // check for file and notify if file is not present.
+        if (!file_exists($persistFile)) {
+            if (!$this->confirm('Are you sure, there is no file to check notifications?')) {
+                $this->warn('User aborted');
+                exit(1);
+            }
+            file_put_contents($persistFile, json_encode(['notification-version' => '1.0']));
+        }
+
+        $currentData = json_decode(file_get_contents($persistFile), true);
+
+        // check for file and notify if file is empty.
         $minors = User::whereNotNull('parent')->get();
 
         $parentsToNotify = [];
 
         // build the array of parents to notify
         foreach ($minors as $minor) {
-            if ($minor->getAge() >= 18) {
+            if ($minor->getAge() >= 18 && !isset($currentData[$minor->id])) {
                 if (isset($parentsToNotify[$minor->parent])) {
                     $parentsToNotify[$minor->parent]['minors'][] = $minor;
                 } else {
@@ -55,14 +70,28 @@ class NotifyParentsOfMinorAccount extends Command
                         'minors' => [$minor],
                     ];
                 }
+
+                $currentData[$minor->id] = true;
             }
         }
 
         // send the emails
         foreach ($parentsToNotify as $data) {
             $this->info("Sending email to {$data['parent']->email}");
-            Mail::to('webmaster@cincyultimate.org')
-                ->send(new ConvertMinor($data));
+            if (App::environment() == 'prod') {
+                Mail::to($data['parent']->email)
+                    ->bcc('webmaster@cincyultimate.org')
+                    ->send(new ConvertMinor($data));
+            } else {
+                Mail::to('webmaster@cincyultimate.org')
+                    ->send(new ConvertMinor($data));
+            }
         }
+
+        if (count($parentsToNotify) < 1) {
+            $this->info('There are no parents to notify at this time.');
+        }
+
+        file_put_contents($persistFile, json_encode($currentData));
     }
 }

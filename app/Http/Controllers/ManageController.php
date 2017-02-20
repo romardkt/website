@@ -3,16 +3,16 @@
 namespace Cupa\Http\Controllers;
 
 use DateTime;
-use Cupa\File;
-use Cupa\User;
-use Cupa\League;
+use Cupa\Models\File;
+use Cupa\Models\User;
+use Cupa\Models\League;
 use Carbon\Carbon;
-use Cupa\CupaForm;
-use Cupa\Volunteer;
-use Cupa\UserBalance;
-use Cupa\LeagueTeam;
-use Cupa\LeagueMember;
-use Cupa\LeagueLocation;
+use Cupa\Models\CupaForm;
+use Cupa\Models\Volunteer;
+use Cupa\Models\UserBalance;
+use Cupa\Models\LeagueTeam;
+use Cupa\Models\LeagueMember;
+use Cupa\Models\LeagueLocation;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;

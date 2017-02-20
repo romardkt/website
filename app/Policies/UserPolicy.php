@@ -2,8 +2,8 @@
 
 namespace Cupa\Policies;
 
-use Cupa\User;
-use Cupa\LeagueMember;
+use Cupa\Models\User;
+use Cupa\Models\LeagueMember;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy

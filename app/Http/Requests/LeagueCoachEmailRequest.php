@@ -2,7 +2,7 @@
 
 namespace Cupa\Http\Requests;
 
-use Cupa\League;
+use Cupa\Models\League;
 use Illuminate\Support\Facades\Gate;
 
 class LeagueCoachEmailRequest extends Request

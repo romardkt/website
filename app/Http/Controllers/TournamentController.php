@@ -2,12 +2,12 @@
 
 namespace Cupa\Http\Controllers;
 
-use Cupa\Location;
-use Cupa\Tournament;
-use Cupa\TournamentFeed;
-use Cupa\TournamentTeam;
-use Cupa\TournamentMember;
-use Cupa\TournamentLocation;
+use Cupa\Models\Location;
+use Cupa\Models\Tournament;
+use Cupa\Models\TournamentFeed;
+use Cupa\Models\TournamentTeam;
+use Cupa\Models\TournamentMember;
+use Cupa\Models\TournamentLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;

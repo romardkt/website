@@ -3,7 +3,7 @@
 namespace Cupa\Http\Controllers;
 
 use Cupa\Http\Requests\PostAddEditRequest;
-use Cupa\Post;
+use Cupa\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;

@@ -2,8 +2,8 @@
 
 namespace Cupa\Policies;
 
-use Cupa\User;
-use Cupa\VolunteerEvent;
+use Cupa\Models\User;
+use Cupa\Models\VolunteerEvent;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class VolunteerEventPolicy extends CachedPolicy

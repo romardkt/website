@@ -2,12 +2,12 @@
 
 namespace Cupa\Http\Controllers;
 
-use Cupa\Clinic;
+use Cupa\Models\Clinic;
 use Cupa\Http\Requests\ClinicEditRequest;
 use Cupa\Http\Requests\PageEditRequest;
-use Cupa\League;
-use Cupa\Page;
-use Cupa\Tournament;
+use Cupa\Models\League;
+use Cupa\Models\Page;
+use Cupa\Models\Tournament;
 use Illuminate\Support\Facades\Session;
 
 class YouthController extends Controller

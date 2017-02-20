@@ -2,9 +2,9 @@
 
 namespace Cupa\Http\Controllers;
 
-use Cupa\League;
-use Cupa\LeagueMember;
-use Cupa\User;
+use Cupa\Models\League;
+use Cupa\Models\LeagueMember;
+use Cupa\Models\User;
 use Illuminate\Http\Request;
 
 class TypeaheadController extends Controller

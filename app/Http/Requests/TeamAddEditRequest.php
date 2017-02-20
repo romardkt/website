@@ -2,7 +2,7 @@
 
 namespace Cupa\Http\Requests;
 
-use Cupa\Team;
+use Cupa\Models\Team;
 use Illuminate\Support\Facades\Gate;
 
 class TeamAddEditRequest extends Request

@@ -3,7 +3,7 @@
 namespace Cupa\Http\Requests;
 
 use Gate;
-use Cupa\League;
+use Cupa\Models\League;
 
 class LeagueEditRequest extends Request
 {

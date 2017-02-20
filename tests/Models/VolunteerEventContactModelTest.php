@@ -2,9 +2,9 @@
 namespace CupaTest\Models;
 
 use App;
-use Cupa\User;
-use Cupa\VolunteerEvent;
-use Cupa\VolunteerEventContact;
+use Cupa\Models\User;
+use Cupa\Models\VolunteerEvent;
+use Cupa\Models\VolunteerEventContact;
 use CupaTest\TestCase as BaseTest;
 use \Illuminate\Foundation\Testing\WithoutMiddleware;
 // use \Illuminate\Foundation\Testing\DatabaseMigrations;

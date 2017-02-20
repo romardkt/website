@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => Cupa\User::class,
+            'model' => Cupa\Models\User::class,
         ],
 
         // 'users' => [

@@ -2,8 +2,8 @@
 
 namespace Cupa\Policies;
 
-use Cupa\User;
-use Cupa\Officer;
+use Cupa\Models\User;
+use Cupa\Models\Officer;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class OfficerPolicy extends CachedPolicy

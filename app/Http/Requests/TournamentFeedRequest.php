@@ -2,7 +2,7 @@
 
 namespace Cupa\Http\Requests;
 
-use Cupa\Tournament;
+use Cupa\Models\Tournament;
 use Illuminate\Support\Facades\Gate;
 
 class TournamentFeedRequest extends Request

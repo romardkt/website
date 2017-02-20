@@ -2,8 +2,8 @@
 
 namespace Cupa\Policies;
 
-use Cupa\User;
-use Cupa\Pickup;
+use Cupa\Models\User;
+use Cupa\Models\Pickup;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PickupPolicy extends CachedPolicy

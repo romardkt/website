@@ -2,8 +2,8 @@
 
 namespace Cupa\Policies;
 
-use Cupa\User;
-use Cupa\Team;
+use Cupa\Models\User;
+use Cupa\Models\Team;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TeamPolicy extends CachedPolicy

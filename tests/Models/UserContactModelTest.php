@@ -3,8 +3,8 @@ namespace CupaTest\Models;
 
 use App;
 use Config;
-use Cupa\User;
-use Cupa\UserContact;
+use Cupa\Models\User;
+use Cupa\Models\UserContact;
 use CupaTest\TestCase as BaseTest;
 use \Illuminate\Foundation\Testing\WithoutMiddleware;
 // use \Illuminate\Foundation\Testing\DatabaseMigrations;

@@ -29,13 +29,6 @@
             <h4 style="margin-top: 0; margin-bottom: 0; color: inherit;">Payment/Waiver</h4>
             <p style="margin-bottom: 0; margin-top: 0;">If you are not paying or signing your waiver on-line be sure to bring them both with you on the first night.  If you do not you risk not being allowed to play.</p>
         </div>
-        <p style="margin: 20px 0;">
-            <br/>
-            <hr style="height: 0;-moz-box-sizing: content-box;box-sizing: content-box;margin-top: 20px;margin-bottom: 20px;border: 0;border-top: 1px solid #eee;"/>
-            <em>
-                This is an automated message from <a href="https://cincyultimate.org">https://cincyultimate.org</a>.<br/>
-                You may contact the webmaster at <a href="mailto:webmaster@cincyultimate.org">webmaster@cincyultimate.org</a>
-            </em>
-        </p>
+        @include('emails.footer')
     </body>
 </html>

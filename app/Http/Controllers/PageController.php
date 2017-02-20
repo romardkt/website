@@ -2,20 +2,20 @@
 
 namespace Cupa\Http\Controllers;
 
-use Cupa\Page;
-use Cupa\Post;
-use Cupa\User;
-use Cupa\League;
-use Cupa\Paypal;
-use Cupa\Pickup;
-use Cupa\CupaForm;
-use Cupa\Location;
-use Cupa\LeagueGame;
-use Cupa\Tournament;
-use Cupa\LeagueMember;
+use Cupa\Models\Page;
+use Cupa\Models\Post;
+use Cupa\Models\User;
+use Cupa\Models\League;
+use Cupa\Models\Paypal;
+use Cupa\Models\Pickup;
+use Cupa\Models\CupaForm;
+use Cupa\Models\Location;
+use Cupa\Models\LeagueGame;
+use Cupa\Models\Tournament;
+use Cupa\Models\LeagueMember;
 use Cupa\PaypalPayment;
-use Cupa\TournamentTeam;
-use Cupa\UserMedicalRelease;
+use Cupa\Models\TournamentTeam;
+use Cupa\Models\UserMedicalRelease;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\App;

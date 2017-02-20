@@ -4,12 +4,12 @@ namespace Cupa\Http\Controllers;
 
 use Cupa\Http\Requests\PickupAddEditRequest;
 use Cupa\Http\Requests\TournamentAddRequest;
-use Cupa\Location;
-use Cupa\Page;
-use Cupa\Pickup;
-use Cupa\PickupContact;
-use Cupa\Tournament;
-use Cupa\TournamentMember;
+use Cupa\Models\Location;
+use Cupa\Models\Page;
+use Cupa\Models\Pickup;
+use Cupa\Models\PickupContact;
+use Cupa\Models\Tournament;
+use Cupa\Models\TournamentMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;

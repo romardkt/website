@@ -6,7 +6,7 @@ use View;
 use Request;
 use Session;
 use Closure;
-use Cupa\Page;
+use Cupa\Models\Page;
 
 class Setup
 {

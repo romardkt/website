@@ -11,12 +11,27 @@
         </p>
 
         <p style="margin: 20px 0;">
-            <br/>
-            <hr style="height: 0;-moz-box-sizing: content-box;box-sizing: content-box;margin-top: 20px;margin-bottom: 20px;border: 0;border-top: 1px solid #eee;"/>
-            <em>
-                This is an automated message from <a href="https://cincyultimate.org">https://cincyultimate.org</a>.<br/>
-                You may contact the webmaster at <a href="mailto:webmaster@cincyultimate.org">webmaster@cincyultimate.org</a>
-            </em>
+           You have some minor accounts that are now 18 years of age and can be moved into their own account if you would like.
+           All you would need is an email to use for the new account.
         </p>
+
+        <p style="margin: 20px 0;">
+          <p>Here are the minors that are affected:</p>
+          <ul>
+            @foreach($minors as $minor)
+            <li>{{$minor->fullname()}}</li>
+            @endforeach
+          </ul>
+        </p>
+
+        <p style="margin: 20px 0;">
+            You can click here to see and act on the minors:<br/>
+            <a href="{{Config::get('app.url')}}/profile/minors">{{Config::get('app.url')}}/profile/minors</a>
+        </p>
+
+        <p style="margin: 20px 0;">
+            Thanks.
+        </p>
+        @include('emails.footer')
     </body>
 </html>

@@ -2,11 +2,11 @@
 
 namespace Cupa\Http\Controllers;
 
-use Cupa\User;
+use Cupa\Models\User;
 use Carbon\Carbon;
-use Cupa\EmailList;
-use Cupa\Volunteer;
-use Cupa\UserProfile;
+use Cupa\Models\EmailList;
+use Cupa\Models\Volunteer;
+use Cupa\Models\UserProfile;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\URL;
 use Cupa\Http\Requests\LoginRequest;

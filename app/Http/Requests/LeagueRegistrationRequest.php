@@ -2,8 +2,8 @@
 
 namespace Cupa\Http\Requests;
 
-use Cupa\League;
-use Cupa\LeagueQuestion;
+use Cupa\Models\League;
+use Cupa\Models\LeagueQuestion;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 

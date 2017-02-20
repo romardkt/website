@@ -2,8 +2,8 @@
 
 namespace Cupa\Policies;
 
-use Cupa\User;
-use Cupa\Tournament;
+use Cupa\Models\User;
+use Cupa\Models\Tournament;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TournamentPolicy extends CachedPolicy

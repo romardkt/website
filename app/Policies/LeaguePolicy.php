@@ -2,8 +2,8 @@
 
 namespace Cupa\Policies;
 
-use Cupa\User;
-use Cupa\League;
+use Cupa\Models\User;
+use Cupa\Models\League;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class LeaguePolicy extends CachedPolicy

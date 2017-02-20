@@ -2,7 +2,7 @@
 
 namespace Cupa\Http\Requests;
 
-use Cupa\Post;
+use Cupa\Models\Post;
 use Gate;
 
 class PostAddEditRequest extends Request
