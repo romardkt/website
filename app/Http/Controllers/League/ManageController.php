@@ -612,8 +612,9 @@ class ManageController extends Controller
         return redirect()->route('league_players');
     }
 
-    public function status($slug, $all = false)
+    public function status(Request $request, $slug, $all = false)
     {
+        $print = $request->has('print');
         $league = League::fetchBySlug($slug);
         $this->authorize('edit', $league);
         if (!$league) {
@@ -630,6 +631,10 @@ class ManageController extends Controller
         }
 
         Session::put('waiver_redirect', route('home'));
+
+        if ($print) {
+            return view('leagues.manage.status_printable', compact('league', 'statuses', 'all'));
+        }
 
         return view('leagues.manage.status', compact('league', 'statuses', 'all'));
     }

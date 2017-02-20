@@ -16,6 +16,7 @@
     </div>
     <div class="col-xs-6 text-right">
         <div class="btn-group">
+            <a class="btn btn-default" href="{{ route('league_status', [$league->slug, 'all']) }}?print=true"><i class="fa fa-fw fa-lg fa-print"></i> Printable</a>
             <a class="btn btn-default" href="{{ route('league_status_download', [$league->slug, ($all === false) ? 'outstanding' : 'all']) }}"><i class="fa fa-fw fa-lg fa-list"></i> Export</a>
         </div>
     </div>
