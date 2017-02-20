@@ -572,28 +572,32 @@ class ManageController extends Controller
                         continue;
                     }
 
-                    switch ($questionObject->type) {
-                        case 'boolean':
-                            if (is_numeric($player['answers'][$questionObject->name])) {
-                                $line[] = ($player['answers'][$questionObject->name] == 1) ? 'Yes' : 'No';
-                            } else {
-                                $line[] = $player['answers'][$questionObject->name];
-                            }
-                            break;
-                        case 'multiple-check':
-                            if (isset($player['answers'][$questionObject->name])) {
-                                $line[] = implode(', ', $player['answers'][$questionObject->name]);
-                            } else {
-                                $line[] = 'Unknown';
-                            }
-                            break;
-                        default:
-                            if (isset($player['answers'][$questionObject->name])) {
-                                $line[] = $player['answers'][$questionObject->name];
-                            } else {
-                                $line[] = 'Unknown';
-                            }
-                            break;
+                    if (isset($player['answers'][$questionObject->name])) {
+                        switch ($questionObject->type) {
+                            case 'boolean':
+                                if (is_numeric($player['answers'][$questionObject->name])) {
+                                    $line[] = ($player['answers'][$questionObject->name] == 1) ? 'Yes' : 'No';
+                                } else {
+                                    $line[] = $player['answers'][$questionObject->name];
+                                }
+                                break;
+                            case 'multiple-check':
+                                if (isset($player['answers'][$questionObject->name])) {
+                                    $line[] = implode(', ', $player['answers'][$questionObject->name]);
+                                } else {
+                                    $line[] = 'Unknown';
+                                }
+                                break;
+                            default:
+                                if (isset($player['answers'][$questionObject->name])) {
+                                    $line[] = $player['answers'][$questionObject->name];
+                                } else {
+                                    $line[] = 'Unknown';
+                                }
+                                break;
+                        }
+                    } else {
+                        $line[] = 'Unknown';
                     }
                 }
                 fputcsv($fp, $line);
