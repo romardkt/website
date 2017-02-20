@@ -25,6 +25,9 @@ class WaiverRequest extends Request
     public function rules()
     {
         $user = $this->route('user');
+        if (!$user) {
+            $user = Auth::user();
+        }
 
         if ($user->getAge() < 18) {
             return [
