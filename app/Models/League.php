@@ -207,7 +207,8 @@ class League extends Model
         // if the user is not a manager
         if (Gate::denies('is-manager')) {
             $select->where(function ($query) use ($now) {
-                $query->whereIn('lm.user_id', Auth::user()->fetchAllIds())
+                $ids = (Auth::id()) ? Auth::user()->fetchAllIds() : Auth::id();
+                $query->whereIn('lm.user_id', $ids)
                     ->orWhere(function ($query2) use ($now) {
                         $query2->where('l.is_archived', '=', 0)
                             ->whereNotNull('l.date_visible')
