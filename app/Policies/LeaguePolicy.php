@@ -13,6 +13,10 @@ class LeaguePolicy extends CachedPolicy
     protected $globalPerms = ['admin', 'manager'];
     private function isAuthorized(User $user, League $league)
     {
+        if ($user->parent !== null) {
+            $user = $user->parentObject;
+        }
+
         return $this->remember("league-auth-{$user->id}-{$league->id}", function () use ($user, $league) {
             $roles = $user->roles();
             foreach ($roles->get() as $role) {
@@ -21,7 +25,9 @@ class LeaguePolicy extends CachedPolicy
                 }
             }
 
-            return $league->directors()->contains('user_id', $user->id);
+            return $league->directors()->contains(function($value, $key) use ($user) {
+                return in_array($value['user_id'], $user->fetchAllIds());
+            });
         });
     }
 
@@ -36,9 +42,17 @@ class LeaguePolicy extends CachedPolicy
 
     public function coach(User $user, League $league)
     {
+        if ($user->parent !== null) {
+            $user = $user->parentObject;
+        }
+
         return $this->remember("league-coach-{$user->id}-{$league->id}", function () use ($user, $league) {
             if ($league->is_youth) {
-                if ($league->coaches()->contains('user_id', $user->id)) {
+                $isCoach = $league->coaches()->contains(function($value, $key) use ($user) {
+                    return in_array($value['user_id'], $user->fetchAllIds());
+                });
+
+                if ($isCoach) {
                     return true;
                 }
 

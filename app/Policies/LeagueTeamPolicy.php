@@ -15,6 +15,10 @@ class LeagueTeamPolicy extends CachedPolicy
 
     private function isAuthorized(User $user, LeagueTeam $leagueTeam)
     {
+        if ($user->parent !== null) {
+            $user = $user->parentObject;
+        }
+
         return $this->remember("leagueTeam-auth-{$user->id}-{$leagueTeam->id}", function() use ($user, $leagueTeam) {
             $roles = $user->roles();
             foreach ($roles->get() as $role) {
@@ -23,19 +27,33 @@ class LeagueTeamPolicy extends CachedPolicy
                 }
             }
 
-            return $leagueTeam->league->directors()->contains('user_id', $user->id);
+            return $leagueTeam->league->directors()->contains(function($value, $key) use ($user) {
+                return in_array($value['user_id'], $user->fetchAllIds());
+            });
         });
     }
 
     public function coach(User $user, LeagueTeam $leagueTeam)
     {
+        if ($user->parent !== null) {
+            $user = $user->parentObject;
+        }
+
         return $this->remember("leagueTeam-coach-{$user->id}-{$leagueTeam->id}", function() use ($user, $leagueTeam) {
             if ($leagueTeam->league->is_youth) {
-                if ($leagueTeam->coaches()->contains('user_id', $user->id)) {
+                $isCoach = $leagueTeam->coaches()->contains(function($value, $key) use ($user) {
+                    return in_array($value['user_id'], $user->fetchAllIds());
+                });
+
+                if ($isCoach) {
                     return true;
                 }
             } else {
-                if ($leagueTeam->captains()->contains('user_id', $user->id)) {
+                $isCaptain = $leagueTeam->captains()->contains(function($value, $key) use ($user) {
+                    return in_array($value['user_id'], $user->fetchAllIds());
+                });
+
+                if ($isCaptain) {
                     return true;
                 }
             }

@@ -14,6 +14,10 @@ class PickupPolicy extends CachedPolicy
 
     private function isAuthorized(User $user, Pickup $pickup)
     {
+        if ($user->parent !== null) {
+            $user = $user->parentObject;
+        }
+
         return $this->remember("pickup-auth-{$user->id}-{$pickup->id}", function() use ($user, $pickup) {
             $roles = $user->roles();
             foreach ($roles->get() as $role) {
@@ -22,7 +26,9 @@ class PickupPolicy extends CachedPolicy
                 }
             }
 
-            return $pickup->contacts->contains('user_id', $user->id);
+            return $pickup->contacts->contains(function($value, $key) use ($user) {
+                return in_array($value['user_id'], $user->fetchAllIds());
+            });
         });
     }
 

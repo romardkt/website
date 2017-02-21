@@ -14,6 +14,10 @@ class VolunteerEventPolicy extends CachedPolicy
 
     private function isAuthorized(User $user, VolunteerEvent $volunteerEvent)
     {
+        if ($user->parent !== null) {
+            $user = $user->parentObject;
+        }
+
         return $this->remember("volunteerEvent-auth-{$user->id}-{$volunteerEvent->id}", function() use ($user, $volunteerEvent) {
             $roles = $user->roles();
             foreach ($roles->get() as $role) {
@@ -22,7 +26,9 @@ class VolunteerEventPolicy extends CachedPolicy
                 }
             }
 
-            return $volunteerEvent->contacts->contains('user_id', $user->id);
+            return $volunteerEvent->contacts->contains(function($value, $key) use ($user) {
+                return in_array($value['user_id'], $user->fetchAllIds());
+            });
         });
     }
 

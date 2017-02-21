@@ -14,6 +14,10 @@ class TournamentPolicy extends CachedPolicy
 
     private function isAuthorized(User $user, Tournament $tournament)
     {
+        if ($user->parent !== null) {
+            $user = $user->parentObject;
+        }
+
         return $this->remember("tournament-auth-{$user->id}-{$tournament->id}", function() use ($user, $tournament) {
             $roles = $user->roles();
             foreach ($roles->get() as $role) {
@@ -22,7 +26,9 @@ class TournamentPolicy extends CachedPolicy
                 }
             }
 
-            return $tournament->contacts->contains('user_id', $user->id);
+            return $tournament->contacts->contains(function($value, $key) use ($user) {
+                return in_array($value['user_id'], $user->fetchAllIds());
+            });
         });
     }
 

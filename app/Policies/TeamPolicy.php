@@ -14,6 +14,10 @@ class TeamPolicy extends CachedPolicy
 
     private function isAuthorized(User $user, Team $team)
     {
+        if ($user->parent !== null) {
+            $user = $user->parentObject;
+        }
+
         return $this->remember("team-auth-{$user->id}-{$team->id}", function() use ($user, $team) {
             $roles = $user->roles();
             foreach ($roles->get() as $role) {
@@ -22,7 +26,9 @@ class TeamPolicy extends CachedPolicy
                 }
             }
 
-            return $team->captains()->contains('user_id', $user->id);
+            return $team->captains()->contains(function($value, $key) use ($user) {
+                return in_array($value['user_id'], $user->fetchAllIds());
+            });
         });
     }
 
