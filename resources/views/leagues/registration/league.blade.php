@@ -16,7 +16,7 @@
 
         @foreach(json_decode($league->registration->questions) as $i => $questionData)
         <?php list($questionId, $required) = explode('-', $questionData); ?>
-        <?php $question = Cupa\LeagueQuestion::find($questionId); ?>
+        <?php $question = Cupa\Models\LeagueQuestion::find($questionId); ?>
         <?php $i = ($i + 1).'.) '; ?>
         <div class="form-group">
             @if ($question->type == 'descriptive')
