@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# composer stuff
+php composer.phar install
+
 # maintenance
 php artisan down
 
