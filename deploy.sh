@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# maintenance
+php artisan down
+
 # build the js/css
 yarn
 gulp
@@ -12,3 +15,6 @@ php artisan cache:clear
 php artisan view:clear
 php artisan optimize
 php artisan migrate
+
+# all done
+php artisan up
