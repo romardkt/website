@@ -20,6 +20,12 @@ class RegistrationController extends Controller
 {
     public function register(LeagueRegistrationRequest $request, $slug, $state = 'who')
     {
+        // check if user is minor and not a minor account.
+        $user = Auth::user();
+        if ($user->getAge() < 18) {
+            $state = 'error_youth';
+        }
+
         if ($state == 'who') {
             Session::put('league_registration', new stdClass());
         }

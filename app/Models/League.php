@@ -617,9 +617,15 @@ class League extends Model
         $contacts = [];
         foreach ($result as $row) {
             if (empty($row['name']) || empty($row['phone'])) {
-                $parent = User::find($row['id'])->parentObj;
+                $user = User::find($row['id']);
+
+                // get parent if exits
+                if ($user->parent) {
+                    $user = $user->parentObj;
+                }
+
                 $tmp = [];
-                foreach($parent->contacts as $contact) {
+                foreach($user->contacts as $contact) {
                     $tmp[] = [
                         'name' => $contact->name,
                         'phone' => $contact->phone,
