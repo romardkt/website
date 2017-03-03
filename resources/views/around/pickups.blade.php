@@ -14,7 +14,7 @@
             @foreach($pickups as $pickup)
             <div class="col-xs-12 col-sm-6 col-lg-4 pickup">
                 <div class="map">
-                    <a target="_new" href="{{ $pickup->location->getUrl() }}"><img src="{{ $pickup->location->getImage() }}"/></a>
+                    <a target="_new" href="{{ $pickup->location->getUrl() }}"><img src="{{ $pickup->location->getImage() }}" alt="{{ $pickup->title }}"/></a>
                 </div>
                 @can('edit', $pickup)
                 <div class="edit-btn">

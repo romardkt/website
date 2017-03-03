@@ -23,7 +23,7 @@
         @foreach($members as $id => $member)
         <div class="row">
             <div class="col-sm-3 board-member-picture<?php echo ($cnt % 2 == 0) ? '' : ' right'; ?>">
-                <img src="{{ asset($member->image) }}"/>
+                <img src="{{ asset($member->image) }}" alt="{{ $member->user->fullname() }}"/>
                 <p class="text-muted">Appointed {{(new DateTime($member->started))->format('M d Y')}}</p>
                 <br/>
                 @can('edit', $member)

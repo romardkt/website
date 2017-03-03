@@ -26,7 +26,7 @@
                 <div class="carousel-inner">
                     @foreach($featured as $id => $feature)
                     <div class="item{{ ($id == 0) ? ' active': '' }}">
-                        <img src="{{ $feature->image }}"/>
+                        <img src="{{ $feature->image }}" alt="{{ $feature->title }}"/>
                         <div class="carousel-caption">
                             <a target="{{ (starts_with($feature->link, 'http')) ? '_new' : '' }}" href="{{ ($feature->link === null) ? route('post_view', [$feature->slug]) : url($feature->link) }}">
                                 <h4>{{ $feature->title }}</h4>

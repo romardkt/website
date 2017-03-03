@@ -23,7 +23,7 @@
     <div class="col-sm-6 league-team">
         <div class="row">
             <div class="col-sm-4 col-lg-3 logo-container">
-                <img src="{{ asset($team->logo) }}"/>
+                <img src="{{ asset($team->logo) }}" alt="Team logo"/>
             </div>
             <div class="col-sm-8 col-lg-9 title-container">
                 <p style="color: {{ $team->color_code }};" class="title">{{ $team->name }}</p>

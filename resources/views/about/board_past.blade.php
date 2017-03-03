@@ -35,7 +35,7 @@
                 <p class="text-right">{!! $member->description !!}</p>
             </div>
             <div class="col-sm-3 board-member-picture">
-                <img src="{{ asset($member->image) }}"/>
+                <img src="{{ asset($member->image) }}" alt="{{ $member->user->fullname() }}"/>
                 <p class="text-muted"><strong>{{(new DateTime($member->started))->format('M d Y')}}</strong> to <strong>{{(new DateTime($member->stopped))->format('M d Y')}}</strong></p>
                 <br/>
                 @can('edit', $member)
@@ -50,7 +50,7 @@
             </div>
             @else
             <div class="col-sm-3 board-member-picture">
-                <img src="{{ asset($member->image) }}"/>
+                <img src="{{ asset($member->image) }}" alt="{{ $member->user->fullname() }}"/>
                 <p class="text-muted"><strong>{{(new DateTime($member->started))->format('M d Y')}}</strong> to <strong>{{(new DateTime($member->stopped))->format('M d Y')}}</strong></p>
                 <br/>
                 @can('edit', $member)

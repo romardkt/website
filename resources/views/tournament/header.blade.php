@@ -62,7 +62,7 @@
 </div>
 <div class="container">
     <div class="row tournament-banner">
-        <img src="{{ asset($tournament->image) }}"/>
+        <img src="{{ asset($tournament->image) }}" alt="Tournamnet banner"/>
         <div class="actions">
         @can('edit', $tournament)
         @if(Route::currentRouteName() == 'tournament')

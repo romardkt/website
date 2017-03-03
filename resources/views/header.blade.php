@@ -11,7 +11,7 @@
                 <button type="button" id="mobile-main-menu-btn" class="btn"><i class="fa fa-lg fa-3x fa-bars"></i></button>
             </div>
             <div class="col-xs-6 logo text-center">
-                <a href="{{ route('home') }}"><img src="{{ asset('img/logo.png') }}"></a>
+                <a href="{{ route('home') }}"><img src="{{ asset('img/logo.png') }}" alt="CUPA logo"></a>
             </div>
             <div class="col-xs-3 text-right">
                 <button type="button" id="mobile-user-menu-btn" class="btn"><i class="fa fa-lg fa-3x fa-user"></i></button>
@@ -19,7 +19,7 @@
         </div>
         <div class="row normal-header">
             <div class="col-sm-6 logo">
-                <a href="{{ route('home') }}"><img src="{{ asset('img/logo.png') }}"></a>
+                <a href="{{ route('home') }}"><img src="{{ asset('img/logo.png') }}" alt="CUPA logo"></a>
             </div>
             <div class="col-sm-6">
                 <div class="row text-right login">
@@ -85,7 +85,7 @@
     @if(Auth::user())
     <div class="row user-header">
         <div class="col-xs-5 avatar">
-            <img src="{{ asset(Auth::user()->avatar) }}"/>
+            <img src="{{ asset(Auth::user()->avatar) }}" alt="User avatar"/>
         </div>
         <div class="col-xs-7 user">
             <p class="name">

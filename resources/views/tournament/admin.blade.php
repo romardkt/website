@@ -23,7 +23,7 @@
         @if($tournament->image !== '/data/tournaments/default.jpg')
         <div class="current-picture">
             <div class="text-muted">Current Image</div>
-            <img src="{{ asset($tournament->image) }}"/>
+            <img src="{{ asset($tournament->image) }}" alt="Tournament banner"/>
         </div>
         <div class="form-group">
             <div class="checkbox">

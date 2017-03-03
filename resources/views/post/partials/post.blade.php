@@ -36,7 +36,7 @@
         @if(isset($post) && $post->image !== null)
         <div class="current-picture">
             <div class="text-muted">Current Image</div>
-            <img src="{{ asset($post->image) }}"/>
+            <img src="{{ asset($post->image) }}" alt="Post image"/>
         </div>
         <div class="form-group">
             <div class="checkbox">

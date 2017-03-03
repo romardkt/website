@@ -52,7 +52,7 @@ $('.datepicker').pickadate({
 
 <div class="current-picture">
     <div class="text-muted">Current Image</div>
-    <img src="{{ asset($user->avatar) }}"/>
+    <img src="{{ asset($user->avatar) }}" alt="User avatar"/>
 </div>
 @if ($user->avatar != '/data/users/default.png')
 <div class="form-group">

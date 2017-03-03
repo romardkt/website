@@ -4,7 +4,7 @@
 @include('page_header')
 <div class="team">
     <div class="row team">
-        <div class="col-xs-12 col-sm-4 col-md-3 team-logo"><img src="{{ asset($team->logo) }}"/></div>
+        <div class="col-xs-12 col-sm-4 col-md-3 team-logo"><img src="{{ asset($team->logo) }}" alt="Team logo"/></div>
         <div class="col-xs-12 col-sm-8 col-md-9 team-title">
             <p>{{ $team->display_name }}</p>
             <small>Captain(s):

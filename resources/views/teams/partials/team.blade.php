@@ -63,7 +63,7 @@
         @if(isset($team) && $team->logo != '/data/users/default.png')
         <div class="current-picture">
             <div class="text-muted">Current Image</div>
-            <img src="{{ asset($team->logo) }}"/>
+            <img src="{{ asset($team->logo) }}" alt="Team logo"/>
         </div>
         <div class="form-group">
             {!! Form::checkbox('logo_remove', 1, false) !!} Remove Image

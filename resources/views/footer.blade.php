@@ -1,5 +1,5 @@
 <div class="row">
-    <img src="{{ asset('img/skyline.png') }}"/>
+    <img src="{{ asset('img/skyline.png') }}" alt="CUPA footer image"/>
     <div class="col-xs-12 col-sm-3 text-center">
         Follow CUPA<br/>
         <a class="twitter" href="https://twitter.com/cincyultimate" target="_new" title="tw:@cincyultimate">
@@ -56,10 +56,10 @@
 </div>
 <div class="row mentions">
     <div class="col-xs-12 text-right">
-        <a target="_blank" href="https://bugsnag.com/blog/bugsnag-loves-open-source">
+        <a target="_blank" rel="noopener" href="https://bugsnag.com/blog/bugsnag-loves-open-source">
             <img class="bugsnag" src="{{ asset('/img/bugsnag.png') }}" alt="Bugsnag logo"/>
         </a>
-        <a target="_blank" href="https://m.do.co/c/6141b95c66f4">
+        <a target="_blank" rel="noopener" href="https://m.do.co/c/6141b95c66f4">
             <img class="digitalocean" src="{{ asset('/img/digitalocean.png') }}" alt="Digital Ocean logo"/>
         </a>
     </div>

@@ -10,7 +10,7 @@
             @if(isset($officer) && $officer->image != '/data/users/default.png')
             <div class="current-picture">
                 <div class="text-muted">Current Image</div>
-                <img src="{{ asset($officer->image) }}"/>
+                <img src="{{ asset($officer->image) }}" alt="{{ $officer->user->fullname() }}"/>
             </div>
             {!! Form::checkbox('avatar_remove', 1, null) !!} Remove Avatar
             <br/><br/>
