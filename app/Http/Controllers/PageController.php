@@ -292,6 +292,13 @@ class PageController extends Controller
         }
 
         $isYouth = $user->getAge() < 18;
+
+        if ($isYouth && $user->parent === null) {
+            Session::flash('msg-error', 'Your account is listed as a minor account.  Please have your parent/guardian login to sign the waiver.');
+
+            return redirect()->to($redirect);
+        }
+
         if ($isYouth) {
             return view('page.waiver_youth', compact('user', 'year', 'isYouth'));
         }

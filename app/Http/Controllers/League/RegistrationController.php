@@ -61,7 +61,7 @@ class RegistrationController extends Controller
                 break;
         }
 
-        if ($state != 'who') {
+        if ($state != 'who' && $user->getAge() >= 18) {
             $user = User::with(['profile', 'parentObj', 'parentObj.profile'])->find($session->registrant->id);
             if ($user->isLeagueMember($league->id)) {
                 Session::flash('msg-error', $user->fullname().' is already registered for this league.');

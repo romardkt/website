@@ -175,7 +175,7 @@ class VolunteerController extends Controller
 
     public function showEdit(VolunteerEvent $event, Request $request)
     {
-        $this->authorize('is-volunteer');
+        $this->authorize('edit', $event);
         $locations = Location::fetchForSelect();
         $volunteerCategories = VolunteerEventCategory::fetchForSelect();
         if ($request->has('hidden-contacts')) {

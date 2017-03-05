@@ -13,7 +13,8 @@ class VolunteerShowRequest extends Request
      */
     public function authorize()
     {
-        return Gate::allows('is-volunteer');
+        $event = $this->route('event');
+        return Gate::allows('is-volunteer') || Gate::allows('edit', $event);
     }
 
     /**
