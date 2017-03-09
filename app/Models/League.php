@@ -491,6 +491,11 @@ class League extends Model
                 unset($contacts['unpaid-players']);
             }
 
+            $contacts['missing-waivers'] = LeagueMember::fetchMissingWaiverLeagueMembers($this->id, $this->year);
+            if (count($contacts['missing-waivers']) < 1) {
+                unset($contacts['missing-waivers']);
+            }
+
             $contacts['waitlisted-players'] = LeagueMember::fetchAllLeagueMembers($this->id, 'waitlist');
             if (count($contacts['waitlisted-players']) < 1) {
                 unset($contacts['waitlisted-players']);

@@ -443,4 +443,21 @@ class LeagueMember extends Model
             ],
         ];
     }
+
+    public static function fetchMissingWaiverLeagueMembers($leagueId, $year)
+    {
+        $players = [];
+        $members = self::with('user')
+            ->where('league_id', '=', $leagueId)
+            ->where('position', '=', 'player')
+            ->get();
+
+        foreach($members as $member) {
+            if (!$member->user->hasWaiver($year)) {
+                $players[] = $member;
+            }
+        }
+
+        return $players;
+    }
 }
