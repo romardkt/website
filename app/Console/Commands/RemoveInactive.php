@@ -50,20 +50,20 @@ class RemoveInactive extends Command
     private function removeNonActivatedAccounts()
     {
         // get the date for one year ago
-        $oneYear = date('Y-m-d', strtotime('-1 year'));
+        $oneMonth = date('Y-m-d', strtotime('-1 month'));
 
         // find all of the inactive old accounts
         $users = User::where('is_active', '=', false)
           ->whereNull('parent')
           ->whereNull('activated_at')
-          ->where('created_at', '<=', $oneYear)
+          ->where('created_at', '<=', $oneMonth)
           ->get();
 
         // define the log path
         $logLocation = storage_path().'/logs/'.date('Y-m-d-').'inactives.log';
         foreach ($users as $user) {
             // log the removal
-            file_put_contents($logLocation, $user->fullname()." removed for not being active.\n", FILE_APPEND | LOCK_EX);
+            file_put_contents($logLocation, $user->fullname()." removed for not being activated.\n", FILE_APPEND | LOCK_EX);
             $user->delete();
         }
     }
@@ -71,7 +71,7 @@ class RemoveInactive extends Command
     private function removeOldAccounts()
     {
         // get the date for twelve years ago
-        $twelveYear = date('Y', strtotime('-12 year'));
+        $twoYear = date('Y', strtotime('-2 year'));
 
         // find all of the users with most recent waiver
         $users = DB::table('users')
@@ -91,7 +91,7 @@ class RemoveInactive extends Command
                 // check all chilren
                 foreach ($userObject->children as $child) {
                     $latestWaiver = $child->fetchLatestWaiver();
-                    if ($latestWaiver && $latestWaiver->year > $twelveYear) {
+                    if ($latestWaiver && $latestWaiver->year > $twoYear) {
                         $hasChildWaiver = true;
                         break;
                     }
@@ -102,7 +102,9 @@ class RemoveInactive extends Command
                 // log the removal
                 file_put_contents($logLocation, $user->first_name.' '.$user->last_name." removed for not being active for 12 years.\n", FILE_APPEND | LOCK_EX);
                 $userObject = User::find($user->id);
-                $userObject->delete();
+                $userObject->is_active = 0;
+                $userObject->reason = 'has been disabled due to inactivity.';
+                $userObject->save();
             }
         }
     }
