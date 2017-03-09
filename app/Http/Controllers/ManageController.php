@@ -452,4 +452,58 @@ class ManageController extends Controller
                 return response()->json([]);
         }
     }
+
+    public function volunteers()
+    {
+        return view('manage.volunteers');
+    }
+
+    public function postVolunteers(Request $request)
+    {
+        $data = $request->input();
+        $emails = (empty($data['emails'])) ? [] : explode(',', $data['emails']);
+        $action = $data['action'];
+
+        if (empty($emails)) {
+            Session::flash('msg-error', 'You did not specify any emails');
+            return redirect()->route('manage_volunteers');
+        }
+
+        $modifications = [];
+
+        foreach($emails as $email) {
+            $user = User::where('email', '=', $email)->first();
+
+            // ignore invalid users
+            if (!$user) {
+                $modifications[$email] = '<span class="label label-danger">could not find email</span>';
+                continue;
+            }
+
+            if ($action == 'remove') {
+                if ($user->isVolunteer()) {
+                    $modifications[$user->email] = '<span class="label label-danger">not removed</span>';
+                    $user->volunteer()->first()->delete();
+                    $modifications[$user->email] = '<span class="label label-success">removed</span>';
+                } else {
+                    $modifications[$user->email] = '<span class="label label-danger">not a volunteer</span>';
+                }
+            } else if ($action == 'addition') {
+                if (!$user->isVolunteer()) {
+                    $modifications[$user->email] = '<span class="label label-danger">not added</span>';
+                    $volunteer = Volunteer::create([
+                        'user_id' => $user->id,
+                        'primary_interest' => 'Unknown',
+                        'experience' => 'Unknown',
+                    ]);
+                    $volunteer->save();
+                    $modifications[$user->email] = '<span class="label label-success">added</span>';
+                } else {
+                    $modifications[$user->email] = '<span class="label label-danger">already a volunteer</span>';
+                }
+            }
+        }
+
+        return redirect()->route('manage_volunteers')->withErrors($modifications);
+    }
 }

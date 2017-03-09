@@ -15,6 +15,7 @@
 
                 @can('is-volunteer')
                 <option value="{{ route('manage_users') }}"{{ (Route::currentRouteName() == 'manage_users') ? ' selected' : '' }}>Users</option>
+                <option value="{{ route('manage_volunteers') }}"{{ (Route::currentRouteName() == 'manage_volunteers') ? ' selected' : '' }}>Volunteers</option>
                 @endif
 
                 @can('is-admin')
@@ -41,6 +42,7 @@
 
                 @can('is-volunteer')
                 <a class="list-group-item{{ (Route::currentRouteName() == 'manage_users') ? ' active' : '' }}" href="{{ route('manage_users') }}">Users</a>
+                <a class="list-group-item{{ (Route::currentRouteName() == 'manage_volunteers') ? ' active' : '' }}" href="{{ route('manage_volunteers') }}">Volunteers</a>
                 @endif
                 @can('is-admin')
                 <a class="list-group-item{{ (Route::currentRouteName() == 'manage_duplicates') ? ' active' : '' }}" href="{{ route('manage_duplicates') }}">Duplicate Users</a>
