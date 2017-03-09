@@ -319,4 +319,6 @@ Route::group(['prefix' => 'manage'], function () {
     Route::get('files/{file}/remove', ['as' => 'manage_files_remove', 'uses' => 'ManageController@filesRemove']);
     Route::get('volunteer/{volunteer_id}/remove', ['as' => 'manage_volunteer_remove', 'uses' => 'ManageController@volunteerRemove']);
     Route::get('waivers', ['as' => 'manage_waivers', 'uses' => 'ManageController@waivers']);
+    Route::get('reports', ['as' => 'manage_reports', 'uses' => 'ManageController@reports']);
+    Route::get('reports/data', ['as' => 'manage_reports_data', 'uses' => 'ManageController@reportsData']);
 });

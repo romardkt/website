@@ -373,4 +373,74 @@ class LeagueMember extends Model
 
         return isset($league);
     }
+
+    public static function generateLeagueCountsByYearForChart()
+    {
+        $years = [];
+        $countData = [];
+        foreach(LeaguePlayerCount::with('league')->get() as $count) {
+            // set the unique years
+            if (!isset($years[$count->league->year])) {
+                $years[$count->league->year] = true;
+            }
+
+            if (!isset($countData['males'])) {
+                $countData['males'] = [];
+            }
+            if (!isset($countData['females'])) {
+                $countData['females'] = [];
+            }
+            if (!isset($countData['totals'])) {
+                $countData['totals'] = [];
+            }
+
+            $countData['males'][$count->league->year] = (isset($countData['males'][$count->league->year])) ? $countData['males'][$count->league->year] + $count->male : $count->male;
+            $countData['females'][$count->league->year] = (isset($countData['females'][$count->league->year])) ? $countData['females'][$count->league->year] + $count->female : $count->female;
+            $countData['totals'][$count->league->year] = (isset($countData['totals'][$count->league->year])) ? $countData['totals'][$count->league->year] + $count->total : $count->total;
+
+        }
+
+        ksort($years);
+
+        $data = [
+            'labels' => array_keys($years),
+            'datasets' => [
+                [
+                    'label' => 'Men',
+                    'data' => array_values($countData['males']),
+                    'backgroundColor' => array_fill(0, count($countData['males']), 'rgba(54, 162, 235, 0.4)'),
+                ],
+                [
+                    'label' => 'Women',
+                    'data' => array_values($countData['females']),
+                    'backgroundColor' => array_fill(0, count($countData['males']), 'rgba(255, 99, 132, 0.4)'),
+                ],
+                [
+                    'label' => 'Total',
+                    'data' => array_values($countData['totals']),
+                    'backgroundColor' => array_fill(0, count($countData['males']), 'rgba(255, 206, 86, 0.4)'),
+                ],
+            ],
+        ];
+
+        return [
+            'type' => 'bar',
+            'data' => $data,
+            'options' => [
+                'title' => [
+                    'display' => true,
+                    'text' => 'Players in leagues per year',
+                ],
+                'scales' => [
+                    'yAxes' => [
+                        [
+                            'ticks' => [
+                                'beginAtZero' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
 }

@@ -34,7 +34,8 @@ class Kernel extends ConsoleKernel
         // this is scheduled to run 15min after the database backup
         // to minimize errors if something happens
         $schedule->call(function () {
-            Artisan::call('cupa:remove-inactives');
+            // due to league counts we have disabled this
+            // Artisan::call('cupa:remove-inactives');
             Artisan::call('cupa:notify-parents');
         })->daily()->at('8:15');
     }

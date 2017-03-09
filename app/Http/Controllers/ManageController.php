@@ -3,18 +3,21 @@
 namespace Cupa\Http\Controllers;
 
 use DateTime;
+use Carbon\Carbon;
 use Cupa\Models\File;
 use Cupa\Models\User;
 use Cupa\Models\League;
-use Carbon\Carbon;
 use Cupa\Models\CupaForm;
 use Cupa\Models\Volunteer;
-use Cupa\Models\UserBalance;
 use Cupa\Models\LeagueTeam;
+use Cupa\Models\Tournament;
+use Cupa\Models\UserBalance;
+use Illuminate\Http\Request;
 use Cupa\Models\LeagueMember;
 use Cupa\Models\LeagueLocation;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Auth;
+use Cupa\Models\VolunteerEventSignup;
 use Illuminate\Support\Facades\Session;
 use Cupa\Http\Requests\DuplicatesRequest;
 use Cupa\Http\Requests\LoadLeagueRequest;
@@ -423,5 +426,30 @@ class ManageController extends Controller
         }
 
         return view('manage.waivers', compact('waivers'));
+    }
+
+    public function reports()
+    {
+        $this->authorize('is-manager');
+
+        return view('manage.reports');
+    }
+
+    public function reportsData(Request $request)
+    {
+        $type = $request->get('type');
+
+        switch ($type) {
+            case 'league_counts_by_year':
+                return LeagueMember::generateLeagueCountsByYearForChart();
+            case 'leagues_by_year':
+                return League::generateLeaguesByYearForChart();
+            case 'volunteers_by_year':
+                return VolunteerEventSignup::generateVolunteersByYearForChart();
+            case 'tournaments_by_year':
+                return Tournament::generateTournamentsByYearForChart();
+            default:
+                return response()->json([]);
+        }
     }
 }

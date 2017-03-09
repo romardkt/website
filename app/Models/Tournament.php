@@ -109,4 +109,55 @@ class Tournament extends Model
             ->orderBy('name')
             ->get();
     }
+
+    public static function generateTournamentsByYearForChart()
+    {
+        $years = [];
+        $counts = [];
+        foreach(self::all() as $league) {
+            // set the unique years
+            if (!isset($years[$league->year])) {
+                $years[$league->year] = true;
+            }
+
+            if (!isset($counts[$league->year])) {
+                $counts[$league->year] = 0;
+            }
+
+            $counts[$league->year] += 1;
+        }
+
+        ksort($years);
+
+        $data = [
+            'labels' => array_keys($years),
+            'datasets' => [
+                [
+                    'label' => 'Tournaments',
+                    'data' => array_values($counts),
+                    'backgroundColor' => array_fill(0, count($counts), 'rgba(54, 162, 235, 0.4)'),
+                ],
+            ],
+        ];
+
+        return [
+            'type' => 'bar',
+            'data' => $data,
+            'options' => [
+                'title' => [
+                    'display' => true,
+                    'text' => '# of Tournaments per year',
+                ],
+                'scales' => [
+                    'yAxes' => [
+                        [
+                            'ticks' => [
+                                'beginAtZero' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
 }

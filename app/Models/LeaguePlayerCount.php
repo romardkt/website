@@ -8,4 +8,9 @@ class LeaguePlayerCount extends Model
 {
     protected $table = 'league_player_counts';
     protected $fillable = [];
+
+    public function league()
+    {
+        return $this->belongsTo(League::class);
+    }
 }

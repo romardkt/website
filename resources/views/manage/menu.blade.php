@@ -10,6 +10,7 @@
                 <option value="{{ route('manage_league_players') }}"{{ (Route::currentRouteName() == 'manage_league_players') ? ' selected' : '' }}>League Players</option>
                 <option value="{{ route('manage_coaches') }}"{{ (Route::currentRouteName() == 'manage_coaches') ? ' selected' : '' }}>All Coaches</option>
                 <option value="{{ route('manage_files') }}"{{ (Route::currentRouteName() == 'manage_files') ? ' selected' : '' }}>Files</option>
+                <option value="{{ route('manage_reports') }}"{{ (Route::currentRouteName() == 'manage_reports') ? ' selected' : '' }}>Reports</option>
                 @endif
 
                 @can('is-volunteer')
@@ -35,6 +36,7 @@
                 <a class="list-group-item{{ (Route::currentRouteName() == 'manage_league_players') ? ' active' : '' }}" href="{{ route('manage_league_players') }}">League Players</a>
                 <a class="list-group-item{{ (Route::currentRouteName() == 'manage_coaches') ? ' active' : '' }}" href="{{ route('manage_coaches') }}">All Coaches</a>
                 <a class="list-group-item{{ (Route::currentRouteName() == 'manage_files') ? ' active' : '' }}" href="{{ route('manage_files') }}">Files</a>
+                <a class="list-group-item{{ (Route::currentRouteName() == 'manage_reports') ? ' active' : '' }}" href="{{ route('manage_reports') }}">Reports</a>
                 @endif
 
                 @can('is-volunteer')

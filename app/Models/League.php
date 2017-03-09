@@ -678,7 +678,58 @@ class League extends Model
         Log::info('Searching for old league: '.$search);
 
         return static::where('slug', 'LIKE', $search)
-                     ->where('season', '=', $season)
-                     ->first();
+            ->where('season', '=', $season)
+            ->first();
+    }
+
+    public static function generateLeaguesByYearForChart()
+    {
+        $years = [];
+        $counts = [];
+        foreach(League::all() as $league) {
+            // set the unique years
+            if (!isset($years[$league->year])) {
+                $years[$league->year] = true;
+            }
+
+            if (!isset($counts[$league->year])) {
+                $counts[$league->year] = 0;
+            }
+
+            $counts[$league->year] += 1;
+        }
+
+        ksort($years);
+
+        $data = [
+            'labels' => array_keys($years),
+            'datasets' => [
+                [
+                    'label' => 'Leagues',
+                    'data' => array_values($counts),
+                    'backgroundColor' => array_fill(0, count($counts), 'rgba(54, 162, 235, 0.4)'),
+                ],
+            ],
+        ];
+
+        return [
+            'type' => 'bar',
+            'data' => $data,
+            'options' => [
+                'title' => [
+                    'display' => true,
+                    'text' => '# of Leagues per year',
+                ],
+                'scales' => [
+                    'yAxes' => [
+                        [
+                            'ticks' => [
+                                'beginAtZero' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 }
