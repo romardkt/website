@@ -27,7 +27,7 @@
 
         <div class="form-group">
             {!! Form::label('Birthday') !!}
-            {!! Form::input('date', 'birthday', convertDate($session->registrant->birthday, 'm/d/Y'), ['class' => 'form-control datepicker text-center']) !!}
+            {!! Form::input('text', 'birthday', convertDate($session->registrant->birthday, 'm/d/Y'), ['class' => 'form-control datepicker text-center']) !!}
         </div>
 
         <div class="form-group">
