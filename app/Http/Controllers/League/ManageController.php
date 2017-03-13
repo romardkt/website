@@ -161,9 +161,7 @@ class ManageController extends Controller
 
         if ($league->is_youth) {
             LeagueMember::updateMembers($league->id, $team->id, $input['head_coaches'], 'coach');
-            if (count($input['asst_coaches'])) {
-                LeagueMember::updateMembers($league->id, $team->id, $input['asst_coaches'], 'assistant_coach');
-            }
+            LeagueMember::updateMembers($league->id, $team->id, $input['asst_coaches'], 'assistant_coach');
         } else {
             LeagueMember::updateMembers($league->id, $team->id, $input['captains'], 'captain');
         }

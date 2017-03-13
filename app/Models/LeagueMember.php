@@ -125,8 +125,10 @@ class LeagueMember extends Model
         }
 
         $subMembers = [];
-        foreach ($members as $memberId) {
-            $subMembers[] = $memberId;
+        if ($members) {
+            foreach ($members as $memberId) {
+                $subMembers[] = $memberId;
+            }
         }
 
         $remove = array_diff($dbMembers, $subMembers);
