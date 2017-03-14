@@ -25,6 +25,16 @@
         </div>
 
         <div class="form-group">
+            {!! Form::label('Password') !!}
+            {!! Form::password('password', ['class' => 'form-control']) !!}
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('Confirm Password') !!}
+            {!! Form::password('password_confirmation', ['class' => 'form-control']) !!}
+        </div>
+
+        <div class="form-group">
             <div class="col-xs-12 text-center">
                 <button type="submit" class="btn btn-primary">Convert Account</button>
                 <a class="btn btn-default" href="{{ route('profile_minor_edit', $minor->id) }}">Cancel</a>

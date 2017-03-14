@@ -4,14 +4,14 @@
         <meta charset="utf-8">
     </head>
     <body style="margin: 10px 0;">
-        <h1 style="margin-bottom: 30px;">CUPA Inactive Report</h1>
+        <h1 style="margin-bottom: 30px;">CUPA Minors Report</h1>
         @if(isset($logFile))
         <p style="margin: 20px 0;">
-            There were some inactives to report, please check the attached files for details.
+            There were some minors changes to report, please check the attached files for details.
         </p>
         @else
         <p style="margin: 20px 0;">
-            There is no inactive removals to report.
+            There is no minor changes to report.
         </p>
 
         @endif

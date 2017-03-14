@@ -346,21 +346,14 @@ class ProfileController extends Controller
         // update the required fields
         $minor->parent = null;
         $minor->email = $request->input('email');
-        $minor->password = Hash::make(md5($request->input('email')));
+        $minor->password = Hash::make($request->input('password'));
         $minor->activated_at = new \DateTime();
         $minor->last_login_at = null;
         $minor->reason = 'was converted from a minor account';
+        $minor->is_active = 1;
         $minor->save();
 
-        // send the email
-        Mail::send('emails.reset', ['code' => $minor->fetchPasswordResetCode(), 'email' => $minor->email], function ($m) use ($minor) {
-            // send email to the user
-            $m->to($minor->email, $minor->fullname())
-                ->replyTo('webmaster@cincyultimate.org')
-                ->subject('[CUPA] Password Reset');
-        });
-
-        Session::flash('msg-success', 'Minor account converted to regular account, Password reset link sent');
+        Session::flash('msg-success', 'Minor account converted to regular account, you may now login as the new account');
 
         return redirect()->route('profile_minors');
     }

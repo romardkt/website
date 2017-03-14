@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         \Cupa\Console\Commands\SendEmails::class,
         \Cupa\Console\Commands\RemoveInactive::class,
         \Cupa\Console\Commands\NotifyParentsOfMinorAccount::class,
+        \Cupa\Console\Commands\CheckMinorAccounts::class,
     ];
 
     /**
@@ -35,8 +36,9 @@ class Kernel extends ConsoleKernel
         // to minimize errors if something happens
         $schedule->call(function () {
             // due to league counts we have disabled this
-            // Artisan::call('cupa:remove-inactives');
-            Artisan::call('cupa:notify-parents');
+            Artisan::call('cupa:remove-inactives');
+            // Artisan::call('cupa:notify-parents');
+            Artisan::call('cupa:check-minor-accounts');
         })->daily()->at('8:15');
     }
 

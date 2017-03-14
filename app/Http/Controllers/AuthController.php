@@ -35,6 +35,7 @@ class AuthController extends Controller
             $user = Auth::user();
             if ($user->is_active) {
                 $user->last_login_at = Carbon::now()->format('Y-m-d H:i:s');
+                $user->reason = null;
                 $user->save();
 
                 return response()->json(['status' => 'ok']);
