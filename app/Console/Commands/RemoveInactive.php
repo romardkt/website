@@ -70,7 +70,7 @@ class RemoveInactive extends Command
 
     private function removeOldAccounts()
     {
-        // get the date for twelve years ago
+        // get the date for two years ago
         $twoYear = date('Y', strtotime('-2 year'));
 
         // find all of the users with most recent waiver
@@ -98,7 +98,7 @@ class RemoveInactive extends Command
                 }
             }
 
-            if ($user->year < $twelveYear && !$hasChildWaiver) {
+            if ($user->year < $twoYear && !$hasChildWaiver) {
                 // log the removal
                 file_put_contents($logLocation, $user->first_name.' '.$user->last_name." removed for not being active for 12 years.\n", FILE_APPEND | LOCK_EX);
                 $userObject = User::find($user->id);
