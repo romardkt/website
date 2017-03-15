@@ -23,7 +23,16 @@
                 <td class="hidden-xs"><span class="label label-info">On Waitlist</span></td>
                 @endif
                 <td class="text-center hidden-xs">{{ (isset($member->team)) ? $member->team->record->record() : 'N/A' }}</td>
-                <td class="text-center">{!! ($member->paid == 0 && $member->league->registration->cost > 0) ? '<span class="text-danger"><a class="text-danger" href="' . route('league_success', [$member->league->slug]) . '"><strong>$' . $member->league->registration->cost . '</strong></a></span>': '<span class="text-success">$0</span>' !!}</td>
+                <td class="text-center">
+                    <?php
+                        if($member->user->gender == 'Female') {
+                            $cost = ($member->league->registration->cost_female === null) ? $member->league->registration->cost : $member->league->registration->cost_female;
+                        } else {
+                            $cost = $member->league->registration->cost;
+                        }
+                    ?>
+
+                    {!! ($member->paid == 0 && $cost > 0) ? '<span class="text-danger"><a class="text-danger" href="' . route('league_success', [$member->league->slug]) . '"><strong>$' . $cost . '</strong></a></span>': '<span class="text-success">$0</span>' !!}</td>
                 <td class="text-center">
                     @if($member->user->hasWaiver($member->league->year))
                         <span class="text-success">Yes</span>

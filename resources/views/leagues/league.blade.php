@@ -139,7 +139,12 @@
             </dd>
             <dt>Cost:</dt>
             <dd>
-                <span class="text-warning">{{ ($league->registration->cost > 0) ? '$' . $league->registration->cost: 'Free' }}</span>
+                <span class="text-warning">
+                    {{ ($league->registration->cost > 0) ? '$' . $league->registration->cost: 'Free' }}
+                    @if($league->registration->cost_female !== null)
+                    <span class="text-muted">( {{ ($league->registration->cost_female > 0) ? '$' . $league->registration->cost_female: 'Free' }} for female players )</span>
+                    @endif
+                </span>
             </dd>
             <dt>Waiver:</dt>
             <dd>

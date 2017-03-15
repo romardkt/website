@@ -152,6 +152,7 @@ class EditController extends Controller
         $limits = $league->limits;
 
         $registration->cost = $input['cost'];
+        $registration->cost_female = (empty($input['cost_female'])) ? null : $input['cost_female'];
         $registration->begin = convertDate($input['start_date'].' '.$input['start_time']);
         $registration->end = convertDate($input['end_date'].' '.$input['end_time']);
         $registration->save();
@@ -165,32 +166,6 @@ class EditController extends Controller
 
         return redirect()->route('league', [$league->slug]);
     }
-
-    // private function editRegistrationQuestions(League $league)
-    // {
-    //     $currentQuestions = json_decode($league->registration()->first()->questions);
-    //     $questions = LeagueQuestion::fetchQuestions($currentQuestions);
-    //     $allQuestions = LeagueQuestion::fetchAllQuestions($currentQuestions);
-
-    //     if (Request::method() == 'POST') {
-    //         $input = $request->all();
-
-    //         $rules = ['question' => 'required'];
-
-    //         $validator = Validator::make($input, $rules);
-    //         if ($validator->fails()) {
-    //             return response()->json(['status' => 'error']);
-    //         }
-
-    //         $league->updateQuestion($input['question'], $input['type']);
-
-    //         return response()->json(['status' => 'success']);
-    //     }
-
-    //     $isYouth = $league->is_youth;
-
-    //     return view('leagues.edit_registration_questions', compact('league', 'questions', 'allQuestions', 'isYouth'));
-    // }
 
     private function editRegistrationQuestions(League $league, $request)
     {

@@ -68,6 +68,8 @@ class LeagueEditRequest extends Request
                 $rules['female'] = 'integer|min:1';
                 $rules['total'] = 'integer|min:1';
                 $rules['teams'] = 'integer|min:1';
+                $rules['cost'] = 'integer|min:0';
+                $rules['cost_female'] = 'integer|min:0';
                 break;
             case 'registration_questions':
                 $rules['question'] = 'required';

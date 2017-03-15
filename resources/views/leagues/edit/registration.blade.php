@@ -41,6 +41,12 @@
             <span class="help-block">Leave blank for NO cost</span>
         </div>
 
+        <div class="form-group">
+            {!! Form::label('Cost for Females') !!}
+            {!! Form::number('cost_female', $league->registration->cost_female, ['class' => 'text-center form-control']) !!}
+            <span class="help-block">Leave blank same as default cost</span>
+        </div>
+
         <legend>Registration Limits</legend>
 
         <div class="form-group">

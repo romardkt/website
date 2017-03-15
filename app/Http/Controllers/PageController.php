@@ -112,6 +112,13 @@ class PageController extends Controller
                 $league = League::find($id);
                 $title = $league->displayName();
                 $cost = $league->registration->cost;
+
+                // update cost if female and different cost for females
+                $member = LeagueMember::find($memberId);
+                if ($member->user->gender == 'Female' && $league->registration->cost_female !== null) {
+                    $cost = $league->registration->cost_female;
+                }
+
                 $redirect = route('league_success', [$league->slug]);
                 break;
         }
