@@ -31,7 +31,7 @@ class TournamentController extends Controller
     private function fetchTournament($name, $year)
     {
         $tournament = Tournament::fetchTournament($name, $year);
-        if (!$tournament || $tournament->is_visible == 0 && Gate::denies('show', $tournament)) {
+        if (!$tournament || ($tournament->is_visible == 0 && Gate::denies('show', $tournament))) {
             abort(404);
         }
 
