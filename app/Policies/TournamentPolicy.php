@@ -22,7 +22,7 @@ class TournamentPolicy extends CachedPolicy
             return false;
         }
 
-        return $this->remember("tournament-auth-{$userId}-{$tournament->id}", function() use ($user, $tournament) {
+        return $this->remember("tournament-auth-{$user->id}-{$tournament->id}", function() use ($user, $tournament) {
             $roles = $user->roles();
             foreach ($roles->get() as $role) {
                 if (in_array($role->role->name, $this->globalPerms)) {
