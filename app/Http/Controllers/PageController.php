@@ -246,6 +246,11 @@ class PageController extends Controller
             // redirect to league
             $league = League::find($paypal->league_id);
 
+            if (!$league) {
+                Session::flash('msg-error', 'Invalid paypal request');
+                return redirect()->route('home');
+            }
+
             return redirect()->route('league_success', [$league->slug]);
         }
     }
