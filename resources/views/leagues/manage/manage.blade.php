@@ -98,7 +98,7 @@
 <script>
 var options = {
   valueNames: [ 'name', 'team' ],
-  page: 400
+  page: 1000
 };
 var playerList = new List('players', options);
 var addMember = null;
