@@ -40,6 +40,12 @@ class RemoveInactive extends Command
      */
     public function handle()
     {
+        // remove the log file to start from scratch
+        $logLocation = storage_path().'/logs/'.date('Y-m-d-').'inactives.log';
+        if (file_exists($logLocation)) {
+            unlink($logLocation);
+        }
+
         $this->removeNonActivatedAccounts();
 
         $this->removeOldAccounts();
@@ -100,7 +106,7 @@ class RemoveInactive extends Command
 
             if ($user->year < $twoYear && !$hasChildWaiver) {
                 // log the removal
-                file_put_contents($logLocation, $user->first_name.' '.$user->last_name." removed for not being active for 12 years.\n", FILE_APPEND | LOCK_EX);
+                file_put_contents($logLocation, $user->first_name.' '.$user->last_name." disabled for not being active for 2 years.\n", FILE_APPEND | LOCK_EX);
                 $userObject = User::find($user->id);
                 $userObject->is_active = 0;
                 $userObject->reason = 'has been disabled due to inactivity.';

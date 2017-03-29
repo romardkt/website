@@ -12,7 +12,7 @@
 
         <p style="margin: 20px 0;">
            You have some minor accounts that are now 18 years of age and can be moved into their own account if you would like.
-           All you would need is an email to use for the new account.
+           All you would need is an email and password to use for the new account.
         </p>
 
         <p style="margin: 20px 0;">

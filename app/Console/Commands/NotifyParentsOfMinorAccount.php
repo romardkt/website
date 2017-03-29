@@ -45,10 +45,6 @@ class NotifyParentsOfMinorAccount extends Command
 
         // check for file and notify if file is not present.
         if (!file_exists($persistFile)) {
-            if (!$this->confirm('Are you sure, there is no file to check notifications?')) {
-                $this->warn('User aborted');
-                exit(1);
-            }
             file_put_contents($persistFile, json_encode(['notification-version' => '1.0']));
         }
 

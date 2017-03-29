@@ -37,8 +37,8 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             // due to league counts we have disabled this
             Artisan::call('cupa:remove-inactives');
-            // Artisan::call('cupa:notify-parents');
             Artisan::call('cupa:check-minor-accounts');
+            Artisan::call('cupa:notify-parents');
         })->daily()->at('8:15');
     }
 
