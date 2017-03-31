@@ -4,19 +4,32 @@
 <div class="row">
     <div class="col-xs-12 col-sm-8 col-sm-offset-2">
         <h2 class="text-center">User Account Registration</h2>
+        <hr/>
+
+        <h4>Players YOUNGER than 18 years of age</h4>
         <p>
-            To register for an account with the online CUPA system you will need to supply <strong>all of the information below</strong>.
-            You will also have to be <strong>at least 18 years of age</strong>.  If you are younger than 13 years old and you are wanting
-            to play in a youth league, please have your parents sign up and add you as a minor to their account.  They may
-            then register as you for the league.
+            A CUPA player account is limited to <strong>18 years of age or older</strong>.  Please have your parents
+            sign up with their information.  They will then be able to add you as a minor to their
+            account and then register you for the league or activity you would like to participate
+            in.  Please see the help to see how you would
+            <a rel="noopener noreferrer" target="_blank" href="/upload/youth_registration.pdf">add a minor</a>.
         </p>
+
+        <br/><br/>
+
+        <h4>Players OLDER than 18 years of age</h4>
         <p>
-            After you submit the registration <strong>you will need to activate your account by confirming your email address</strong>.  We
-            do this by sending an activation link to the email you specify.  Once you click on that link you will be able
-            to login to the system.  <strong>If you do not receive that link or you ignore it your account will not be activated
-            and you will not be able to login.</strong>  You may {!! secureEmail( 'webmaster@cincyultimate.org', 'contact us', '[CUPA] User Account Registration') !!} if you are having problems or do not receive the
-            activation email.
+            To create a CUPA player account you will have to enter in all the information below.
+            After you create your account we will need to confirm your email address to verify it is a
+            valid email address. <strong>We do this by sending an activation link to the email you specify</strong>.
+            Once you click on that link you will be able to login to the system. If you do not receive
+            that link or you ignore it your account will not be activated and you will not be able to
+            login. Please check your spam folders and wait a few minutes before contacting us. If you
+            still are not receiving the email please use the contact form or send an email to
+            {!! secureEmail( 'webmaster@cincyultimate.org', 'webmaster@cincyultimate.org', '[CUPA] Player account activation help') !!}
         </p>
+
+        <br/><br/>
     </div>
 </div>
 <div class="row">
@@ -43,9 +56,15 @@
             {!! Form::text('last_name', null, ['class' => 'form-control']) !!}
         </div>
 
+        <div class="alert alert-info">
+            <strong>Note:</strong> If you are registering for a minor please follow
+            <a href="/upload/youth_registration.pdf">these instructions</a>.
+        </div>
+
         <div class="form-group">
             {!! Form::label('Birthday') !!}
             {!! Form::input('date', 'birthday', null, ['class' => 'form-control datepicker text-center']) !!}
+            <span class="help-text">You must be 18 or older to register</span>
         </div>
 
         <div class="form-group">
@@ -70,14 +89,14 @@
         <hr/>
 
         <div class="form-group">
-            <div class="checkbox">
-                {!! Form::checkbox('email_list', 1, true) !!} Sign up for CUPA Anouncement List
+            <div class="checkbox indent-more">
+                {!! Form::checkbox('email_list', 1, true) !!} <label>Sign up for CUPA Anouncement List</label>
             </div>
         </div>
 
         <div class="form-group">
-            <div class="checkbox">
-                {!! Form::checkbox('volunteer_list', 1, true) !!} Sign up for CUPA Volunteer List
+            <div class="checkbox indent-more">
+                {!! Form::checkbox('volunteer_list', 1, true) !!} <label>Sign up for CUPA Volunteer List</label>
             </div>
         </div>
 

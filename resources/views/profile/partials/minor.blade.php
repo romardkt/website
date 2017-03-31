@@ -51,7 +51,7 @@
         <div class="form-group">
             <div class="checkbox">
                 {!! Form::checkbox('consent', 1, false) !!} I consent to allowing the collection of my minor's information
-                <span class="help-block"><a target="_blank" href="http://www.ecfr.gov/cgi-bin/text-idx?SID=4939e77c77a1a1a08c1cbf905fc4b409&node=16%3A1.0.1.3.36&rgn=div5">Children's Online Privacy Protection Regulations</a>
+                <span class="help-block"><a rel="noopener noreferrer" target="_blank" href="http://www.ecfr.gov/cgi-bin/text-idx?SID=4939e77c77a1a1a08c1cbf905fc4b409&node=16%3A1.0.1.3.36&rgn=div5">Children's Online Privacy Protection Regulations</a>
             </div>
             <div class="alert alert-warning">
                 This minor's data will <strong>NOT</strong> be used except for the leagues that this minor will be registering for.  It will only be used to help place/organize the league and nothing else.

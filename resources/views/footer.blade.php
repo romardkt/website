@@ -2,26 +2,26 @@
     <img src="{{ asset('img/skyline.png') }}" alt="CUPA footer image"/>
     <div class="col-xs-12 col-sm-3 text-center">
         Follow CUPA<br/>
-        <a class="twitter" href="https://twitter.com/cincyultimate" target="_new" title="tw:@cincyultimate">
+        <a class="twitter" href="https://twitter.com/cincyultimate" rel="noopener noreferrer" target="_blank" title="tw:@cincyultimate">
             <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x"></i>
                 <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
             </span>
         </a>
-        <a class="facebook" href="https://www.facebook.com/cincyultimate" target="_new" title="fb:cincyultimate">
+        <a class="facebook" href="https://www.facebook.com/cincyultimate" rel="noopener noreferrer" target="_blank" title="fb:cincyultimate">
             <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x"></i>
                 <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
             </span>
         </a><br/><br/>
         Follow YUC<br/>
-        <a class="twitter" href="https://twitter.com/yuctweets" target="_new" title="tw:@cincyultimate">
+        <a class="twitter" href="https://twitter.com/yuctweets" rel="noopener noreferrer" target="_blank" title="tw:@cincyultimate">
             <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x"></i>
                 <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
             </span>
         </a>
-        <a class="facebook" href="https://www.facebook.com/groups/9133123030/" target="_new" title="fb:cincyultimate">
+        <a class="facebook" href="https://www.facebook.com/groups/9133123030/" rel="noopener noreferrer" target="_blank" title="fb:cincyultimate">
             <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x"></i>
                 <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
@@ -32,7 +32,7 @@
         <p class="visible-xs">&nbsp;</p>
         <p>Want to know what is going on with CUPA?  You can sign up for the CUPA announcements or follow us on twitter/facebook.</p>
         <p>
-            <a class="btn btn-default" target="_new" href="https://groups.google.com/group/CUPA_Announcements/subscribe">
+            <a class="btn btn-default" rel="noopener noreferrer" target="_blank" href="https://groups.google.com/group/CUPA_Announcements/subscribe">
                 <i class="fa fa-fw fa-lg fa-envelope"></i>
                 CUPA Announcements E-Mail List
             </a>
@@ -56,10 +56,10 @@
 </div>
 <div class="row mentions">
     <div class="col-xs-12 text-right">
-        <a target="_blank" rel="noopener" href="https://bugsnag.com/blog/bugsnag-loves-open-source">
+        <a rel="noopener noreferrer" target="_blank" rel="noopener" href="https://bugsnag.com/blog/bugsnag-loves-open-source">
             <img class="bugsnag" src="{{ asset('/img/bugsnag.png') }}" alt="Bugsnag logo"/>
         </a>
-        <a target="_blank" rel="noopener" href="https://m.do.co/c/6141b95c66f4">
+        <a rel="noopener noreferrer" target="_blank" rel="noopener" href="https://m.do.co/c/6141b95c66f4">
             <img class="digitalocean" src="{{ asset('/img/digitalocean.png') }}" alt="Digital Ocean logo"/>
         </a>
     </div>

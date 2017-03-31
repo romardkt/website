@@ -8,10 +8,10 @@ if (!function_exists('htmlify')) {
     function htmlify($data)
     {
         // replace html links
-        $data = preg_replace('/(http[s]?:\/\/[a-zA-Z\.\/\d#-_]+)/', '<a target="_blank" href="$1">$1</a>', $data);
+        $data = preg_replace('/(http[s]?:\/\/[a-zA-Z\.\/\d#-_]+)/', '<a rel="noopener noreferrer" target="_blank" href="$1">$1</a>', $data);
 
         // replace hashtags
-        $data = preg_replace('/([\\n| ])#([a-zA-z-]+)/', '$1<a target="_blank" href="https://twitter.com/search?q=%23$2">#$2</a>', $data);
+        $data = preg_replace('/([\\n| ])#([a-zA-z-]+)/', '$1<a rel="noopener noreferrer" target="_blank" href="https://twitter.com/search?q=%23$2">#$2</a>', $data);
 
         return $data;
     }
@@ -35,9 +35,9 @@ if (!function_exists('secureEmail')) {
                 $secureText .= '&#'.ord($text[ $i ]);
             }
 
-            return '<a target="_new" href="mailto:'.$secureEmail.$subject.'"><i class="fa fa-fw fa-envelope"></i> '.$secureText.'</a>';
+            return '<a rel="noopener noreferrer" target="_new" href="mailto:'.$secureEmail.$subject.'"><i class="fa fa-fw fa-envelope"></i>'.$secureText.'</a>';
         } else {
-            return '<a target="_new" href="mailto:'.$secureEmail.$subject.'"><i class="fa fa-fw fa-envelope"></i> '.$secureEmail.'</a>';
+            return '<a rel="noopener noreferrer" target="_new" href="mailto:'.$secureEmail.$subject.'"><i class="fa fa-fw fa-envelope"></i>'.$secureEmail.'</a>';
         }
     }
 }

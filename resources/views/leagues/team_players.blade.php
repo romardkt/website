@@ -4,7 +4,7 @@
     <div class="list-group-item">
         <span class="badge">{{ $player['height'] }}</span>
         @if($isCoach)
-            <a class="badge" target="_new" href="{{route('waiver_export', [$player['year'], $player['id']])}}">
+            <a class="badge" rel="noopener noreferrer" target="_blank" href="{{route('waiver_export', [$player['year'], $player['id']])}}">
                 <i class="fa fa-fw fa-download" title="Download Waiver"></i>
             </a>
         @endif

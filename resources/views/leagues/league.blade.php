@@ -96,7 +96,7 @@
                 {{ (new DateTime($location->end))->format('h:i A')}}
                 </p>
                 <p>
-                <a target="_blank" href="{{ $location->location->getUrl() }}">{{ $location->location->name }}</a><br/>
+                <a rel="noopener noreferrer" target="_blank" href="{{ $location->location->getUrl() }}">{{ $location->location->name }}</a><br/>
                 {{ $location->location->street }}<br/>
                 {{ $location->location->city . ', ' . $location->location->state . ' ' . $location->location->zip }}
                 </p>

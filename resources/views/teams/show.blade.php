@@ -29,21 +29,21 @@
             </div>
             <div class="social">
                 @if($team->website !== null)
-                <a class="web" href="{{ $team->website }}" target="_new" title="Website">
+                <a class="web" href="{{ $team->website }}" rel="noopener noreferrer" target="_blank" title="Website">
                     <span class="fa-stack fa-lg">
                         <i class="fa fa-circle fa-stack-2x"></i>
                         <i class="fa fa-home fa-stack-1x fa-inverse"></i>
                     </span></a>
                 @endif
                 @if($team->facebook)
-                <a class="facebook" href="{{ $team->facebook }}" target="_new" title="Facebook">
+                <a class="facebook" href="{{ $team->facebook }}" rel="noopener noreferrer" target="_blank" title="Facebook">
                     <span class="fa-stack fa-lg">
                         <i class="fa fa-circle fa-stack-2x"></i>
                         <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
                     </span></a>
                 @endif
                 @if($team->twitter)
-                <a class="twitter" href="{{ $team->twitter }}" target="_new" title="Twitter">
+                <a class="twitter" href="{{ $team->twitter }}" rel="noopener noreferrer" target="_blank" title="Twitter">
                     <span class="fa-stack fa-lg">
                         <i class="fa fa-circle fa-stack-2x"></i>
                         <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>

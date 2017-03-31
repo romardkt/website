@@ -10,7 +10,7 @@
         @include('header')
         <div class="container page-content">
             <!--[if lt IE 9]>
-            <div id="ie-message" class="alert alert-warning">You are using an outdated browser, please update to view this web page as intended.  <a href="http://browsehappy.com/" target="_new">More information</a></div>
+            <div id="ie-message" class="alert alert-warning">You are using an outdated browser, please update to view this web page as intended.  <a href="http://browsehappy.com/" rel="noopener noreferrer" target="_blank">More information</a></div>
             <![endif]-->
             @yield('content')
         </div>

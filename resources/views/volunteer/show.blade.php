@@ -68,7 +68,7 @@
                             @foreach ($event->contacts as $contact) {!! secureEmail(($event->email_override === null) ? $contact->user->email : $event->email_override, $contact->user->fullname()) !!}
                             @endforeach
                             <br/>
-                            <strong>Location:</strong> <a target="_blank" href="{{ $event->location->getUrl() }}">{{ $event->location->name }}</a><br/>
+                            <strong>Location:</strong> <a rel="noopener noreferrer" target="_blank" href="{{ $event->location->getUrl() }}">{{ $event->location->name }}</a><br/>
                             <hr/>
                         </p>
                         <p>

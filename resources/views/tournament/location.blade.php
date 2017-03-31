@@ -4,7 +4,7 @@
 <div class="row location">
     <div class="col-xs-12 col-sm-7 text-center">
         <h3>Map Location</h3>
-        <a target="_new" href="{{ $tournament->location->getUrl() }}"><img src="{{ $tournament->location->getImage(14) }}" alt="Map location image"/></a>
+        <a rel="noopener noreferrer" target="_blank" href="{{ $tournament->location->getUrl() }}"><img src="{{ $tournament->location->getImage(14) }}" alt="Map location image"/></a>
         <p>
             {!! $tournament->location->address() !!}
             <small class="text-muted">Click on map for link</small>

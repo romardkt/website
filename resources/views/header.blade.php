@@ -38,12 +38,12 @@
                     </ul>
                 </div>
                 <div class="row text-right social">
-                    <a class="twitter" href="https://twitter.com/cincyultimate" target="_new" title="tw:@cincyultimate">
+                    <a class="twitter" href="https://twitter.com/cincyultimate" rel="noopener noreferrer" target="_blank" title="tw:@cincyultimate">
                         <span class="fa-stack fa-lg">
                             <i class="fa fa-circle fa-stack-2x"></i>
                             <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                         </span></a>
-                    <a class="facebook" href="https://www.facebook.com/cincyultimate" target="_new" title="fb:cincyultimate">
+                    <a class="facebook" href="https://www.facebook.com/cincyultimate" rel="noopener noreferrer" target="_blank" title="fb:cincyultimate">
                         <span class="fa-stack fa-lg">
                             <i class="fa fa-circle fa-stack-2x"></i>
                             <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>

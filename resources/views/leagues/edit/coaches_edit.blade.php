@@ -38,7 +38,7 @@
         <legend>Coaching Requirements</legend>
 
         <div class="form-group">
-            <a target="_new" href="{{ route('youth_coaching_requirements') }}">Link to Coaching Requirements</a>
+            <a rel="noopener noreferrer" target="_blank" href="{{ route('youth_coaching_requirements') }}">Link to Coaching Requirements</a>
         </div>
 
         <div class="form-group">

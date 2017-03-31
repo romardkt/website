@@ -19,7 +19,7 @@
                     @foreach($subMenus as $subMenu)
                         <?php $active = ($subMenu->route == $page->route) ? ' class="active"' : '';?>
                         @if(in_array($subMenu->route, ['youth_ycc', 'around_fields', 'around_discgolf']))
-                            <li{{ $active }}><a target="_blank" href="{{ route($subMenu->route) }}">{{{ $subMenu->display }}}</a></li>
+                            <li{{ $active }}><a rel="noopener noreferrer" target="_blank" href="{{ route($subMenu->route) }}">{{{ $subMenu->display }}}</a></li>
                         @elseif($subMenu->route == 'volunteer_list')
                             @can('is-volunteer')
                             <li{{ $active }}><a href="{{ route($subMenu->route) }}">{{{ $subMenu->display }}}</a></li>

@@ -19,18 +19,18 @@
             </p>
             <ul>
                 <li>
-                    Check out a game or two from last year’s Championships: You may watch them on <a target="_new" href="https://www.youtube.com/results?search_query=2013+Ultimate+College+Championships">YouTube.com</a>. The ESPN filmed games will come up.
+                    Check out a game or two from last year’s Championships: You may watch them on <a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/results?search_query=2013+Ultimate+College+Championships">YouTube.com</a>. The ESPN filmed games will come up.
                 </li>
                 <li>
-                    Check out the event website link: <a target="_new" href="http://play.usaultimate.org/events/USA-Ultimate-D-I-College-Championships/">http://play.usaultimate.org/events/USA-Ultimate-D-I-College-Championships/</a>
+                    Check out the event website link: <a rel="noopener noreferrer" target="_blank" href="http://play.usaultimate.org/events/USA-Ultimate-D-I-College-Championships/">http://play.usaultimate.org/events/USA-Ultimate-D-I-College-Championships/</a>
                 </li>
             </ul>
         </p>
         <p>
-            On Sunday night at the College Championships, USA Ultimate will be hosting a FREE parents’ dinner at 5:00 pm at the Mason High School Stadium. All parents, siblings and other family members are welcome! We will be serving food from a local favorite, Montgomery Inn (<a target="_new" href="http://www.montgomeryinn.com/">http://www.montgomeryinn.com/</a>). Please use the Google document link below to RSVP and don’t forget to come by the USA Ultimate Information Tent for your free parents button!
+            On Sunday night at the College Championships, USA Ultimate will be hosting a FREE parents’ dinner at 5:00 pm at the Mason High School Stadium. All parents, siblings and other family members are welcome! We will be serving food from a local favorite, Montgomery Inn (<a target="_blank" href="http://www.montgomeryinn.com/">http://www.montgomeryinn.com/</a>). Please use the Google document link below to RSVP and don’t forget to come by the USA Ultimate Information Tent for your free parents button!
         </p>
         <p>
-            <a target="_new" href="https://docs.google.com/forms/d/1o7KLHxI1DOBXTvgUF6cReMOQ_U3AMXZ3IZVy-KZ4_vE/viewform">Link to RSVP for the Parents Dinner</a>
+            <a rel="noopener noreferrer" target="_blank" href="https://docs.google.com/forms/d/1o7KLHxI1DOBXTvgUF6cReMOQ_U3AMXZ3IZVy-KZ4_vE/viewform">Link to RSVP for the Parents Dinner</a>
         </p>
         <p>
             Questions? Email Julia Lee at <a href="mailto:Julia@hq.usaultimate.org">Julia@hq.usaultimate.org</a>.
@@ -82,28 +82,28 @@
         <p>
             <h4 style="text-decoration: underline;">What to do when the games are over:</h4>
             <p>
-                Visit <a target="_new" href="http://ohioslargestplayground.com">http://ohioslargestplayground.com</a> to check out what is available in the area. Also, we will be manning a tent to help you with suggestions and answer questions - look for the purple event at the tournament site.
+                Visit <a rel="noopener noreferrer" target="_blank" href="http://ohioslargestplayground.com">http://ohioslargestplayground.com</a> to check out what is available in the area. Also, we will be manning a tent to help you with suggestions and answer questions - look for the purple event at the tournament site.
             </p>
             <p>
                 Some key attractions:
                 <ul>
-                    <li><a target="_new" href="http://visitkingsisland.com">Kings Island</a>: we have a special 4-day pass for $60.99</li>
-                    <li><a target="_new" href="http://cincinnati.reds.mlb.com">Cincinnati Reds</a>: The Reds are in town this weekend (Fri – Mon)</li>
-                    <li><a target="_new" href="http://cincinnatizoo.org">Cincinnati Zoo & Botanical Garden</a>: The zoo is a great family experience</li>
+                    <li><a rel="noopener noreferrer" target="_blank" href="http://visitkingsisland.com">Kings Island</a>: we have a special 4-day pass for $60.99</li>
+                    <li><a rel="noopener noreferrer" target="_blank" href="http://cincinnati.reds.mlb.com">Cincinnati Reds</a>: The Reds are in town this weekend (Fri – Mon)</li>
+                    <li><a rel="noopener noreferrer" target="_blank" href="http://cincinnatizoo.org">Cincinnati Zoo & Botanical Garden</a>: The zoo is a great family experience</li>
                 </ul>
                 <p>
                     For the adults, Cincinnati has several local micro breweries:
                 </p>
                 <ul>
-                    <li><a target="_new" href="http://www.madtreebrewing.com/">MadTree Brewing</a>: 5164 Kennedy Ave, Cincinnati</li>
-                    <li><a target="_new" href="http://rhinegeist.com/">Rhinegeist Brewery</a>: 1910 Elm St, Cincinnati</li>
-                    <li><a target="_new" href="http://www.mtcarmelbrewingcompany.com/">Mt Carmel Brewing Company</a>: 4362 Mount Carmel Tobasco Rd, Cincinnati</li>
-                    <li><a target="_new" href="http://www.christianmoerlein.com/">Christian Moerlein Brewing Company</a>: 1621 Moore St, Cincinnati</li>
-                    <li><a target="_new" href="http://fiftywestbrew.com/">Fifty West Brewing Co</a>: 7668 Wooster Pike, Cincinnati</li>
-                    <li><a target="_new" href="http://tripledigitbrewing.com/">Triple Digit Brewing Co</a>: 1621 Dana Ave Cincinnati</li>
+                    <li><a rel="noopener noreferrer" target="_blank" href="http://www.madtreebrewing.com/">MadTree Brewing</a>: 5164 Kennedy Ave, Cincinnati</li>
+                    <li><a rel="noopener noreferrer" target="_blank" href="http://rhinegeist.com/">Rhinegeist Brewery</a>: 1910 Elm St, Cincinnati</li>
+                    <li><a rel="noopener noreferrer" target="_blank" href="http://www.mtcarmelbrewingcompany.com/">Mt Carmel Brewing Company</a>: 4362 Mount Carmel Tobasco Rd, Cincinnati</li>
+                    <li><a rel="noopener noreferrer" target="_blank" href="http://www.christianmoerlein.com/">Christian Moerlein Brewing Company</a>: 1621 Moore St, Cincinnati</li>
+                    <li><a rel="noopener noreferrer" target="_blank" href="http://fiftywestbrew.com/">Fifty West Brewing Co</a>: 7668 Wooster Pike, Cincinnati</li>
+                    <li><a rel="noopener noreferrer" target="_blank" href="http://tripledigitbrewing.com/">Triple Digit Brewing Co</a>: 1621 Dana Ave Cincinnati</li>
                 </ul>
                 <p>
-                    <a target="_new" href="http://taximaxxcincy.com/">http://taximaxxcincy.com/</a> is the local taxi service.
+                    <a rel="noopener noreferrer" target="_blank" href="http://taximaxxcincy.com/">http://taximaxxcincy.com/</a> is the local taxi service.
                 </p>
             </p>
         </p>

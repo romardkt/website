@@ -39,7 +39,7 @@
                     <td>
                       {{{ $status['first_name'] . ' '  . $status['last_name'] }}}
                       @if($status['waiver'] !== null)
-                        <a target="_new" href="{{route('waiver_export', [$league->year, $status['user_id']])}}"><i class="fa fa-fw fa-download" title="Download waiver"></i></a>
+                        <a rel="noopener noreferrer" target="_blank" href="{{route('waiver_export', [$league->year, $status['user_id']])}}"><i class="fa fa-fw fa-download" title="Download waiver"></i></a>
                       @endif
                     </td>
                     <td class="text-center">
