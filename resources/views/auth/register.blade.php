@@ -17,7 +17,7 @@
 
         <br/><br/>
 
-        <h4>Players OLDER than 18 years of age</h4>
+        <h4>Players 18 years of age or OLDER</h4>
         <p>
             To create a CUPA player account you will have to enter in all the information below.
             After you create your account we will need to confirm your email address to verify it is a
