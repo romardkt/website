@@ -217,23 +217,28 @@ class AuthController extends Controller
     {
         $input = $request->all();
         $user = User::fetchBy('reset_password_code', $code);
-        $user->password = Hash::make($input['password']);
-        $user->reset_password_code = null;
-        $user->last_reset_password_at = Carbon::now()->format('Y-m-d H:i:s');
-        $user->reason = null;
-        $user->save();
 
-        // send the email
-        Mail::send('emails.reset_confirm', [], function ($m) use ($user) {
-            // send email to the user
-            $m->to($user->email, $user->fullname())
-                ->replyTo('webmaster@cincyultimate.org')
-                ->subject('[CUPA] Password Reset Confirmation');
-        });
+        if ($user) {
+            $user->password = Hash::make($input['password']);
+            $user->reset_password_code = null;
+            $user->last_reset_password_at = Carbon::now()->format('Y-m-d H:i:s');
+            $user->reason = null;
+            $user->save();
 
-        Auth::login($user, true);
-        Session::flash('msg-success', 'Password has been reset to the entered password.');
+            // send the email
+            Mail::send('emails.reset_confirm', [], function ($m) use ($user) {
+                // send email to the user
+                $m->to($user->email, $user->fullname())
+                    ->replyTo('webmaster@cincyultimate.org')
+                    ->subject('[CUPA] Password Reset Confirmation');
+            });
 
-        return redirect()->route('profile');
+            Auth::login($user, true);
+            Session::flash('msg-success', 'Password has been reset to the entered password.');
+
+            return redirect()->route('profile');
+        }
+
+        return redirect()->route('do_reset');
     }
 }
