@@ -6,11 +6,18 @@ use View;
 use Request;
 use Session;
 use Closure;
-use Log;
+use Route;
 use Cupa\Models\Page;
 
 class Setup
 {
+    protected $ignoredPaths = [
+        'logout',
+        'login',
+        'auth/facebook/callback',
+        'auth/facebook/redirect',
+    ];
+
     /**
      * Handle an incoming request.
      *
@@ -31,9 +38,8 @@ class Setup
             View::share('subMenus', $menu[$parts[0]]);
         }
 
-        $url = Request::url();
-        if (stristr($url, 'auth') === false && stristr($url, 'logout') === false) {
-            Log::info('previous: '.$url);
+        $url = $request->route()->uri;
+        if (!in_array($url, $this->ignoredPaths)) {
             Session::put('previous', $url);
         }
 

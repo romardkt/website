@@ -159,7 +159,17 @@
                     @include('partials.login')
                 {!! Form::close() !!}
 
-                <a class="btn btn-default" href="{{ route('facebook_redirect') }}">Login With Facebook</a>
+                <div class="row">
+                    <div class="col-xs-offset-1 col-xs-4"><hr/></div>
+                    <div class="col-xs-2 text-center"><h4>OR</h4></div>
+                    <div class="col-xs-4"><hr/></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-offset-3 col-xs-6 text-center"><a class="btn btn-default btn-facebook" href="{{ route('facebook_redirect') }}"><i class="fa fa-fw fa-facebook"></i>Login With Facebook</a></div>
+                </div>
+
+
             </div>
             <div class="modal-footer hidden-xs">
                 <a class="btn btn-warning pull-left" href="{{ route('register') }}">Don't have an account?</a>

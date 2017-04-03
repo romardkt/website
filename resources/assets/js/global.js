@@ -96,7 +96,7 @@ $(document).ready(function(){
     $('.message').stop().animate({top:'0'}, 300);
     var time = setTimeout(function(){
         $('.message').stop().animate({top:'-100px'}, 300);
-    }, 2500);
+    }, 8000);
 
     $(window).scroll(function() {
         if($(this).scrollTop() > 100){

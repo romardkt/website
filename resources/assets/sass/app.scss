@@ -158,19 +158,19 @@ body {
     z-index: 10000;
     @include border-radius(0px);
     /* IE 8 */
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=92)";
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=97)";
 
     /* IE 5-7 */
-    filter: alpha(opacity=92);
+    filter: alpha(opacity=97);
 
     /* Netscape */
-    -moz-opacity: 0.92;
+    -moz-opacity: 0.97;
 
     /* Safari 1.x */
-    -khtml-opacity: 0.92;
+    -khtml-opacity: 0.97;
 
     /* Good browsers */
-    opacity: 0.92;
+    opacity: 0.97;
 }
 
 .header {
@@ -859,6 +859,16 @@ body {
 
     &:focus {
         color: $facebook;
+    }
+}
+
+.btn-facebook {
+    background-color: $facebook;
+    color: $white;
+
+    &:hover {
+        background-color: lighten($facebook, 10%);
+        color: $white !important;
     }
 }
 

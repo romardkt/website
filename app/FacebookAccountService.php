@@ -28,7 +28,7 @@ class FacebookAccountService
 
 
             if (!$user) {
-                throw new Exception('Could not find account for email `'.$providerUser->getEmail().'`');
+                throw new \Exception('Could not find account for email `'.$providerUser->getEmail().'`');
             }
 
             // update the users' avatar

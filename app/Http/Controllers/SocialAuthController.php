@@ -27,7 +27,8 @@ class SocialAuthController extends Controller
             # log the user in
             Auth::login($user, true);
         } catch (\Exception $e) {
-            Session::flash('msg-error', 'Could not log you in with Facebook, please try again.');
+            Bugsnag::notifyException($e);
+            Session::flash('msg-error', $e->getMessage());
         }
 
         return redirect()->to(Session::get('previous'));
