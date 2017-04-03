@@ -40,6 +40,9 @@
 
         <legend>Registration</legend>
 
+        <div class="alert alert-info">
+            If you want to login with Facebook, make sure this email matches Facebook.
+        </div>
         <div class="form-group">
             {!! Form::label('Email Addresss') !!}
             {!! Form::email('email', null, ['class' => 'form-control']) !!}
