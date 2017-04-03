@@ -15,7 +15,8 @@
     "intervention/image": "^2.3",
     "intervention/imagecache": "^2.3",
     "doctrine/dbal": "^2.5",
-    "bugsnag/bugsnag-laravel": "^2.4"
+    "bugsnag/bugsnag-laravel": "^2.4",
+    "laravel/socialite": "^3.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

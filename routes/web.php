@@ -33,6 +33,10 @@ Route::get('daytonultimate', ['as' => 'leagues_dayton', 'uses' => 'PageControlle
 Route::get('daytonultimate/edit', ['as' => 'leagues_dayton_edit', 'uses' => 'PageController@daytonEdit']);
 Route::post('daytonultimate/edit', ['as' => 'leagues_dayton_edit_post', 'uses' => 'PageController@postDaytonEdit']);
 
+# Facebook Login
+Route::get('auth/facebook/redirect', ['as' => 'facebook_redirect', 'uses' => 'SocialAuthController@facebookRedirect']);
+Route::get('auth/facebook/callback', ['as' => 'facebook_callback', 'uses' => 'SocialAuthController@facebookCallback']);
+
 Route::group(['prefix' => 'post'], function () {
     Route::get('all', ['as' => 'posts', 'uses' => 'PostController@all']);
     Route::get('add', ['as' => 'posts_add', 'uses' => 'PostController@add']);

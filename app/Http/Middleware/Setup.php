@@ -6,6 +6,7 @@ use View;
 use Request;
 use Session;
 use Closure;
+use Log;
 use Cupa\Models\Page;
 
 class Setup
@@ -31,7 +32,10 @@ class Setup
         }
 
         $url = Request::url();
-        Session::put('previous', $url);
+        if (stristr($url, 'auth') === false && stristr($url, 'logout') === false) {
+            Log::info('previous: '.$url);
+            Session::put('previous', $url);
+        }
 
         return $next($request);
     }

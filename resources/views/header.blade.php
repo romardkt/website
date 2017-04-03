@@ -158,6 +158,8 @@
                 {!! Form::open(['id' => 'login-form', 'class' => 'form form-horizontal', 'role' => 'form']) !!}
                     @include('partials.login')
                 {!! Form::close() !!}
+
+                <a class="btn btn-default" href="{{ route('facebook_redirect') }}">Login With Facebook</a>
             </div>
             <div class="modal-footer hidden-xs">
                 <a class="btn btn-warning pull-left" href="{{ route('register') }}">Don't have an account?</a>
