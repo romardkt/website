@@ -8,7 +8,7 @@ php artisan down
 
 # build the js/css
 yarn
-gulp
+gulp --production
 
 # clear and optimize the Laravel app
 php artisan clear-compiled
