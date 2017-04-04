@@ -15,7 +15,7 @@ class FacebookAccountService
             ->first();
 
         if ($account) {
-            $this->updateAvatar($account->user, $providerUser->getAvatar());
+            // $this->updateAvatar($account->user, $providerUser->getAvatar());
 
             return $account->user;
         } else {
@@ -32,7 +32,7 @@ class FacebookAccountService
             }
 
             // update the users' avatar
-            $this->updateAvatar($user, $providerUser->getAvatar());
+            // $this->updateAvatar($user, $providerUser->getAvatar());
 
             // update the user
             $account->user_id = $user->id;
