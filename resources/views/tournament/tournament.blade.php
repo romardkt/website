@@ -12,6 +12,10 @@
         {!! $tournament->description !!}
     </div>
     <div class="col-xs-12 col-sm-4 feed">
+        <div class="text-right">
+            {!! generateSocailShareButtons('right', route('tournament', [$tournament->name, $tournament->year])) !!}
+            <br/><br/>
+        </div>
         @if(count($tournament->feed))
         @foreach($tournament->feed as $item)
         <div class="row">

@@ -10,6 +10,7 @@
 @can('edit', $league)
 <div class="row">
     <div class="col-xs-12 text-right">
+        {!! generateSocailShareButtons('right', route('league_teams', [$league->slug])) !!}
         <div class="btn-group">
             <a class="btn btn-default" href="{{ route('league_team_add', [$league->slug]) }}"><i class="fa fa-fw fa-lg fa-plus"></i> Add Team</a>
         </div>

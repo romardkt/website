@@ -3,6 +3,13 @@
 @section('content')
 @include('page_header')
 <div class="row">
+    <div class="col-xs-12 text-center">
+        {!! generateSocailShareButtons('center', route('youth_clinic', [$clinic->name])) !!}
+    </div>
+</div>
+
+
+<div class="row">
     <div class="col-xs-12">
         <a class="btn btn-default" href="{{ route('youth_clinics') }}"><i class="fa fa-lg fa-fw fa-chevron-circle-left"></i> All Clinics</a>
     </div>

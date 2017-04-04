@@ -17,6 +17,7 @@
         <p class="text-muted">
             Posted at <strong>{{ convertDate($post->post_at, 'M j Y h:i A') }}</strong> by <strong>{{ $post->postedBy->fullname() }} </strong>
         </p>
+        {!! generateSocailShareButtons('center', route('post_view', [$post->slug])) !!}
         <hr/>
     </div>
 </div>

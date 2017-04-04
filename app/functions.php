@@ -312,3 +312,23 @@ if (!function_exists('displayFilesize')) {
         return number_format($bytes / pow(1024, $power), 2, '.', ',').' '.$units[$power];
     }
 }
+
+if (!function_exists('generateSocailShareButtons')) {
+    function generateSocailShareButtons($align, $link, $size = 'large', $message = '')
+    {
+       $fbButton = '<div class="fb-share-button"
+            data-href="'.$link.'"
+            data-layout="button"
+            data-size="'.$size.'">
+        </div>';
+
+
+        if ($message !== '') {
+            $message = ' data-text="'.$message.'"';
+        }
+        $twButton = '<a href="https://twitter.com/share" data-url="'.$link.'" class="twitter-share-button" data-size="'.$size.'" data-related="cincyultimate" data-show-count="false"'.$message.'>Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>';
+
+
+        return '<table class="social-share '.$align.'" align="'.$align.'"><tr><td class="item facebook">'.$fbButton.'</td><td class="item twitter nudge">'.$twButton.'</td></table>';
+    }
+}

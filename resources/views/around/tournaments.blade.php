@@ -5,6 +5,7 @@
 <div class="row">
     <div class="col-xs-12 text-center">
         <h2 class="page">Tournaments</h2>
+        {!! generateSocailShareButtons('center', route('around_tournaments')) !!}
     </div>
 </div>
 <hr/>

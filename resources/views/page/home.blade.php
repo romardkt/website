@@ -72,7 +72,9 @@
                                 </small>
                             </p>
                         </a>
-                        <div class="content">{{ str_limit(strip_tags($post->content), 250, '...') }}</div>
+                        <div class="content">
+                            {{ str_limit(strip_tags($post->content), 250, '...') }}<br/>
+                        </div>
                     </div>
                     @endforeach
 

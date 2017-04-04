@@ -35,6 +35,7 @@
         @endif
     </div>
     <div class="col-xs-6 text-right">
+        {!! generateSocailShareButtons('right', route('league', [$league->slug])) !!}
         @can('edit', $league)
         <a class="btn btn-primary" href="{{ route('league_edit', [$league->slug, 'settings']) }}"><i class="fa fa-lg fa-fw fa-edit"></i> Settings</a>
             @if($league->is_archived == 0)

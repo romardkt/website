@@ -4,8 +4,9 @@
 @include('page_header')
 
 <div class="row">
-    <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-        <h2 class="text-center">Pickup Games</h2>
+    <div class="col-xs-12 col-sm-offset-1 col-sm-10 text-center">
+        <h2>Pickup Games</h2>
+        {!! generateSocailShareButtons('center', route('around_pickups')) !!}
     </div>
 </div>
 <hr/>

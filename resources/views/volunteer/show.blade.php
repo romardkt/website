@@ -12,6 +12,7 @@
         <h2 class="page">Past Volunteer Opportunities</h2>
         @else
         <div class="pull-right">
+            {!! generateSocailShareButtons('right', route('volunteer_show')) !!}<br/>
             <a class="btn btn-default" href="{{route('volunteer_show_past')}}">Show Past Events</a>
         </div>
         <h2 class="page">Current Volunteer Opportunities</h2>

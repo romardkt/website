@@ -4,7 +4,7 @@
 @include('page_header')
 <div class="row">
     <div class="col-xs-12 text-center">
-        <h2 class="page">Youth Tournaments</h2>
+        <h2>Youth Tournaments</h2>
     </div>
 </div>
 @include('youth.partials.header')

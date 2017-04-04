@@ -31,12 +31,15 @@
         @endif
         <?php $currentWeek = $game->week;?>
         <a name="week{{ $game->week }}"></a>
-        <div class="col-sm-5 col-sm-offset-1">
-            <h3>Week {{ $game->week }}</h3>
+        <div class="col-sm-4 col-sm-offset-1">
+            <h3>
+                Week {{ $game->week }}
+                {!! generateSocailShareButtons('right', route('league_schedule', [$league->slug]).'#week'.$game->week) !!}
+            </h3>
         </div>
-        <div class="col-sm-5 text-right">
-            @can('edit', $league)
+        <div class="col-sm-6 text-right">
             <br/>
+            @can('edit', $league)
             Set week {{ $game->week }} games to:
             <a href="{{ route('league_schedule_markall', [$league->slug, $game->week, 'game_on']) }}">Game On</a> |
             <a href="{{ route('league_schedule_markall', [$league->slug, $game->week, 'gametime_decision']) }}">Gametime Decision</a> |

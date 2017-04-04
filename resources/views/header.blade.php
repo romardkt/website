@@ -4,6 +4,7 @@
     <div class="col-xs-3 green"></div>
     <div class="col-xs-3 yellow"></div>
 </div>
+<div id="fb-root"></div>
 <div class="row header">
     <div class="container">
         <div class="row mobile-header">
