@@ -63,7 +63,6 @@ class ProfileController extends Controller
         $user->first_name = $input['first_name'];
         $user->last_name = $input['last_name'];
         $user->birthday = convertDate($input['birthday'], 'Y-m-d');
-        $user->gender = $input['gender'];
         $user->save();
 
         $profile = $user->profile;
@@ -194,7 +193,6 @@ class ProfileController extends Controller
         $minor->first_name = $input['first_name'];
         $minor->last_name = $input['last_name'];
         $minor->birthday = convertDate($input['birthday'], 'Y-m-d');
-        $minor->gender = $input['gender'];
         $minor->save();
 
         $minorProfile = $minor->profile;

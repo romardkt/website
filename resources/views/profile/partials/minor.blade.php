@@ -18,10 +18,17 @@
         <div class="form-group">
             {!! Form::label('Gender') !!}
             <div class="checkbox">
-                {!! Form::radio('gender', 'Male', null, ['id' => 'gender-male']) !!} &nbsp;{!! Form::label('gender-male', 'Male') !!}
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                {!! Form::radio('gender', 'Female', null, ['id' => 'gender-female']) !!} &nbsp;{!! Form::label('gender-female', 'Female') !!}
+                @if ($type == 'Update')
+                    {!! Form::radio('gender', $minor->gender, null, ['id' => 'gender', 'disabled' => true]) !!} &nbsp;{!! Form::label('gender', $minor->gender) !!}
+                @else
+                    {!! Form::radio('gender', 'Male', null, ['id' => 'gender-male']) !!} &nbsp;{!! Form::label('gender-male', 'Male') !!}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    {!! Form::radio('gender', 'Female', null, ['id' => 'gender-female']) !!} &nbsp;{!! Form::label('gender-female', 'Female') !!}
+                @endif
             </div>
+            @if ($type == 'Update')
+            <div class="help-block">You may not edit the gender, if you made a mistake please contact the webmaster.</div>
+            @endif
         </div>
 
         <div class="form-group">
@@ -49,8 +56,8 @@
         </div>
 
         <div class="form-group">
-            <div class="checkbox">
-                {!! Form::checkbox('consent', 1, false) !!} I consent to allowing the collection of my minor's information
+            <div class="checkbox indent-more">
+                {!! Form::checkbox('consent', 1, false) !!} <label>I consent to allowing the collection of my minor's information</label>
                 <span class="help-block"><a rel="noopener noreferrer" target="_blank" href="http://www.ecfr.gov/cgi-bin/text-idx?SID=4939e77c77a1a1a08c1cbf905fc4b409&node=16%3A1.0.1.3.36&rgn=div5">Children's Online Privacy Protection Regulations</a>
             </div>
             <div class="alert alert-warning">

@@ -23,7 +23,9 @@ class ProfileMinorRequest extends Request
      */
     public function rules()
     {
-        return [
+        $route = $this->route()->getName();
+
+        $rules = [
             'first_name' => 'required',
             'last_name' => 'required',
             'birthday' => 'required|date',
@@ -33,5 +35,11 @@ class ProfileMinorRequest extends Request
             'experience' => 'required|integer|min:1950|max:'.date('Y'),
             'consent' => 'required',
         ];
+
+        if ($route === 'profile_minor_edit_post') {
+            unset($rules['gender']);
+        }
+
+        return $rules;
     }
 }

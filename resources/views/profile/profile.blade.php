@@ -40,10 +40,9 @@ $('.datepicker').pickadate({
 <div class="form-group">
     {!! Form::label('Gender') !!}
     <div class="checkbox">
-        {!! Form::radio('gender', 'Male', null, ['id' => 'gender-male']) !!} &nbsp;{!! Form::label('gender-male', 'Male') !!}
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        {!! Form::radio('gender', 'Female', null, ['id' => 'gender-female']) !!} &nbsp;{!! Form::label('gender-female', 'Female') !!}
+        {!! Form::radio('gender', $user->gender, null, ['id' => 'gender', 'disabled' => true]) !!} &nbsp;{!! Form::label('gender', $user->gender) !!}
     </div>
+    <div class="help-block">You may not edit your gender, if you made a mistake please contact the webmaster.</div>
 </div>
 
 <br/>

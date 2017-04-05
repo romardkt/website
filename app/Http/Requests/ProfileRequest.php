@@ -31,7 +31,6 @@ class ProfileRequest extends Request
             'first_name' => 'required',
             'last_name' => 'required',
             'birthday' => 'required|date|before:'.date('Y-m-d', strtotime('-'.$ageRanges['min'].' years')).'|after:'.date('Y-m-d', strtotime('-'.$ageRanges['max'].' years')),
-            'gender' => 'required|in:Male,Female',
             'phone' => 'required|regex:/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/',
             'avatar' => 'mimes:jpg,png,gif,jpeg',
             'height' => 'integer',
